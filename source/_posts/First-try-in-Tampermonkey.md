@@ -12,7 +12,6 @@ I start an open-sourced project in Tampermonkey, which sounds so cool, isn’t i
 
 I have been learning about Java in the atguigu, which is one of the most popular Java-Learning online courses in
 Bilibili.
-
 A problem struck me that the titles of hundreds of episodes are incomplete when viewing a separate video in collection.
 
 I try to find an appropriate method for adopting the size of every title in their line.
