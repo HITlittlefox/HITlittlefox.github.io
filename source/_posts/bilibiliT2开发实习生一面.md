@@ -1,6 +1,6 @@
 ---
 title: bilibiliT2开发实习生一面
-category: 大三下
+category: 我要就业
 date: 2022-07-06 15:49:42
 tags:
 ---
