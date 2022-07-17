@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>暴力递归到动态优化 | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="暴力递归到动态优化 | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷题顺序与思路">
+<meta property="og:url" content="http://example.com/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-10T06:00:22.000Z">
+<meta property="article:modified_time" content="2022-07-10T06:26:59.079Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(45)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(10)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(23)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="45">
+<input type="hidden" id="yelog_site_word_count" value="55.2k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 大三下 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/6-29%E5%AD%97%E8%8A%82java%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2-%E5%AE%9E%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="6.29字节java后端开发一面(实习)">6.29字节java后端开发一面(实习)</span>
+            <span class="post-date" title="2022-07-07 09:53:19">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/Momenta%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Momenta前端开发实习一面">Momenta前端开发实习一面</span>
+            <span class="post-date" title="2022-07-06 20:36:03">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/bilibiliT2%E5%BC%80%E5%8F%91%E5%AE%9E%E4%B9%A0%E7%94%9F%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="bilibiliT2开发实习生一面">bilibiliT2开发实习生一面</span>
+            <span class="post-date" title="2022-07-06 15:49:42">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/7-3%E7%AE%80%E5%8E%86%E6%9B%B4%E6%96%B0%E8%AE%A8%E8%AE%BA%E5%A4%9C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="7-3简历更新讨论夜">7-3简历更新讨论夜</span>
+            <span class="post-date" title="2022-07-03 22:09:25">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Mybatis/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis">mybatis</span>
+            <span class="post-date" title="2022-06-28 19:38:11">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/springmvc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springmvc">springmvc</span>
+            <span class="post-date" title="2022-06-28 19:38:04">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/05/20/2022-5-20%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="2022-5-20记录">2022-5-20记录</span>
+            <span class="post-date" title="2022-05-20 16:58:03">2022/05/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-暴力递归到动态优化" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">暴力递归到动态优化</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="我要就业">我要就业</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2022-07-13 11:03:31'>2022-07-10 11:56</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:3.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%844%E7%A7%8D%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B"><span class="toc-text">常见的4种尝试模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E6%80%BB%E7%BA%B2"><span class="toc-text">暴力递归到动态规划的总纲</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%AE%9E%E7%8E%B0%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97"><span class="toc-text">暴力递归实现斐波那契数列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%89%BE%E4%BD%8D%E7%BD%AE"><span class="toc-text">机器人找位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%B7%A6%E5%BE%80%E5%8F%B3%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-text">从左往右尝试模型:背包问题:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%B7%A6%E5%BE%80%E5%8F%B3%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-%E6%95%B0%E5%AD%97%E5%AD%97%E7%AC%A6%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-text">从左往右尝试模型:数字字符转化问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%9B%B4%E4%B8%8A%E7%9A%84%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-%E7%8E%A9%E5%AE%B6%E6%8A%BD%E5%8F%96%E7%BA%B8%E7%89%8C%E9%97%AE%E9%A2%98"><span class="toc-text">范围上的尝试模型:玩家抽取纸牌问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-text">暴力递归到动态规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%91%E8%B4%A7%E5%B8%81%E9%97%AE%E9%A2%98%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89-%E8%AF%A5%E9%A2%98%E6%98%AF%E5%AF%B9%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E5%AE%8C%E6%95%B4%E4%BC%98%E5%8C%96%E8%B7%AF%E5%BE%84%E7%9A%84%E6%BC%94%E7%A4%BA"><span class="toc-text">凑货币问题（重要）:该题是对动态规划完整优化路径的演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%B4%E7%BA%B8%E9%97%AE%E9%A2%98"><span class="toc-text">贴纸问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%A2%E8%AF%95%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E8%BF%87%E7%A8%8B%E7%9A%84%E5%8E%9F%E5%88%99"><span class="toc-text">面试中设计暴力递归过程的原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%EF%BC%9F"><span class="toc-text">笔试面试过程中怎么设计暴力递归？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%844%E7%A7%8D%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-1"><span class="toc-text">常见的4种尝试模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90%E6%9C%89%E6%B2%A1%E6%9C%89%E9%87%8D%E5%A4%8D%E8%A7%A3"><span class="toc-text">如何分析有没有重复解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E5%A5%97%E8%B7%AF"><span class="toc-text">暴力递归到动态规划的套路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96"><span class="toc-text">动态规划的进一步优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B7%E6%9C%AC%E4%BD%8D%E7%BD%AE%E5%85%A8%E5%AF%B9%E5%BA%94%E7%9A%84%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-%E4%B8%A4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97"><span class="toc-text">多样本位置全对应的尝试模型:两个字符串的最长公共子序列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E6%89%BE%E4%B8%9A%E5%8A%A1%E9%99%90%E5%88%B6%E7%9A%84%E5%B0%9D%E8%AF%95%E6%A8%A1%E5%9E%8B-%E5%92%96%E5%95%A1%E9%97%AE%E9%A2%98"><span class="toc-text">寻找业务限制的尝试模型:咖啡问题</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="常见的4种尝试模型"><a href="#常见的4种尝试模型" class="headerlink" title="常见的4种尝试模型"></a>常见的4种尝试模型</h3><ol>
+<li>从左往右的尝试模型</li>
+<li>范围上的尝试模型</li>
+<li>多样本位置全对应的尝试模型</li>
+<li>寻找业务限制的尝试模型</li>
+</ol>
+<h3 id="暴力递归到动态规划的总纲"><a href="#暴力递归到动态规划的总纲" class="headerlink" title="暴力递归到动态规划的总纲"></a>暴力递归到动态规划的总纲</h3><ol>
+<li>尝试 &#x3D;&#x3D;&gt; 分辨出来所有的参数，找到所有的可变参数以及固定的值（边界）</li>
+<li>可变参数的组合是什么，表大小根据可变参数的变化范围来确定</li>
+<li>已知固定位置的依赖，有具体参数的例子（范围的两端）</li>
+<li>知道在表中的最终想要的位置，baseCase固定的行列（确定好baseCase）</li>
+<li>分析任意位置的依赖</li>
+</ol>
+<h3 id="暴力递归实现斐波那契数列"><a href="#暴力递归实现斐波那契数列" class="headerlink" title="暴力递归实现斐波那契数列"></a>暴力递归实现斐波那契数列</h3><h3 id="机器人找位置"><a href="#机器人找位置" class="headerlink" title="机器人找位置"></a>机器人找位置</h3><ol>
+<li>动态规划(记忆化搜索)：你的暴力递归过程有重复计算,我给你加缓存,下次遇到同样过程直接给你解</li>
+<li>经典的动态规划:把整个DP表从简单状态到复杂状态都列出来</li>
+<li>从暴力递归改动态规划,不用看原题意,看暴力递归过程,足矣</li>
+<li>题目解释<ol>
+<li>假设有排成一行的N个位置记为1~N，N一定大于或等于2</li>
+<li>开始时机器人在其中的M位置上(M一定是1~N中的一个)</li>
+<li>如果机器人来到1位置，那么下一步只能往右来到2位置；</li>
+<li>如果机器人来到N位置，那么下一步只能往左来到N-1位置；</li>
+<li>如果机器人来到中间位置，那么下一步可以往左走或者往右走；</li>
+<li>规定机器人必须走K步，最终能来到P位置(P也是1~N中的一个)的方法有多少种</li>
+<li>给定四个参数 N、M、K、P，返回方法数</li>
+</ol>
+</li>
+<li>传统递归:<pre><code class="java">public static int robotWalkRegularRecursion(int N, int start, int aim, int K) &#123;
+    if (N &lt; 2 || start &lt; 1 || start &gt; N || aim &lt; 1 || aim &gt; N || K &lt; 1) &#123;
+        return -1;
+    &#125;
+    return process1(start, K, aim, N);
+&#125;
+
+// 机器人当前来到的位置是cur，
+// 机器人还有rest步需要去走，
+// 最终的目标是aim，
+// 有哪些位置？1~N
+// 返回：机器人从cur出发，走过rest步之后，最终停在aim的方法数，是多少？
+public static int process1(int cur, int rest, int aim, int N) &#123;
+    if (rest == 0) &#123; // 如果已经不需要走了，走完了！
+        return cur == aim ? 1 : 0;
+    &#125;
+    if (cur == 1) &#123; // 1 -&gt; 2
+        return process1(2, rest - 1, aim, N);
+    &#125;
+    if (cur == N) &#123; // N-1 &lt;- N
+        return process1(N - 1, rest - 1, aim, N);
+    &#125;
+    return process1(cur - 1, rest - 1, aim, N)
+            + process1(cur + 1, rest - 1, aim, N);
+&#125;
+</code></pre>
+</li>
+<li>动态规划(记忆化搜索)<pre><code class="java">// 动态规划(记忆化搜索)：你的暴力递归过程有重复计算,我给你加缓存,下次遇到同样过程直接给你解
+// 如果把整个DP表从简单状态到复杂状态都列出来,就是经典的动态规划
+// dp就是缓存表
+// dp[cur][rest] == -1 -&gt; process1(cur, rest)之前没算过！
+// dp[cur][rest] != -1 -&gt; process1(cur, rest)之前算过！返回值，dp[cur][rest]
+// N+1 * K+1
+public static int robotWalkMemoryDP(int N, int start, int aim, int K) &#123;
+    if (N &lt; 2 || start &lt; 1 || start &gt; N || aim &lt; 1 || aim &gt; N || K &lt; 1) &#123;
+        return -1;
+    &#125;
+    int[][] dp = new int[N + 1][K + 1];
+    for (int i = 0; i &lt;= N; i++) &#123;
+        for (int j = 0; j &lt;= K; j++) &#123;
+            dp[i][j] = -1;
+        &#125;
+    &#125;
+    return walkCache(start, K, aim, N, dp);
+&#125;
+
+// cur 范: 1 ~ N
+// rest 范：0 ~ K
+public static int walkCache(int cur, int rest, int aim, int N, int[][] dp) &#123;
+    // 如果之前算过了,直接出来结果
+    if (dp[cur][rest] != -1) &#123;
+        return dp[cur][rest];
+    &#125;
+    // 之前没算过！
+    int ans = 0;
+    if (rest == 0) &#123;
+        ans = cur == aim ? 1 : 0;
+    &#125; else if (cur == 1) &#123;
+        ans = walkCache(2, rest - 1, aim, N, dp);
+    &#125; else if (cur == N) &#123;
+        ans = walkCache(N - 1, rest - 1, aim, N, dp);
+    &#125; else &#123;
+        ans = walkCache(cur - 1, rest - 1, aim, N, dp) + walkCache(cur + 1, rest - 1, aim, N, dp);
+    &#125;
+    dp[cur][rest] = ans;
+    return ans;
+
+&#125;
+</code></pre>
+</li>
+<li>动态规划:动态规划是直接把暴力递归的思路直接架空，拿出所对应的确定的值进行计算<img src="/image/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/1657607960651.png" alt="1657607960651"><pre><code class="java">public static int robotWalkDP(int start, int aim, int K, int N) &#123;
+    if (N &lt; 2 || start &lt; 1 || start &gt; N || aim &lt; 1 || aim &gt; N || K &lt; 1) &#123;
+        return -1;
+    &#125;
+    int[][] dp = new int[N + 1][K + 1];
+
+    // cur已经到aim，而剩余步数也为0了
+    dp[aim][0] = 1;
+    // 处理其他的情况
+    for (int rest = 1; rest &lt;= K; rest++) &#123;
+        dp[1][rest] = dp[2][rest - 1];
+        for (int cur = 2; cur &lt; N; cur++) &#123;
+            dp[cur][rest] = dp[cur - 1][rest - 1] + dp[cur + 1][rest - 1];
+        &#125;
+        dp[N][rest] = dp[N - 1][rest - 1];
+    &#125;
+    return dp[start][K];
+&#125;
+</code></pre>
+</li>
+</ol>
+<h3 id="从左往右尝试模型-背包问题"><a href="#从左往右尝试模型-背包问题" class="headerlink" title="从左往右尝试模型:背包问题:"></a>从左往右尝试模型:背包问题:</h3><ol>
+<li>题目解释<ol>
+<li>给定两个长度都为N的数组weights和values，weight[i]和values[i]分别代表i号物品的重量和价值。</li>
+<li>给定一个正数bag，表示一个载重bag的袋子，你装的物品不能超过这个重量。返回你能装下最多的价值是多少？</li>
+</ol>
+</li>
+<li>暴力递归</li>
+<li>动态规划</li>
+</ol>
+<h3 id="从左往右尝试模型-数字字符转化问题"><a href="#从左往右尝试模型-数字字符转化问题" class="headerlink" title="从左往右尝试模型:数字字符转化问题"></a>从左往右尝试模型:数字字符转化问题</h3><ol>
+<li>题目解释:<ol>
+<li>规定1和A对应，2和B对应，3和C对应…。那么一个数字字符比如”111”就可以转化为：“AAA”,“KA”,“AK”。</li>
+<li>给定一个只有数字字符组成的字符串str,返回有多少种转化结果</li>
+</ol>
+</li>
+<li>思路：根据从左往右，我们划分多大，来尝试，比如111，我们尝试一个1，为”A”,剩下两个1去继续尝试。如果我们两个1尝试，就是”K”。三个1超过26字符，无法尝试。继续如此周而复始</li>
+<li>暴力递归</li>
+<li>动态规划</li>
+</ol>
+<h3 id="范围上的尝试模型-玩家抽取纸牌问题"><a href="#范围上的尝试模型-玩家抽取纸牌问题" class="headerlink" title="范围上的尝试模型:玩家抽取纸牌问题"></a>范围上的尝试模型:玩家抽取纸牌问题</h3><ol>
+<li>题目解释:<ol>
+<li>给定一个整形数组arr，代表数值不同的纸牌排成一条线，玩家A和玩家B依次拿走每张纸牌。规定玩家A先拿，玩家B后拿，但是每个玩家每次只能拿走最左或最右的纸牌，玩家A和玩家B都绝顶聪明。请赶回最后获胜者的分数</li>
+<li>绝顶聪明学术上的解释：双方玩家都会使得对方玩家在当前单独改变策略时，不会获得更大的收益。</li>
+</ol>
+</li>
+<li>暴力递归</li>
+<li>动态规划</li>
+</ol>
+<h3 id="暴力递归到动态规划"><a href="#暴力递归到动态规划" class="headerlink" title="暴力递归到动态规划"></a>暴力递归到动态规划</h3><ol>
+<li>题目&#x3D;&gt;找到暴力递归写法（尝试）<ol>
+<li>拥有重复解的前提下&#x3D;&gt;把可变参数<ol>
+<li>不讲究组织的形式，做缓存，那就是记忆化搜索的方法</li>
+<li>精细化组织,那就是动态规划</li>
+</ol>
+</li>
+<li>如果暴力过程中没有枚举行为（即通过循环来求得值）<ol>
+<li>则记忆化搜索和动态规划的时间复杂度一致，没有必要从记忆化搜索再优化为动态规划</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>以背包问题举例，<ol>
+<li>我们每一个重量有要和不要两个选择，且都要递归展开。</li>
+<li>那么我们的递归时间复杂度尾O(2^N)。</li>
+<li>而记忆化搜索，根据可变参数得到的长为N价值为W的二维表，那么我们的时间复杂度为O(N*bag)。</li>
+<li>如果递归过程中状态转移有化简继续优化的可能，例如枚举。那么经典动态规划可以继续优化，否则记忆化搜索和动态规划的时间复杂度是一样的</li>
+</ol>
+</li>
+</ol>
+<h3 id="凑货币问题（重要）-该题是对动态规划完整优化路径的演示"><a href="#凑货币问题（重要）-该题是对动态规划完整优化路径的演示" class="headerlink" title="凑货币问题（重要）:该题是对动态规划完整优化路径的演示"></a>凑货币问题（重要）:该题是对动态规划完整优化路径的演示</h3><ol>
+<li>题目解释:<ol>
+<li>有一个表示货币面值的数组arr，每种面值的货币可以使用任意多张。arr数组元素为正数，且无重复值。例如[7,3,100,50]这是四种面值的货币。</li>
+<li>问：给定一个特定金额Sum，我们用货币面值数组有多少种方法，可以凑出该面值。例如P&#x3D;1000,用这是四种面值有多少种可能凑出1000</li>
+</ol>
+</li>
+<li>ways1为暴力递归的解题思路及实现</li>
+<li>ways2为暴力递归改记忆化搜索的版本</li>
+<li>ways3为记忆化搜索版本改动态规划的版本</li>
+<li>ways4为动态规划优化(排除重复枚举)的版本</li>
+</ol>
+<h3 id="贴纸问题"><a href="#贴纸问题" class="headerlink" title="贴纸问题"></a>贴纸问题</h3><ol>
+<li>题目解释:<ol>
+<li>给定一个字符串str，给定一个字符串类型的数组arr。arr里的每一个字符串，代表一张贴纸，你可以把单个字符剪开使用，目的是拼出str来。</li>
+<li>返回需要至少多少张贴纸可以完成这个任务。</li>
+<li>例如：str&#x3D;”babac”，arr&#x3D;{“ba”,”c”,”abcd”}</li>
+<li>至少需要两张贴纸”ba”和”abcd”，因为使用这两张贴纸，把每一个字符串单独剪开，含有2个a，2个b，1个c。是可以拼出str的，所以返回2。</li>
+</ol>
+</li>
+<li>思路1 minStickers1：由于任何贴纸都可以剪切的很碎，跟贴纸的顺序没关系。那么目标str我们先进行排序，那么也不会有影响。babac排序为aabbc，我们再去选择贴纸，str被贴纸贴好后，剩下的接着排序，再选择……<ol>
+<li>由于我们的可变参数，只有一个目标字符串。但是目标字符串的可能性太多，没办法精细化动态规划。傻缓存的暴力递归已经是最优解了。所以只有一个可变参数，又存在重复解，那么傻缓存就是最优解。</li>
+</ol>
+</li>
+<li>思路2 minStickers2，我们每一张贴纸枚举所有可能的张数，后续过程不再考虑这张贴纸。但是方法一会好一点，因为只有一个可变参数。而方法二有两个可变参数，我们在设计递归的时候，尽量少的使用可变参数，这样我们缓存结构的命中率会提升</li>
+</ol>
+<h3 id="面试中设计暴力递归过程的原则"><a href="#面试中设计暴力递归过程的原则" class="headerlink" title="面试中设计暴力递归过程的原则"></a>面试中设计暴力递归过程的原则</h3><p>(怎么猜是不对的？)</p>
+<ol>
+<li>每一个可变参数，一定不要比int类型更加复杂<ol>
+<li>比如可变参数是int a和int b 那么我们的缓存结构可以是a*b的二维数组。大小取决于a和b的范围</li>
+<li>但是如果我们的可变参数是一个数组，int[] a。那么如果过多，我们不太容易设计那么大的缓存结构。如果只有一个这种可变参数就是原则2</li>
+<li>不管什么问题，我们在脑海中想象可变参数就不会突破整形范围</li>
+</ol>
+</li>
+<li>原则1可以违反，让类型突破到一维线性结构，那必须是唯一可变参数。例如上述贴纸问题</li>
+<li>如果发现原则1被违反，但没违反原则2。只需要做到记忆化搜索就是最优解</li>
+<li>可变参数个数，能少则少</li>
+</ol>
+<h3 id="笔试面试过程中怎么设计暴力递归？"><a href="#笔试面试过程中怎么设计暴力递归？" class="headerlink" title="笔试面试过程中怎么设计暴力递归？"></a>笔试面试过程中怎么设计暴力递归？</h3><ol>
+<li>一定逼自己找到不违反原则情况下的暴力尝试！</li>
+<li>如果你找到暴力尝试，不符合原则，马上舍弃，找新的！</li>
+<li>如果某个题目突破了设计原则，一定极难极难，面试中出现的概率低于5%</li>
+</ol>
+<h3 id="常见的4种尝试模型-1"><a href="#常见的4种尝试模型-1" class="headerlink" title="常见的4种尝试模型"></a>常见的4种尝试模型</h3><ol>
+<li><p>每一个模型背后都有很多题目</p>
+</li>
+<li><p>从左往右的尝试模型</p>
+<ol>
+<li>例如背包问题</li>
+</ol>
+</li>
+<li><p>范围上的尝试模型</p>
+<ol>
+<li>例如纸牌博弈问题</li>
+</ol>
+</li>
+<li><p>多样本位置全对应的尝试模型</p>
+<ol>
+<li>两个字符串的最长公共子序列问题</li>
+</ol>
+</li>
+<li><p>寻找业务限制的尝试模型</p>
+<ol>
+<li>四种模型中最难的一种，暂时只看process方法，process更改为动态规划的dp方法。后面会展开说明其他方法，</li>
+</ol>
+</li>
+</ol>
+<h3 id="如何分析有没有重复解"><a href="#如何分析有没有重复解" class="headerlink" title="如何分析有没有重复解"></a>如何分析有没有重复解</h3><ol>
+<li>列出调用过程，可以只列出前几层</li>
+<li>有没有重复解，一看便知</li>
+</ol>
+<h3 id="暴力递归到动态规划的套路"><a href="#暴力递归到动态规划的套路" class="headerlink" title="暴力递归到动态规划的套路"></a>暴力递归到动态规划的套路</h3><ol>
+<li>你已经有了一个不违反原则的暴力递归，而且的确存在重复调用</li>
+<li>找到哪些参数的变化会影响返回值，对每一个列出变化范围</li>
+<li>参数间的所有组合数量，意味着缓存表(DP)大小</li>
+<li>记忆化搜索的方法就是傻缓存，非常容易得到</li>
+<li>规定好严格的表大小，分析位置的依赖顺序，然后从基础填写到最终解</li>
+<li>对于有枚举行为的决策过程，进一步优化</li>
+</ol>
+<h3 id="动态规划的进一步优化"><a href="#动态规划的进一步优化" class="headerlink" title="动态规划的进一步优化"></a>动态规划的进一步优化</h3><ol>
+<li>主要就是用来优化动态规划的单个位置的枚举行为<ol>
+<li>空间压缩</li>
+<li>状态化简</li>
+<li>四边形不等式</li>
+<li>其他优化技巧</li>
+</ol>
+</li>
+</ol>
+<h3 id="多样本位置全对应的尝试模型-两个字符串的最长公共子序列"><a href="#多样本位置全对应的尝试模型-两个字符串的最长公共子序列" class="headerlink" title="多样本位置全对应的尝试模型:两个字符串的最长公共子序列"></a>多样本位置全对应的尝试模型:两个字符串的最长公共子序列</h3><ol>
+<li>题目解释:<ol>
+<li>例如“ab1cd2ef345gh”和“opq123rs4tx5yz”的最长公共子序列为“12345”。</li>
+<li>即在两个字符串所有相等的子序列里最长的。所以返回子序列的长度5</li>
+<li>假如”a123bc”和”12dea3fz”两个字符串，我们把这两个样本的下标一个作为行，一个作为列。<ol>
+<li>观察这样的结构所表示的意义。</li>
+<li>dp表这样设计就是str1从0到i位置，str2从0到j位置，两个位置的最长公共子序列。</li>
+<li>dp[i][j] 表示的含义是，str1字符串在i位置</li>
+<li>str2在j位置，两个最长公共子序列多长。</li>
+<li>那么str1和str2的最长公共子序列，就是dp[str1.length][str2.length]</li>
+</ol>
+</li>
+<li>对于任何位置dp[i][j]:<ol>
+<li>如果str1的i位置和str2的j位置的最长公共子序列跟str1的i位置字符和str2的j位置字符无关，那么此时的最长公共子序列长度就是dp[i-1][j-1]</li>
+<li>此时与str1的i位置结尾的字符有关系，和str2的j位置结尾的字符没关系。此时跟str2的j位置没关系，最长公共子序列式dp[i][j-1]</li>
+<li>此时与str1的i位置结尾的字符没关系，和str2的j位置结尾的字符有关系。此时跟str1的j位置没关系，最长公共子序列式dp[i-1][j]</li>
+<li>此时即与str1的i字符结尾，有关系。又与str2的j位置结尾，有关系。只有str1[i]&#x3D;&#x3D;str2[j]才有可能存在这种情况，且为dp[i-1][j-1] + 1</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="寻找业务限制的尝试模型-咖啡问题"><a href="#寻找业务限制的尝试模型-咖啡问题" class="headerlink" title="寻找业务限制的尝试模型:咖啡问题"></a>寻找业务限制的尝试模型:咖啡问题</h3><ol>
+<li>题目解释:<ol>
+<li>例题：给定一个数组，代表每个人喝完咖啡准备刷杯子的时间，只有一台咖啡机，一次只能洗一个杯子，时间耗费a，洗完才能洗下一杯。</li>
+<li>每个咖啡杯也可以自己挥发干净，时间耗费b，咖啡杯可以并行挥发。</li>
+<li>返回让所有咖啡杯变干净的最早完成时间。</li>
+<li>三个参数：int[]arr , int a , int b（京东）</li>
+</ol>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

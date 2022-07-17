@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spring-IoC | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="Spring-IoC | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷题顺序与思路">
+<meta property="og:url" content="http://example.com/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-10T06:00:22.000Z">
+<meta property="article:modified_time" content="2022-07-10T06:26:59.079Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(45)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(10)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(23)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="45">
+<input type="hidden" id="yelog_site_word_count" value="55.2k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 大三下 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/6-29%E5%AD%97%E8%8A%82java%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2-%E5%AE%9E%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="6.29字节java后端开发一面(实习)">6.29字节java后端开发一面(实习)</span>
+            <span class="post-date" title="2022-07-07 09:53:19">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/Momenta%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Momenta前端开发实习一面">Momenta前端开发实习一面</span>
+            <span class="post-date" title="2022-07-06 20:36:03">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/bilibiliT2%E5%BC%80%E5%8F%91%E5%AE%9E%E4%B9%A0%E7%94%9F%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="bilibiliT2开发实习生一面">bilibiliT2开发实习生一面</span>
+            <span class="post-date" title="2022-07-06 15:49:42">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/7-3%E7%AE%80%E5%8E%86%E6%9B%B4%E6%96%B0%E8%AE%A8%E8%AE%BA%E5%A4%9C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="7-3简历更新讨论夜">7-3简历更新讨论夜</span>
+            <span class="post-date" title="2022-07-03 22:09:25">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Mybatis/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis">mybatis</span>
+            <span class="post-date" title="2022-06-28 19:38:11">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/springmvc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springmvc">springmvc</span>
+            <span class="post-date" title="2022-06-28 19:38:04">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/05/20/2022-5-20%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="2022-5-20记录">2022-5-20记录</span>
+            <span class="post-date" title="2022-05-20 16:58:03">2022/05/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Spring-IoC" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Spring-IoC</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="大三下">大三下</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2022-06-29 19:25:32'>2022-06-28 19:37</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:1.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E9%A1%BA%E5%BA%8F%E4%B8%BA-spring-springmvc-mybatis"><span class="toc-text">学习顺序为:spring springmvc mybatis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E7%BB%84%E6%88%90%E5%8F%8A%E6%8B%93%E5%B1%95"><span class="toc-text">Spring组成及拓展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC%E7%90%86%E8%AE%BA%E6%8E%A8%E5%AF%BC"><span class="toc-text">IoC理论推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-Spring"><span class="toc-text">Hello,Spring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IoC%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-text">IoC创建对象的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring%E9%85%8D%E7%BD%AE"><span class="toc-text">Spring配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-text">依赖注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bean%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-text">Bean的自动装配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91"><span class="toc-text">使用注解开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Java%E7%9A%84%E6%96%B9%E5%BC%8F%E9%85%8D%E7%BD%AESpring"><span class="toc-text">使用Java的方式配置Spring</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="学习顺序为-spring-springmvc-mybatis"><a href="#学习顺序为-spring-springmvc-mybatis" class="headerlink" title="学习顺序为:spring springmvc mybatis"></a>学习顺序为:spring springmvc mybatis</h2><ol>
+<li><p>Spring是一个轻量级容器框架</p>
+<ol>
+<li>控制反转（IoC）</li>
+<li>面向切面（AOP）</li>
+</ol>
+</li>
+<li><p>理念：使现有的技术更加容易使用，大杂烩，整合了现有的技术框架</p>
+</li>
+<li><p>SSH&#x3D;Struct2+Spring+Hibernate</p>
+</li>
+<li><p>SSM&#x3D;SpringMVC+Spring+Mybatis</p>
+</li>
+<li><p>官网：<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-framework#overview">Spring Framework</a></p>
+</li>
+<li><p>中文文档：<a target="_blank" rel="noopener" href="https://www.docs4dev.com/docs/zh/spring-framework/5.1.3.RELEASE/reference/">Spring Framework 中文文档 - Spring Framework 5.1.3.RELEASE Reference | Docs4dev</a></p>
+</li>
+<li><p>官方文档在这个链接<a target="_blank" rel="noopener" href="https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html">https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html</a></p>
+</li>
+<li><p>Github<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-framework">spring-projects&#x2F;spring-framework: Spring Framework (github.com)</a></p>
+</li>
+<li><p>MAVEN<a target="_blank" rel="noopener" href="https://mvnrepository.com/tags/spring">Maven Repository: spring (mvnrepository.com)</a></p>
+</li>
+<li><pre><code class="java">&lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+    &lt;version&gt;5.3.21&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;5.3.21&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li><p>优点：</p>
+<ol>
+<li>开源、免费的框架；</li>
+<li>轻量级、非入侵式的框架</li>
+<li>控制反转IoC，面向切面编程AOP</li>
+<li>支持事务的处理，对框架整合的支持</li>
+</ol>
+</li>
+<li><p>总结一句话：Spring就是一个轻量级的控制反转IoC和面向切面编程AOP的框架</p>
+</li>
+</ol>
+<hr>
+<h2 id="Spring组成及拓展"><a href="#Spring组成及拓展" class="headerlink" title="Spring组成及拓展"></a>Spring组成及拓展</h2><ol>
+<li>七大模块</li>
+<li>现代化的java开发（基于spring的开发）：构建一切–协调一切–连接一切<ol>
+<li>Spring Boot<ol>
+<li>一个快速开发的脚手架</li>
+<li>基于Springboot可以快速的开发单个微服务</li>
+<li>约定大于配置</li>
+</ol>
+</li>
+<li>Spring Cloud<ol>
+<li>基于spring boot实现的</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Spingboot的前提使完全掌握Spring和SpringMVC</li>
+<li>弊端：配置地狱</li>
+</ol>
+<hr>
+<h2 id="IoC理论推导"><a href="#IoC理论推导" class="headerlink" title="IoC理论推导"></a>IoC理论推导</h2><ol>
+<li><p>UserDao接口</p>
+</li>
+<li><p>UserDaoImpl接口</p>
+</li>
+<li><p>UserService业务接口</p>
+</li>
+<li><p>UserServiceImpl接口</p>
+</li>
+<li><p>之前的业务中，用户的需求可能会影响原来的代码，我们需要根据用户的需求去修改原代码</p>
+</li>
+<li><p>如果程序代码量十分大，修改一次的成本代价十分昂贵。</p>
+</li>
+<li><pre><code class="java">private UserDao userDao;
+
+// 使用set进行动态实现值的注入，实现了IoC控制反转！！！
+public void setUserDao(UserDao userDao) &#123;
+this.userDao = userDao;
+&#125;
+</code></pre>
+</li>
+<li><p>使用一个Set接口实现，已经发生了革命性的变化：</p>
+<ol>
+<li>之前程序是主动创建对象，控制权在程序员手上！（用户每一个需求需要程序员去改代码）</li>
+<li>使用了Set注入后，程序不再具有主动性，而是变成了被动的接收对象 </li>
+<li>这种思想，从本质上解决了问题，不用再去管理对象的创建了。系统的耦合性大大降低，可以更加专注业务的实现。这是IoC的原型。</li>
+</ol>
+</li>
+<li><p>控制反转IoC（Inversion of Control）是一种设计思想，DI（依赖注入）是实现IoC的一种方法。</p>
+</li>
+<li><p>IoC是一种通过<strong>描述</strong>（XML或注解）并通过<strong>第三方</strong>去生产或获取特定对象的方式。在Spring中实现控制反转的是IoC容器，其实现方法是依赖注入（Dependency Injection, DI）。</p>
+</li>
+</ol>
+<hr>
+<h2 id="Hello-Spring"><a href="#Hello-Spring" class="headerlink" title="Hello,Spring"></a>Hello,Spring</h2><ol>
+<li>Hello对象是Spring创建的；Hello对象的属性是Spring容器（也就是beans）设置的。</li>
+<li>控制：谁来控制对象的创建，传统应用程序的对象是由程序本身控制创建的，使用Spring后，对象是由Spring来创建的。</li>
+<li>反转：程序本身不创建对象，而变成被动的接收对象</li>
+<li>依赖：就是利用set方法来进行注入的</li>
+<li>IoC是一种编程思想，由主动的编程变成被动的接收</li>
+<li>到了现在，彻底不用去程序中主动改动了。如果想要实现不同操作，只需要在xml配置文件中进行修改，所谓的IoC，一句话搞定：对象由Spring来创建、管理、装配！</li>
+</ol>
+<hr>
+<h2 id="IoC创建对象的方式"><a href="#IoC创建对象的方式" class="headerlink" title="IoC创建对象的方式"></a>IoC创建对象的方式</h2><ol>
+<li>使用无参构造从创建构造</li>
+<li>假设使用有参构造创建对象<ol>
+<li>根据index参数下标设置</li>
+<li>根据参数名字设置</li>
+<li>根据参数类型设置</li>
+</ol>
+</li>
+<li>Spring容器在<code>ApplicationContext context = new ClassPathXmlApplicationContext(&quot;beans.xml&quot;);</code>就实例化了所有对象,随用随取.(在配置文件加载时,容器中管理的对象就都被创建了)</li>
+</ol>
+<hr>
+<h2 id="Spring配置"><a href="#Spring配置" class="headerlink" title="Spring配置"></a>Spring配置</h2><ol>
+<li>别名</li>
+<li>Bean的配置</li>
+<li>import:一般用于团队开发使用,可以将多个配置文件,导入合并为一个.<ol>
+<li>项目中多个人开发,分别负责不同的类开发,不同类注册在不同bean中,import可以合并.</li>
+<li>使用总配置即可.</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><ol>
+<li>构造器注入</li>
+<li>Set方式注入(重点)<ol>
+<li>依赖注入:Set注入<ol>
+<li>依赖:bean对象的创建依赖于容器</li>
+<li>注入:bean对象中的所有属性由容器来注入</li>
+</ol>
+</li>
+<li>环境搭建<ol>
+<li>复杂类型</li>
+<li>真实测试对象</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>拓展方式注入<ol>
+<li><code>xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</code>p命名空间注入,可以直接注入属性的值:property</li>
+<li><code>xmlns:c=&quot;http://www.springframework.org/schema/c&quot;</code>c命名空间</li>
+<li>需要先导入约束,才能使用</li>
+</ol>
+</li>
+<li>bean的作用域<ol>
+<li>Singleton单例(Spring默认模式)<code>scope=&quot;Singleton&quot;</code></li>
+<li>prototype原型,每次从容器中get,都会产生一个新对象</li>
+<li>request\session\appication,只在web开发中使用</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="Bean的自动装配"><a href="#Bean的自动装配" class="headerlink" title="Bean的自动装配"></a>Bean的自动装配</h2><ol>
+<li><p>自动装配是Spring满足Bean依赖的一种方式</p>
+</li>
+<li><p>Spring会在上下文中自动寻找,并自动给bean装配属性</p>
+</li>
+<li><p>有三种自动装配方式:</p>
+<ol>
+<li>XML显式配置</li>
+<li>java显式配置</li>
+<li>隐式自动装配(重要)</li>
+</ol>
+</li>
+<li><p>环境搭建</p>
+<ol>
+<li>byName:自动去容器上下文找和自己对象Set方法后面的值对应的bean id,并且全局唯一</li>
+<li>byType:自动去容器上下文找和自己对象属性类型相同的bean，需要全局唯一</li>
+</ol>
+</li>
+<li><p>使用注解实现自动装配</p>
+<ol>
+<li><p>导入约束</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+</code></pre>
+</li>
+<li><p>配置注解的支持</p>
+<pre><code>&lt;context:annotation-config/&gt;
+</code></pre>
+</li>
+<li><p>@Autowired</p>
+<ol>
+<li>直接在属性上使用,也可以在set方式上使用</li>
+<li>使用autowired不用编写set方法,前提是自动装配的属性在IoC容器中存在且符合bytype</li>
+<li>如果环境复杂,不能一个autowired完成,可以用@Qualifier(value&#x3D;”xxx”)辅助</li>
+</ol>
+</li>
+<li><p>@Resource,或者@Resource(name&#x3D;”xxx”)</p>
+</li>
+<li><p>@Nullable 这个字段可以为null</p>
+</li>
+<li><p>@Autowired和@Resource的区别</p>
+<ol>
+<li><p>自动装配,都可以放在属性字段上</p>
+</li>
+<li><p>@Autowired必须要求对象存在</p>
+</li>
+<li><p>执行顺序不同:</p>
+<ol>
+<li>@Autowired默认通过byType,多个同类型时,采用byName;</li>
+<li>@Resource默认通过byName,如果找不到就byType</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="使用注解开发"><a href="#使用注解开发" class="headerlink" title="使用注解开发"></a>使用注解开发</h2><ol>
+<li>bean</li>
+<li>属性如何注入</li>
+<li>衍生的注解<ol>
+<li>dao：@Repository</li>
+<li>service：@Service</li>
+<li>controller：@Controller</li>
+</ol>
+</li>
+<li>自动装载配置<ol>
+<li>@Autowired</li>
+<li>@Nullable</li>
+<li>@Resource</li>
+</ol>
+</li>
+<li>作用域:@Scope(“Singleton”);@Scope(“prototype”)</li>
+<li>小结：<ol>
+<li>xml更加万能，适用于任何场合，维护简单方便</li>
+<li>注解：不是自己的类，使用不了，维护相对复杂</li>
+<li>最佳实践：<ol>
+<li>xml用来管理bean</li>
+<li>注解用来完成属性的注入</li>
+<li>使用过程中，只需要注意一个问题：必须让注解生效，就要开启注解支持</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="使用Java的方式配置Spring"><a href="#使用Java的方式配置Spring" class="headerlink" title="使用Java的方式配置Spring"></a>使用Java的方式配置Spring</h2><ol>
+<li>使用多个注解@Component、@Beans，完成xml的功能</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

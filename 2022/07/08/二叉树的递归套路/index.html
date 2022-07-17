@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>二叉树的递归套路 | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="二叉树的递归套路 | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刷题顺序与思路">
+<meta property="og:url" content="http://example.com/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="(C++)labuladong的算法小抄(C++)labuladong刷题模板框架+套路(Go)LeetCode Cookbook 牛客题霸(C++)代码随想录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-10T06:00:22.000Z">
+<meta property="article:modified_time" content="2022-07-10T06:26:59.079Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(45)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(10)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(23)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="45">
+<input type="hidden" id="yelog_site_word_count" value="55.2k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All 大三下 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/6-29%E5%AD%97%E8%8A%82java%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2-%E5%AE%9E%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="6.29字节java后端开发一面(实习)">6.29字节java后端开发一面(实习)</span>
+            <span class="post-date" title="2022-07-07 09:53:19">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/Momenta%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Momenta前端开发实习一面">Momenta前端开发实习一面</span>
+            <span class="post-date" title="2022-07-06 20:36:03">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/bilibiliT2%E5%BC%80%E5%8F%91%E5%AE%9E%E4%B9%A0%E7%94%9F%E4%B8%80%E9%9D%A2/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="bilibiliT2开发实习生一面">bilibiliT2开发实习生一面</span>
+            <span class="post-date" title="2022-07-06 15:49:42">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/7-3%E7%AE%80%E5%8E%86%E6%9B%B4%E6%96%B0%E8%AE%A8%E8%AE%BA%E5%A4%9C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="7-3简历更新讨论夜">7-3简历更新讨论夜</span>
+            <span class="post-date" title="2022-07-03 22:09:25">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Mybatis/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis">mybatis</span>
+            <span class="post-date" title="2022-06-28 19:38:11">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/springmvc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springmvc">springmvc</span>
+            <span class="post-date" title="2022-06-28 19:38:04">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/05/20/2022-5-20%E8%AE%B0%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="2022-5-20记录">2022-5-20记录</span>
+            <span class="post-date" title="2022-05-20 16:58:03">2022/05/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-二叉树的递归套路" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">二叉树的递归套路</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="我要就业">我要就业</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2022-07-10 13:58:17'>2022-07-08 08:56</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:3.8k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF"><span class="toc-text">二叉树的递归套路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AE%9A%E4%B8%80%E6%A3%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%B4%E7%BB%93%E7%82%B9head%EF%BC%8C%E8%BF%94%E5%9B%9E%E8%BF%99%E9%A2%97%E4%BA%8C%E5%8F%89%E6%A0%91%E6%98%AF%E4%B8%8D%E6%98%AF%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">给定一棵二叉树的头结点head，返回这颗二叉树是不是平衡二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E4%BA%8C%E5%8F%89%E6%A0%91%E4%BB%BB%E6%84%8F%E4%B8%A4%E4%B8%AA%E8%8A%82%E7%82%B9%E6%9C%80%E5%A4%A7%E5%80%BC"><span class="toc-text">返回二叉树任意两个节点最大值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E7%9A%84%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%A7%E5%B0%8FSize"><span class="toc-text">返回二叉树中的最大的搜索二叉树的大小Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%BE%E5%AF%B9%E6%9C%80%E5%A4%A7%E5%BF%AB%E4%B9%90%E5%80%BC"><span class="toc-text">派对最大快乐值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E4%BA%8C%E5%8F%89%E6%A0%91%E6%98%AF%E5%90%A6%E6%98%AF-%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">判断二叉树是否是 满二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E4%BA%8C%E5%8F%89%E6%A0%91%E6%98%AF%E4%B8%8D%E6%98%AF-%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">判断二叉树是不是 搜索二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E7%9A%84%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%A7%E5%B0%8FSize-1"><span class="toc-text">返回二叉树中的最大的搜索二叉树的大小Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E7%9A%84%E6%90%9C%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%B4%E8%8A%82%E7%82%B9"><span class="toc-text">返回二叉树中的最大的搜索二叉树的头节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%AF%E5%90%A6%E6%98%AF%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">是否是完全二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%8E%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88"><span class="toc-text">最低公共祖先</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="二叉树的递归套路"><a href="#二叉树的递归套路" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h2><ol>
+<li>简述<ol>
+<li>可以解决面试中的绝大部分二叉树(95%以上)的问题，尤其是树形dp问题</li>
+<li>其本质是利用递归遍历二叉树的便利性，每个节点在递归的过程中可以回到该节点3次</li>
+</ol>
+</li>
+<li>具体步骤为：<ol>
+<li>假设以X节点为头，假设可以向X左树和右树要任何信息</li>
+<li>在上一步的假设下，讨论以X为头结点的树，得到答案的可能性（最重要）<ol>
+<li><strong>常见分类</strong><ol>
+<li>与X无关的答案</li>
+<li>与X有关的答案</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>列出所有可能性后，确定到底需要向左树和右树要什么样的信息</li>
+<li>把左树信息和右树信息<strong>求全集</strong>，就是任何一颗子树都需要返回的信息S</li>
+<li>递归函数都返回S，每颗子树都这么要求</li>
+<li>写代码，在代码中考虑如何把左树信息和右树信息整合出整棵树的信息</li>
+</ol>
+</li>
+<li>Base cases: <ol>
+<li>The base case is also called <strong>a stopping condition for recursive calls</strong>. It is very important to have a base case for every recursive code.</li>
+</ol>
+</li>
+</ol>
+<h3 id="给定一棵二叉树的头结点head，返回这颗二叉树是不是平衡二叉树"><a href="#给定一棵二叉树的头结点head，返回这颗二叉树是不是平衡二叉树" class="headerlink" title="给定一棵二叉树的头结点head，返回这颗二叉树是不是平衡二叉树"></a>给定一棵二叉树的头结点head，返回这颗二叉树是不是平衡二叉树</h3><ol>
+<li><code>Code03_IsBalanced</code></li>
+<li>题目解释:<ol>
+<li>平衡树概念：在一棵二叉树中，每一个子树，左树的高度和右树的高度差不超过1</li>
+</ol>
+</li>
+<li><strong>以X为头的树的可能性</strong>，要做到平衡，需要的条件是<ol>
+<li>X左树平衡，</li>
+<li>右树平衡，</li>
+<li>X的左树高度和右树高度差不超过1</li>
+<li>对左树的要求:<ol>
+<li>返回:是否平衡</li>
+<li>返回:高度</li>
+</ol>
+</li>
+<li>对右树的要求:<ol>
+<li>返回:是否平衡</li>
+<li>返回:高度</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>如果想用递归,需要左右都索要相同信息<strong>求全集</strong>,也就是他们给的信息的<strong>并</strong>,所以该题,我们X需要向左右子树要的信息Info为，<ol>
+<li>是否平衡public boolean isBalanced;</li>
+<li>高度public int height;</li>
+</ol>
+</li>
+</ol>
+<pre><code class="java">// 左右要求一样，Info信息返回的结构体
+public static class Info &#123;
+    public boolean isBalanced;
+    public int height;
+
+    public Info(boolean i, int h) &#123;
+        isBalanced = i;
+        height = h;
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="java">public static Info process(Node x) &#123;
+    if (x == null) &#123;
+        return new Info(true, 0);
+    &#125;
+    // 假设左树可以给信息
+    Info leftInfo = process(x.left);
+    // 假设右树可以给信息
+    Info rightInfo = process(x.right);
+    // 整棵树的高度
+    int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+    // 该树是否平衡，先假设true，再用条件进行判断
+    boolean isBalanced = true;
+    if (!leftInfo.isBalanced) &#123;
+        isBalanced = false;
+    &#125;
+    if (!rightInfo.isBalanced) &#123;
+        isBalanced = false;
+    &#125;
+    if (Math.abs(leftInfo.height - rightInfo.height) &gt; 1) &#123;
+        isBalanced = false;
+    &#125;
+    return new Info(isBalanced, height);
+&#125;
+</code></pre>
+<h3 id="返回二叉树任意两个节点最大值"><a href="#返回二叉树任意两个节点最大值" class="headerlink" title="返回二叉树任意两个节点最大值"></a>返回二叉树任意两个节点最大值</h3><ol>
+<li><code>Code06_MaxDistance</code></li>
+<li>题目解释:<ol>
+<li>给定一棵二叉树的头结点head，任何两个节点之间都存在距离，返回整棵二叉树的最大距离</li>
+<li>两个节点之间的距离:两个节点中最精简的路径上存在的节点数</li>
+</ol>
+</li>
+<li><strong>以X为头的树的可能性</strong>(常见的分类)<ol>
+<li>有可能最大距离和当前节点X无关(最大距离不通过X)<ol>
+<li>最大距离是X左树的最大距离,或者,右树的最大距离</li>
+<li>需要选出max(左树最大距离,右树最大距离)</li>
+</ol>
+</li>
+<li>最大距离跟X有关，<ol>
+<li>即最大距离通过X</li>
+<li>左树离X最远的点,到,X右树上离X最远的点。</li>
+<li>即X左树的高度,加上,X自身高度1,加上,X右树上的高度</li>
+</ol>
+</li>
+<li>对左树的要求:<ol>
+<li>返回整棵树最大距离</li>
+<li>返回高度</li>
+</ol>
+</li>
+<li>对右树的要求:<ol>
+<li>返回整棵树最大距离</li>
+<li>返回高度</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>结论：根据递归套路，我们每次递归，需要返回X左树的最大距离和高度，同理返回X右树的最大距离和高度。</li>
+<li><strong>Info求并集</strong><ol>
+<li>最大距离</li>
+<li>高度</li>
+</ol>
+</li>
+</ol>
+<h3 id="返回二叉树中的最大的搜索二叉树的大小Size"><a href="#返回二叉树中的最大的搜索二叉树的大小Size" class="headerlink" title="返回二叉树中的最大的搜索二叉树的大小Size"></a>返回二叉树中的<strong>最大</strong>的搜索二叉树的大小Size</h3><ol>
+<li><code>Code05_MyMaxSubBSTSize</code></li>
+<li>题目解释:<ol>
+<li>给定一颗二叉树，返回这颗二叉树中最大的二叉搜索树的Size</li>
+<li>搜索二叉树概念：整颗树上没有重复值，左树的值都比我小，右树的值都比我大。每颗子树都如此。</li>
+</ol>
+</li>
+<li><strong>以X为头的树的可能性</strong>(常见的分类)<ol>
+<li>与X无关:最终找到的搜索二叉树，不以X为头<ol>
+<li>左树满足搜索二叉树的大小&#x2F;节点个数</li>
+<li>右树满足搜索二叉树的大小&#x2F;节点个数</li>
+</ol>
+</li>
+<li>与X有关:最终找到的搜索二叉树，以X为头<ol>
+<li>X的左树整体是搜索二叉树</li>
+<li>X的右树整体是搜索二叉树</li>
+<li>左树的最大值 小于 X</li>
+<li>右树的最小值 大于 X</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>列出需要信息:<ol>
+<li>左树<ol>
+<li>最大搜索二叉树的子树的大小size</li>
+<li>左树整体是不是搜索二叉树 isAllBST</li>
+<li>左树最大值</li>
+</ol>
+</li>
+<li>右树:<ol>
+<li>最大搜索二叉树的子树的大小size</li>
+<li>右树整体是不是搜索二叉树 isAllBST</li>
+<li>右树最小值</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>总结Info<ol>
+<li>size</li>
+<li>isAllBST</li>
+<li>max</li>
+<li>min</li>
+</ol>
+</li>
+</ol>
+<h3 id="派对最大快乐值"><a href="#派对最大快乐值" class="headerlink" title="派对最大快乐值"></a>派对最大快乐值</h3><ol>
+<li>Code04_MaxHappy<br> 排队最大快乐值问题，员工信息定义如下，多叉树结构：<pre><code class="java">class Employee&#123;
+    // 这名员工可以带来的快乐值
+    public int happy;
+    // 这名员工有哪些直接的下级
+    List&lt;Employee&gt; subordinates;
+&#125;
+</code></pre>
+</li>
+<li>题目解释:<ol>
+<li>每个员工都符合Employee类的描述，整个公司的人员结构可以看作是一颗标准的，没有环的多叉树。</li>
+<li>树的头结点是公司唯一的老板。除了老板外的每个员工都有唯一的直接上级。</li>
+<li>叶节点是没有任何下属的基层员工（subordinates为空），除了基层员工股外，每个员工都有一个或多个直接下级。</li>
+<li>现在公司要来办party，你可以决定哪些员工来，哪些员工不来，</li>
+<li>规则:<ol>
+<li>如果某个员工来了，那么这个员工的所有直接下级都不能来</li>
+</ol>
+</li>
+<li>排队的整体快乐值是所有到场员工的快乐值的累加</li>
+<li>你的目标:<ol>
+<li>让派对的整体快乐值尽量的大</li>
+</ol>
+</li>
+<li>给定一颗多叉树头结点boss，请返回排队的最大快乐值</li>
+</ol>
+</li>
+<li><strong>以X为头的树的可能性</strong>(常见的分类)(假设X有三个员工,分别为firstChild,secondChild,thirdChild)<ol>
+<li>X不来<ol>
+<li>0</li>
+<li>max{firstChild<strong>来</strong>的最大快乐值,firstChild<strong>不来</strong>的最大快乐值,}</li>
+<li>max{secondChild<strong>来</strong>的最大快乐值,secondChild<strong>不来</strong>的最大快乐值,}</li>
+<li>max{thirdChild<strong>来</strong>的最大快乐值,thirdChild<strong>不来</strong>的最大快乐值,}</li>
+<li>相加</li>
+</ol>
+</li>
+<li>X来<ol>
+<li>X.happy</li>
+<li>X.firstChild <strong>不来</strong>的情况下:整棵树的快乐值</li>
+<li>X.secondChild <strong>不来</strong>的情况下:整棵树的快乐值</li>
+<li>X.thirdChild <strong>不来</strong>的情况下:整棵树的快乐值</li>
+<li>相加</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Info:<ol>
+<li>X<strong>来</strong>的情况下,整棵树的最大快乐值</li>
+<li>X<strong>不来</strong>的情况下,整棵树的最大快乐值</li>
+</ol>
+</li>
+</ol>
+<h3 id="判断二叉树是否是-满二叉树"><a href="#判断二叉树是否是-满二叉树" class="headerlink" title="判断二叉树是否是 满二叉树"></a>判断二叉树是否是 <strong>满二叉树</strong></h3><ol>
+<li><p>题目解释:给定一棵二叉树的头结点head，返回这颗二叉树是不是满二叉树。</p>
+</li>
+<li><p>第一种方法</p>
+<ol>
+<li>思路：<ol>
+<li>满二叉树一定满足<code>2^L - 1 == N</code>，其中L是这颗二叉树的高度，N是这颗二叉树的节点个数</li>
+</ol>
+</li>
+<li>Info<pre><code class="java">public static class Info1 &#123;
+    // 以x为头节点的树的高度
+    public int height;
+    // 以x为头节点的树的节点数
+    public int nodes;
+
+    public Info1(int h, int n) &#123;
+        height = h;
+        nodes = n;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li>递归主程序:<pre><code class="java">// 递归进行时
+public static Info1 process1(Node head) &#123;
+    if (head == null) &#123;
+        return new Info1(0, 0);
+    &#125;
+    // 往左递归
+    // 往右递归
+    Info1 leftInfo = process1(head.left);
+    Info1 rightInfo = process1(head.right);
+    // 要信息：height
+    int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+    // 要信息：nodes
+    int nodes = leftInfo.nodes + rightInfo.nodes + 1;
+
+    return new Info1(height, nodes);
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>第二种方法:</p>
+<ol>
+<li>思路：<ol>
+<li>左树满 &amp;&amp; 右树满 &amp;&amp; 左右树高度一样 -&gt; 整棵树是满的</li>
+</ol>
+</li>
+<li>Info<pre><code class="java">public static class Info2 &#123;
+    public boolean isFull;
+    public int height;
+
+    public Info2(boolean f, int h) &#123;
+        // 收集子树是否是满二叉树
+        isFull = f;
+        // 收集子树的高度
+        height = h;
+
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li>递归主程序:<pre><code class="java">// 递归主程序
+public static Info2 process2(Node h) &#123;
+    if (h == null) &#123;
+        return new Info2(true, 0);
+    &#125;
+    // 左树
+    Info2 leftInfo = process2(h.left);
+    // 右树
+    Info2 rightInfo = process2(h.right);
+    // 是否满
+    boolean isFull = leftInfo.isFull &amp;&amp; rightInfo.isFull &amp;&amp; leftInfo.height == rightInfo.height;
+    // 高度
+    int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+    return new Info2(isFull, height);
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="判断二叉树是不是-搜索二叉树"><a href="#判断二叉树是不是-搜索二叉树" class="headerlink" title="判断二叉树是不是 搜索二叉树"></a>判断二叉树是不是 <strong>搜索二叉树</strong></h3><pre><code>网课LeetCode摘录.md : 98. 验证二叉搜索树
+</code></pre>
+<h3 id="返回二叉树中的最大的搜索二叉树的大小Size-1"><a href="#返回二叉树中的最大的搜索二叉树的大小Size-1" class="headerlink" title="返回二叉树中的最大的搜索二叉树的大小Size"></a>返回二叉树中的<strong>最大</strong>的搜索二叉树的大小Size</h3><h3 id="返回二叉树中的最大的搜索二叉树的头节点"><a href="#返回二叉树中的最大的搜索二叉树的头节点" class="headerlink" title="返回二叉树中的最大的搜索二叉树的头节点"></a>返回二叉树中的<strong>最大</strong>的搜索二叉树的头节点</h3><ol>
+<li><code>Code02_MaxSubBSTHead</code></li>
+<li>题目解释:<ol>
+<li>给定一颗二叉树，返回这颗二叉树中最大的二叉搜索树的头节点</li>
+<li>搜索二叉树概念：整颗树上没有重复值，左树的值都比我小，右树的值都比我大。每颗子树都如此。</li>
+</ol>
+</li>
+<li><strong>以X为头的树的可能性</strong>(常见的分类)<ol>
+<li>与X无关:最终找到的搜索二叉树，不以X为头<ol>
+<li>左树收集的答案</li>
+<li>右树收集的答案</li>
+<li>答案中较大的那个</li>
+</ol>
+</li>
+<li>与X有关:最终找到的搜索二叉树，以X为头<ol>
+<li>X的左树整体是搜索二叉树</li>
+<li>X的右树整体是搜索二叉树</li>
+<li>左树的最大值 小于 X</li>
+<li>右树的最小值 大于 X</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>列出需要信息:<ol>
+<li>左树<ol>
+<li>最大二叉搜索子树的头节点</li>
+<li>最大搜索二叉树的子树的大小size</li>
+<li>(是否是搜索二叉树,isAllBST,可由1得出)</li>
+<li>左树最大值</li>
+</ol>
+</li>
+<li>右树:<ol>
+<li>最大二叉搜索子树的头节点</li>
+<li>最大搜索二叉树的子树的大小size</li>
+<li>(右树整体是不是搜索二叉树 isAllBST)</li>
+<li>右树最小值</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>总结Info<ol>
+<li>head(isAllBST)</li>
+<li>size</li>
+<li>max</li>
+<li>min</li>
+</ol>
+</li>
+<li>Info<pre><code class="java">// 每一棵子树
+public static class Info &#123;
+    // 如果最大搜索二叉子树的头节点，就是传入的head，那么整棵树就是搜索二叉树
+    public Node maxSubBSTHead;
+    public int maxSubBSTSize;
+    public int min;
+    public int max;
+
+    public Info(Node h, int size, int mi, int ma) &#123;
+        maxSubBSTHead = h;
+        maxSubBSTSize = size;
+        min = mi;
+        max = ma;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li>递归主程序:<pre><code class="java">public static Info process(Node X) &#123;
+    if (X == null) &#123;
+        return null;
+    &#125;
+    // 左 信息
+    Info leftInfo = process(X.left);
+    // 右 信息
+    Info rightInfo = process(X.right);
+    int min = X.value;
+    int max = X.value;
+    Node maxSubBSTHead = null;
+    int maxSubBSTSize = 0;
+    if (leftInfo != null) &#123;
+        min = Math.min(min, leftInfo.min);
+        max = Math.max(max, leftInfo.max);
+        maxSubBSTHead = leftInfo.maxSubBSTHead;
+        maxSubBSTSize = leftInfo.maxSubBSTSize;
+    &#125;
+    if (rightInfo != null) &#123;
+        min = Math.min(min, rightInfo.min);
+        max = Math.max(max, rightInfo.max);
+        if (rightInfo.maxSubBSTSize &gt; maxSubBSTSize) &#123;
+            maxSubBSTHead = rightInfo.maxSubBSTHead;
+            maxSubBSTSize = rightInfo.maxSubBSTSize;
+        &#125;
+    &#125;
+    if ((leftInfo == null ? true :
+            // 左树是不是搜索二叉树
+            (leftInfo.maxSubBSTHead == X.left &amp;&amp; leftInfo.max &lt; X.value)
+    ) &amp;&amp; (rightInfo == null ? true :
+            // 右树是不是搜索二叉树
+            (rightInfo.maxSubBSTHead == X.right &amp;&amp; rightInfo.min &gt; X.value)
+            )) &#123;
+        maxSubBSTHead = X;
+        maxSubBSTSize =
+                (leftInfo == null ? 0 : leftInfo.maxSubBSTSize)
+                +
+                (rightInfo == null ? 0 : rightInfo.maxSubBSTSize)
+                +
+                1;
+    &#125;
+    return new Info(maxSubBSTHead, maxSubBSTSize, min, max);
+&#125;
+</code></pre>
+</li>
+</ol>
+<h3 id="是否是完全二叉树"><a href="#是否是完全二叉树" class="headerlink" title="是否是完全二叉树"></a>是否是完全二叉树</h3><ol>
+<li>题目解释<ol>
+<li>给定一棵二叉树的头结点head，返回这颗二叉树是不是完全二叉树</li>
+<li>若设二叉树的深度为k，除第 k 层外，其它各层 (1～k-1) 的结点数都达到最大个数，第k 层所有的结点都连续集中在最左边，这就是完全二叉树。</li>
+</ol>
+</li>
+<li>宽度优先遍历解决思路:<ol>
+<li>如果用树的宽度优先遍历的话，<ol>
+<li>如果某个节点有右孩子，但是没有左孩子，一定不是完全二叉树</li>
+<li>否则继续</li>
+</ol>
+</li>
+<li>在1条件的基础上，<ol>
+<li>一旦遇到第一个左右孩子不双全的节点，后续所有节点必须为叶子节点</li>
+</ol>
+</li>
+<li>代码</li>
+</ol>
+</li>
+</ol>
+<pre><code class="java">// 不要提交这个类
+public static class TreeNode &#123;
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+
+    public TreeNode(int v) &#123;
+        val = v;
+    &#125;
+&#125;
+
+public static boolean isCompleteTree1(TreeNode head) &#123;
+    if (head == null) &#123;
+        return true;
+    &#125;
+    LinkedList&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+    // leaf：是否遇到过左右两个孩子不双全的节点
+    boolean leaf = false;
+    TreeNode l = null;
+    TreeNode r = null;
+    queue.add(head);
+    // 标准的宽度优先遍历的代码
+    while (!queue.isEmpty()) &#123;
+        head = queue.poll();
+        l = head.left;
+        r = head.right;
+        if (
+        // 如果遇到了不双全的节点之后，又发现当前节点不是叶节点
+        (leaf &amp;&amp; (l != null || r != null))
+
+                ||
+                // (有右无左)左孩子为空，右孩子不为空，则返回false
+                (l == null &amp;&amp; r != null)
+
+        ) &#123;
+            return false;
+        &#125;
+        if (l != null) &#123;
+            queue.add(l);
+        &#125;
+        if (r != null) &#123;
+            queue.add(r);
+        &#125;
+        if (l == null || r == null) &#123;
+            leaf = true;
+        &#125;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+<ol start="3">
+<li>二叉树递归套路解法思路：(找是完全二叉树的所有情况)<ol>
+<li><p>满二叉树（无缺口），一定是完全二叉树。</p>
+<ol>
+<li>此时左右树需要给X的信息是，<ol>
+<li>是否是满的</li>
+<li>高度</li>
+</ol>
+</li>
+<li>如果左右树满，且左右树高度一样，那么就是该种情况:满二叉树,也就是完全二叉树</li>
+</ol>
+</li>
+<li><p>有缺口</p>
+<ol>
+<li>缺口可能停在我的左树上<ol>
+<li>左树需要给我是否是完全二叉树</li>
+<li>右树需要给X是否是满二叉树</li>
+<li>且左树高度比右树高度大1</li>
+</ol>
+</li>
+<li>缺口可能在左右树的分界。左树是满的，右树也是满的，左树高度比右树大1</li>
+<li>左树已经满了，缺口可能在我的右树上。<ol>
+<li>左树是满的</li>
+<li>右树是完全二叉树</li>
+<li>且左右树高度一样</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Info</p>
+<ol>
+<li>是否是完全二叉树</li>
+<li>是否是满二叉树</li>
+<li>高度</li>
+</ol>
+</li>
+<li><p>Info代码</p>
+<pre><code class="java">public static class Info &#123;
+    public boolean isFull;
+    public boolean isCBT;
+    public int height;
+    // 1. 是否是完全二叉树
+    // 2. 是否是满二叉树
+    // 3. 高度
+    public Info(boolean full, boolean cbt, int h) &#123;
+        isFull = full;
+        isCBT = cbt;
+        height = h;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>递归代码</p>
+<pre><code class="java">public static Info process(TreeNode x) &#123;
+    if (x == null) &#123;
+        return new Info(true, true, 0);
+    &#125;
+    Info leftInfo = process(x.left);
+    Info rightInfo = process(x.right);
+    // 高度
+    int height = Math.max(leftInfo.height, rightInfo.height) + 1;
+    // 是否是满二叉树
+    boolean isFull = leftInfo.isFull &amp;&amp; rightInfo.isFull &amp;&amp; leftInfo.height == rightInfo.height;
+    // 是否是完全二叉树
+    boolean isCBT = false;
+    if (leftInfo.isFull &amp;&amp; rightInfo.isFull &amp;&amp; leftInfo.height == rightInfo.height) &#123;
+        isCBT = true;
+    &#125; else if (leftInfo.isCBT &amp;&amp; rightInfo.isFull &amp;&amp; leftInfo.height == rightInfo.height + 1) &#123;
+        isCBT = true;
+    &#125; else if (leftInfo.isFull &amp;&amp; rightInfo.isFull &amp;&amp; leftInfo.height == rightInfo.height + 1) &#123;
+        isCBT = true;
+    &#125; else if (leftInfo.isFull &amp;&amp; rightInfo.isCBT &amp;&amp; leftInfo.height == rightInfo.height) &#123;
+        isCBT = true;
+    &#125;
+    return new Info(isFull, isCBT, height);
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="最低公共祖先"><a href="#最低公共祖先" class="headerlink" title="最低公共祖先"></a>最低公共祖先</h3><ol>
+<li>题目解释<ol>
+<li>给一颗二叉树的头结点head，和另外两个节点a和b。返回a和b的最低公共祖先</li>
+<li>二叉树的最低公共祖先概念:任意两个节点，往父亲看，最开始交汇的节点，就是最低公共祖先</li>
+</ol>
+</li>
+<li>解法一：用辅助map，Key表示节点，Value表示节点的父亲节点。我们把两个目标节点的父亲以此放到map中，依次遍历</li>
+<li>解法二：使用二叉树的递归套路。<ol>
+<li>Info<pre><code class="java">// 任何子树返回三个信息
+public static class Info &#123;
+    public boolean findA;
+    public boolean findB;
+    // o1和o2的最初交汇点是谁，如果不是在这棵树上交汇的，返回null
+    public Node ans;
+
+    public Info(boolean fA, boolean fB, Node an) &#123;
+        findA = fA;
+        findB = fB;
+        ans = an;
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li>递归过程<pre><code class="java">public static Info process(Node x, Node a, Node b) &#123;
+    // base case
+    if (x == null) &#123;
+        return new Info(false, false, null);
+    &#125;
+    // 左树要来三个信息
+    Info leftInfo = process(x.left, a, b);
+    // 右树要来三个信息
+    Info rightInfo = process(x.right, a, b);
+    boolean findA = (x == a) || leftInfo.findA || rightInfo.findA;
+    boolean findB = (x == b) || leftInfo.findB || rightInfo.findB;
+    // o1和o2最初交互点在哪里
+    Node ans = null;
+    if (leftInfo.ans != null) &#123;
+        ans = leftInfo.ans;
+    &#125; else if (rightInfo.ans != null) &#123;
+        ans = rightInfo.ans;
+    &#125; else &#123;
+        if (findA &amp;&amp; findB) &#123;
+            ans = x;
+        &#125;
+    &#125;
+    return new Info(findA, findB, ans);
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
