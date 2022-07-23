@@ -393,7 +393,7 @@ public static void process(TreeNode x, int preSum, int sum) {
 }
 ```
 
-## 113. 路径总和 II
+## 113. 总和 II
 1. 题目:https://leetcode.cn/problems/path-sum-ii/
 2. 代码:
 ```java
