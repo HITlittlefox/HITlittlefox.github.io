@@ -64,5 +64,260 @@ Dao 层，Service 层，Controller 层
 ### 2 第一个Mybatis程序
 思路：搭建环境–> 导入 Mybatis–> 编写代码–> 测试！
 
-### 2.1 搭建环境
-搭建数据库
+1. 搭建环境
+    1. 数据库
+        ```sql
+        CREATE DATABASE `mybatis`;
+
+
+        CREATE TABLE `users`(
+        `id` INT(20) NOT NULL PRIMARY KEY,
+        `name` VARCHAR(30) DEFAULT NULL,
+        `pwd` VARCHAR(30) DEFAULT NULL
+
+        )ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+
+        INSERT INTO `users` (`id`,`name`,`pwd`) VALUES
+        (1,'小红','123456'),
+        (2,'小明','783456'),
+        (3,'小蓝','893456');
+        ```
+    2. 依赖
+        ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <project xmlns="http://maven.apache.org/POM/4.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
+
+            <groupId>org.lxl</groupId>
+            <artifactId>mybatis</artifactId>
+            <packaging>pom</packaging>
+            <version>1.0-SNAPSHOT</version>
+            <modules>
+                <module>mybatis-01</module>
+            </modules>
+
+            <properties>
+                <maven.compiler.source>8</maven.compiler.source>
+                <maven.compiler.target>8</maven.compiler.target>
+            </properties>
+            <dependencies>
+                <!--junit依赖-->
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <version>4.12</version>
+                </dependency>
+                <!--mysql依赖-->
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.1.47</version>
+                </dependency>
+                <!--mybatis依赖-->
+                <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+                <dependency>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                    <version>3.5.2</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/java</directory>
+                        <includes>
+                            <include>**/*.xml</include>
+                            <include>**/*.properties</include>
+                        </includes>
+                    </resource>
+
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*.xml</include>
+                            <include>**/*.properties</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </project>
+        ```
+2. 创建一个模块
+    1. mybatis-config.xml 编写 mybatis 核心配置文件
+        ```xml
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE configuration
+                PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+        <configuration>
+            <environments default="development">
+                <environment id="development">
+                    <transactionManager type="JDBC"/>
+                    <dataSource type="POOLED">
+                        <property name="driver" value="com.mysql.jdbc.Driver"/>
+                        <property name="url"
+                                value="jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+                        <property name="username" value="root"/>
+                        <property name="password" value="root"/>
+                    </dataSource>
+                </environment>
+            </environments>
+
+            <mappers>
+                <mapper resource="com/lxl/dao/UserMapper.xml"/>
+            </mappers>
+
+        </configuration>
+        ```
+    2. MybatisUtils 编写 mybatis 工具类
+        ```java
+        package com.lxl.utils;
+        import org.apache.ibatis.io.Resources;
+        import org.apache.ibatis.session.SqlSession;
+        import org.apache.ibatis.session.SqlSessionFactory;
+        import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+        import java.io.IOException;
+        import java.io.InputStream;
+
+        //编写 Mybatis 工具类 获取SqlSessionFactory
+        public class MybatisUtils {
+
+            private static SqlSessionFactory sqlSessionFactory = null;
+
+            static{//静态代码块封装   从一开始就会加载
+                String resource = "mybatis-config.xml";
+                try {
+                    InputStream inputStream =  Resources.getResourceAsStream(resource);
+                    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //获取sqlSession  对象
+            public static SqlSession getSqlSession(){
+                return sqlSessionFactory.openSession();
+            }
+        }
+        ```
+3. 编写代码
+    1. User 编写实体类
+        ```java
+        package com.lxl.pojo;
+
+        public class User {
+            private int id;
+            private String name;
+            private String pwd;
+
+            public User() {
+            }
+
+            public User(int id, String name, String pwd) {
+                this.id = id;
+                this.name = name;
+                this.pwd = pwd;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPwd() {
+                return pwd;
+            }
+
+            public void setPwd(String pwd) {
+                this.pwd = pwd;
+            }
+
+            @Override
+            public String toString() {
+                return "User{" +
+                        "id=" + id +
+                        ", name='" + name + '\'' +
+                        ", pwd='" + pwd + '\'' +
+                        '}';
+            }
+        }
+        ```
+    2. UserMapper 编写接口
+        ```java
+        package com.lxl.dao;
+
+        import com.lxl.pojo.User;
+
+        import java.util.List;
+
+        public interface UserMapper {
+            public abstract List<User> getUserList();
+        }
+        ```
+    3. UserMapper.xml 编写配置文件
+        ```xml
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+        <!--namespace 命名空间 ： 这里等价于之前缩写的 UserDaoImp  指向一个Mapper接口-->
+        <mapper namespace="com.lxl.dao.UserMapper">
+            <!--    id 表示的是实现 namespace 中所对应接口的方法   resultType 表示的是返回值类型  -->
+            <select id="getUserList" resultType="com.lxl.pojo.User">
+                select *
+                from mybatis.users
+            </select>
+        </mapper>
+        ```
+4. 测试
+    ```java
+    package com.lxl.dao;
+
+    import com.lxl.pojo.User;
+    import com.lxl.utils.MybatisUtils;
+    import org.apache.ibatis.session.SqlSession;
+    import org.junit.Test;
+
+    import java.util.List;
+
+    public class UserMapperTest {
+        @Test
+        public void test() {
+            //获取 SqlSession 对象
+            SqlSession sqlSession = MybatisUtils.getSqlSession();
+
+            //从接口的反射类 获得相应的 mapper
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            List<User> userList = mapper.getUserList();
+
+            for (User user : userList) {
+                System.out.println(user);
+            }
+            //关闭资源
+            sqlSession.close();
+        }
+    }
+    ```
+5. 可能遇到的问题
+    1. 配置文件没有配置
+    2. 绑定接口错误
+    3. 方法名不对
+    4. 返回类型不对
+    5. Maven 导出资源问题
+    6. 数据库连接问题
