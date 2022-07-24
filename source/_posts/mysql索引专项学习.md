@@ -1,6 +1,6 @@
 ---
 title: mysql索引专项学习
-category: 大三下
+category: 我要就业
 date: 2022-07-19 09:35:48
 tags:
 ---
