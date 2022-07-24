@@ -321,3 +321,89 @@ Dao 层，Service 层，Controller 层
     4. 返回类型不对
     5. Maven 导出资源问题
     6. 数据库连接问题
+    7. 标签不要写错
+    8. namespace 必须是.
+    9. resource 中必须是 / 隔开
+    10. 程序配置文件必须符合规范
+    11. 空指针异常问题，sqlSessionFactory
+    12. 输出的 xml 文件中存在中文乱码问题
+
+### 3 CRUD
+1. namespace : namespqce 中的包名要和接口的包名一致。
+2. select, insert, update, delete
+    1. id：就是对应的 namespace 中的方法名；
+    2. resultType：sql 语句的返回值 类型在包中的位置
+    3. parameter：参数类型
+    4. 步骤(以select为例):
+        1. 编写接口
+            ```java
+            public interface UserMapper {
+                // 查询全部用户
+                List<User> getUserList();
+            }
+            ``` 
+        2. 编写 sql 
+            ```xml
+            <!--namespace 命名空间:这里等价于之前缩写的 UserDaoImp  指向一个Mapper接口-->
+            <mapper namespace="com.lxl.dao.UserMapper">
+                <!--id 表示的是实现 namespace 中所对应接口的方法
+                resultType 表示的是返回值类型  -->
+                <select id="getUserList" resultType="com.lxl.pojo.User">
+                    select *
+                    from mybatis.users
+                </select>
+            ```
+        3. 测试
+            ```java
+            @Test
+            public void test() {
+                //获取 SqlSession 对象
+                SqlSession sqlSession = MybatisUtils.getSqlSession();
+                //从接口的反射类 获得相应的 mapper
+                UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+                
+                List<User> userList = mapper.getUserList();
+                for (User user : userList) {
+                    System.out.println(user);
+                }
+                
+                //关闭资源
+                sqlSession.close();
+            }
+        ```
+3. 万能的 Map : 假设我们实体类或数据库中的字段过多，我们应当考虑使用 Map ,可以用来若干字段CRUD 
+    1. 编写接口
+        ```java
+        // 万能的Map，添加用户
+        int addUser2(Map<String, Object> map);
+        ```
+    2. 编写 sql 
+        ```java
+        <insert id="addUserByMap" parameterType="map">
+            insert into mybatis.users (id, name, pwd)
+            values (#{userid}, #{username}, #{userpwd});
+        </insert>
+        ```
+    3. 测试
+        ```java
+        // 万能Map，增删改需要提交事务
+        @Test
+        public void addUserByMap() {
+            SqlSession sqlSession = MybatisUtils.getSqlSession();
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("userid", 6);
+            map.put("username", "小华");
+            mapper.addUserByMap(map);
+            // 提交事务
+            sqlSession.commit();
+
+            sqlSession.close();
+        }
+        ```
+    4. 小知识点
+        1. Map 传递参数，直接在 sql 中取出 Key 即可
+        2. 对象传递参数，直接在 sql 中取对象的即可
+        3. 只有一个基本数据类型，可以不写，可以直接在 sql 中取到
+        4. 多个参数使用 Map，或者注解
