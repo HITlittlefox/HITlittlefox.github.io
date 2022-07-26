@@ -911,4 +911,543 @@ NO_LOGGING
     3. 如果只有一个基本数据类型的话，可以忽略，但是建议加上！
     4. 我们在 SQL 中引用的就是我们这里的 @Param () 中设定的属性名
     5. #{} 和 ${} 的区别
+
 ### 9 Lombok
+1. 简介：Lombok是一个可以通过简单的注解形式来帮助我们简化消除一些必须有但显得很臃肿的Java代码的工具，通过使用对应的注解，可以在编译源码的时候生成对应的方法
+2. 步骤:
+    1. 在 IDEA 中安装插件
+    2. 在类或字段上添加相应的注解
+        ```java
+        package com.lxl.pojo;
+        import lombok.AllArgsConstructor;
+        import lombok.Data;
+        import lombok.NoArgsConstructor;
+        @Data
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public class User {
+            private int id;
+            private String name;
+            private String password;
+        }
+        ```
+![1658675040090](image/mybatis-0/1658675040090.png)
+3. 常用注解
+    @Data  
+    @AllArgsConstructor  
+    @NoArgsConstructor  
+    @ToString  
+    @EqualsAndHashCode  
+    @Getter and @Setter  
+
+### 10 多对一处理
+1. 重点提醒:(关键看xml所在位置,以及config文件中的mapper怎么写的)
+    1. ![1658711594659](image/mybatis-0/1658711594659.png)
+2. 多对一
+3. 回顾 Mysql 多对一方式
+    1. 子查询
+    2. 联表查询
+4. SQL 创建数据库
+5. 环境搭建
+    1. 导入 lombok
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.10</version>
+        </dependency>
+        ```
+    2. 新建实体类 Teacher，Student
+        ```java
+        @Data
+        public class Student {
+            private int id;
+            private String name;
+            private int tid;
+        }
+        ```  
+
+        ```java
+        @Data
+        public class Teacher {
+            private int id;
+            private String name;
+
+            //一个老师 拥有多个学生
+            private List<Student> students;
+        }
+        ``` 
+    3. 建立 Mapper 接口
+        ```java
+        public interface StudentMapper {
+            //获取所有学生及对应老师的信息
+            List<Student> getStudent();
+        }
+        ```  
+
+        ```java
+        public interface TeacherMapper {
+            @Select("select * from mybatis.teacher where id = #{tid} ")
+            Teacher getTeacher(@Param("tid") int id);
+        }
+        ```
+
+    4. 在核心配置文件中绑定注册我们的 Mapper 接口或者文件！【方式很多，随心选】
+        ```xml
+        <mappers>
+            <mapper class="com.lxl.dao.TeacherMapper"/>
+        </mappers>
+        ```
+        ![1658710362961](image/mybatis-0/1658710362961.png)
+        
+    5. 测试查询是否成功
+        ```java
+        @Test
+        public void getTeacher() {
+            SqlSession sqlSession = MybatisUtils.getSqlSession();
+            TeacherMapper mapper = sqlSession.getMapper(TeacherMapper.class);
+
+            Teacher teacher = mapper.getTeacher(1);
+            System.out.println(teacher);
+
+            sqlSession.close();
+        }
+        ```  
+
+6. **通过子查询嵌套进行查询**:
+    1. 重点是怎么把返回的对象拿到值,进行下一次查询
+        ```java
+        @Data
+        public class Student {
+            private int id;
+            private String name;
+            private int tid;
+            private Teacher teacher;
+        }
+        ```
+
+        ```java
+        @Data
+        public class Teacher {
+            private int id;
+            private String name;
+        //    //一个老师 拥有多个学生
+        //    private List<Student> students;
+        }
+        ```
+
+        ```xml
+        <mapper namespace="com.lxl.dao.StudentMapper">
+            <!--思路：1. 查询所有学生信息 2. 根据查询出来的学生的tid，寻找对应的老师-->
+            <select id="getStudent" resultMap="StudentTeacher">
+                select *
+                from mybatis.student
+            </select>
+
+            <resultMap id="StudentTeacher" type="Student">
+                <result property="id" column="id"></result>
+                <result property="name" column="name"></result>
+                <result property="tid" column="tid"></result>
+                <!--复杂属性，需要单独处理-->
+                <association property="teacher" column="tid" javaType="Teacher" select="getTeacher">
+                </association>
+            </resultMap>
+
+            <select id="getTeacher" resultType="Teacher">
+                select *
+                from mybatis.teacher
+                where id = #{tid}
+            </select>
+        </mapper>
+        ```
+7. **通过结果进行查询**,也就是直接多表联结查询
+    ```java
+    public interface StudentMapper {
+        //获取所有学生
+        public List<Student> getStudent();
+        //获取所有学生
+        public List<Student> getStudent2();
+    }
+    ```
+
+    ```xml
+    <select id="getStudent2" resultMap="StudentTeacher2">
+        select s.id sid, s.name sname, s.tid stid, t.id tid, t.name tname
+        from mybatis.student s,
+                mybatis.teacher t
+        where s.tid = t.id
+    </select>
+
+    <resultMap id="StudentTeacher2" type="Student">
+        <result property="id" column="sid"></result>
+        <result property="name" column="sname"></result>
+        <result property="tid" column="stid"></result>
+        <!--复杂属性，需要单独处理-->
+        <association property="teacher" javaType="Teacher">
+            <result property="name" column="tname"></result>
+            <result property="id" column="tid"></result>
+        </association>
+
+    </resultMap>
+    ```
+
+    ```java
+    @Test
+    public void getStudent2() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+
+        List<Student> students = mapper.getStudent2();
+        for (Student student : students) {
+            System.out.println(student);
+        }
+        sqlSession.close();
+    }
+    ```
+
+### 11 一对多处理
+1. 实体类需要改一改
+    ```java
+    @Data
+    public class Student {
+        private int id;
+        private String name;
+        private int tid;
+
+    }
+
+    ```
+    ```java
+    @Data
+    public class Teacher {
+        private int id;
+        private String name;
+
+        //一个老师 拥有多个学生
+        private List<Student> students;
+    }
+    ```
+2. **通过结果进行查询**
+    ```java
+    public interface TeacherMapper {
+        //    List<Teacher> getTeacher();
+        Teacher getTeacher(@Param("tid") int id);
+    }
+    ```
+
+    ```xml
+    <mapper namespace="com.lxl.dao.TeacherMapper">
+        <!--按结果嵌套处理    -->
+        <!--
+        思路:
+            1. 从学生表和老师表中查出学生id，学生姓名，老师姓名
+            2. 对查询出来的操作做结果集映射
+                1. 集合的话，使用collection！
+                    JavaType和ofType都是用来指定对象类型的
+                    JavaType是用来指定pojo中属性的类型
+                    ofType指定的是映射到list集合属性中pojo的类型。
+        -->
+        <select id="getTeacher" resultMap="TeacherStudent">
+            select s.id sid, s.name sname, t.name tname, t.id tid
+            from mybatis.student s,
+                mybatis.teacher t
+            where s.tid = t.id
+            and t.id = #{tid}
+        </select>
+
+        <resultMap id="TeacherStudent" type="Teacher">
+            <result property="id" column="tid"/>
+            <result property="name" column="tname"/>
+
+            <collection property="students" ofType="Student">
+                <result property="id" column="sid"/>
+                <result property="name" column="sname"/>
+                <result property="tid" column="tid"/>
+            </collection>
+        </resultMap>
+    </mapper>
+    ```
+
+    ```java
+    @Test
+    public void getTeacher() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        TeacherMapper mapper = sqlSession.getMapper(TeacherMapper.class);
+        Teacher teacher = mapper.getTeacher(1);
+        System.out.println(teacher);
+        sqlSession.close();
+    }
+    ```
+3. **通过子查询嵌套进行查询**
+    ```java
+    public Teacher getTeacher2(@Param("tid") int id);
+    ```
+
+    ```xml
+    <!--按子查询嵌套处理    -->
+    <select id="getTeacher2" resultMap="TeacherStudent2">
+        select *
+        from mybatis.teacher
+        where id = #{tid}
+    </select>
+    <resultMap id="TeacherStudent2" type="Teacher">
+        <!--column是一对多的外键 , 写的是一的主键的列名-->
+        <collection property="students" javaType="ArrayList" ofType="Student" column="id"
+                    select="getStudentByTeacherId"/>
+    </resultMap>
+    <select id="getStudentByTeacherId" resultType="Student">
+        select *
+        from mybatis.student
+        where tid = #{tid}
+    </select>
+    ```
+
+    ```java
+    @Test
+    public void getTeacher2() {
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        TeacherMapper mapper = sqlSession.getMapper(TeacherMapper.class);
+        Teacher teacher = mapper.getTeacher2(1);
+        System.out.println(teacher);
+        sqlSession.close();
+    }
+    ```
+3. 小结
+    1. 关联 - association 【多对一】
+    2. 集合 - collection【一对多】
+    3. JavaType & ofType
+        1. javaType 用来指定实体类中属性的类型
+        2. ofType 用来指定映射到 List 或者集合中的 pojo 类型，泛型中的约束类型
+    4. 注意点：
+        1. 保证 SQL 的可读性，尽量保证通俗易懂
+        2. 注意一对多和多对一中，属性名和字段的问题
+        3. 如果问题不好排查错误，可以使用日志，建议使用 Log4j
+4. 慢 SQL 1s 1000s
+5. 面试高频
+    1. Mysql 引擎
+    2. InnoDB 底层原理
+    3. 索引
+    4. 索引优化
+
+### 12 动态 SQL
+1. 什么是动态 SQL：是指根据不同的条件生成不同的 SQL 语句
+2. 如果你之前用过 JSTL 或任何基于类 XML 语言的文本处理器，你对动态 SQL 元素可能会感觉似曾相识。在 MyBatis 之前的版本中，需要花时间了解大量的元素。借助功能强大的基于 OGNL 的表达式，MyBatis 3 替换了之前的大部分元素，大大精简了元素种类，现在要学习的元素种类比原来的一半还要少。  
+    ```
+    if  
+    choose (when, otherwise)  
+    trim (where, set)  
+    foreach
+    ```
+3. 搭建环境
+    1. 创建一个基础过程
+    2. 导包
+    3. 编写配置文件
+    4. 编写实体类
+    5. 编写实体类对应的 Mapper 接口和 Mapper.xml 文件
+    ```java
+    public interface BlogMapper {
+        //新增一个博客
+        int addBlog(Blog blog);
+    }
+    ```
+
+    ```xml
+    <mapper namespace="com.lxl.dao.BlogMapper">
+        <insert id="addBlog" parameterType="blog">
+            insert into mybatis.blog (id, title, author, create_time, views)
+            values (#{id}, #{title}, #{author}, #{createTime}, #{views});
+        </insert>
+    </mapper>
+    ```
+
+    ```java
+    @Data
+    public class Blog {
+
+        private String id;
+        private String title;
+        private String author;
+        private Date createTime;
+        private int views;
+        //set，get....
+    }
+    ```
+
+    ```java
+    public class IDUtil {
+        public static String genId() {
+            return UUID.randomUUID().toString().replaceAll("-", "");
+        }
+        @Test
+        public void test() {
+            System.out.println(genId());
+        }
+    }
+    ```
+
+    ```java
+
+        @Test
+        public void addInitBlog() {
+            SqlSession session = MybatisUtils.getSqlSession();
+            BlogMapper mapper = session.getMapper(BlogMapper.class);
+
+            Blog blog = new Blog();
+            blog.setId(IDUtil.genId());
+            blog.setTitle("Mybatis如此简单");
+            blog.setAuthor("狂神说");
+            blog.setCreateTime(new Date());
+            blog.setViews(9999);
+
+            mapper.addBlog(blog);
+
+            blog.setId(IDUtil.genId());
+            blog.setTitle("Java如此简单");
+            mapper.addBlog(blog);
+
+            blog.setId(IDUtil.genId());
+            blog.setTitle("Spring如此简单");
+            mapper.addBlog(blog);
+
+            blog.setId(IDUtil.genId());
+            blog.setTitle("微服务如此简单");
+            mapper.addBlog(blog);
+
+            session.close();
+        }
+    ```
+#### 举例(TODO:代码省略,具体看mybatis-08)
+1. IF
+2. WHERE
+3. SET
+4. CHOOSE
+5. SQL片段
+6. FOREACH
+
+### 13 缓存
+1. 简介
+    1. 什么是缓存 [Cache]？
+        1. 存在内存中的临时数据。
+        2. 将用户经常查询的数据放在缓存（内存）中，用户去查询数据就不用从磁盘上 (关系型数据库数据文件) 查询，从缓存中查询，从而提高查询效率，解决了高并发系统的性能问题。
+    2. 为什么使用缓存？
+        1. 减少和数据库的交互次数，减少系统开销，提高系统效率。
+    3. 什么样的数据能使用缓存？
+        1. 经常查询并且不经常改变的数据。
+2. Mybatis缓存
+    1. MyBatis 包含一个非常强大的查询缓存特性，它可以非常方便地定制和配置缓存。缓存可以极大的提升查询效率。
+    2. MyBatis 系统中默认定义了两级缓存：一级缓存和二级缓存
+        1. 默认情况下，只有一级缓存开启。（SqlSession 级别的缓存，也称为本地缓存）
+        2. 二级缓存需要手动开启和配置，他是基于 namespace 级别的缓存。
+        3. 为了提高扩展性，MyBatis 定义了缓存接口 Cache。我们可以通过实现 Cache 接口来自定义二级缓存
+#### 一级缓存
+1. 一级缓存也叫本地缓存：
+    1. 与数据库同一次会话期间查询到的数据会放在本地缓存中。
+    2. 以后如果需要获取相同的数据，直接从缓存中拿，没必须再去查询数据库；
+2. 一级缓存测试(TODO:代码省略,具体看mybatis-Cache)
+3. 一级缓存失效的四种情况(TODO:代码省略,具体看mybatis-Cache)
+    1. 关于一级缓存
+        1. 一级缓存是 SqlSession 级别的缓存，是一直开启的，我们关闭不了它；
+        2. 一级缓存失效情况：没有使用到当前的一级缓存，效果就是，还需要再向数据库中发起一次查询请求！
+    2. sqlSession 不同:
+        1. 每个 sqlSession 中的缓存相互独立
+    3. sqlSession 相同，查询条件不同:
+        1. 当前缓存中，不存在这个数据
+    4. sqlSession 相同，两次查询之间执行了增删改操作:
+        1. 因为增删改操作可能会对当前数据产生影响
+    5. sqlSession 相同，手动清除一级缓存
+        1. 一级缓存就是一个 map
+#### 二级缓存
+1. 二级缓存也叫全局缓存，一级缓存作用域太低了，所以诞生了二级缓存
+2. 基于 namespace 级别的缓存，一个名称空间，对应一个二级缓存；
+3. 工作机制
+    1. 一个会话查询一条数据，这个数据就会被放在当前会话的一级缓存中；
+    2. 如果当前会话关闭了，这个会话对应的一级缓存就没了；但是我们想要的是，会话关闭了，一级缓存中的数据被保存到二级缓存中；
+    3. 新的会话查询信息，就可以从二级缓存中获取内容；
+    4. 不同的 mapper 查出的数据会放在自己对应的缓存（map）中；
+4. 使用步骤(TODO:代码省略,具体看mybatis-Cache)
+    1. 开启全局缓存 【mybatis-config.xml】
+    2. 去每个 mapper.xml 中配置使用二级缓存；【xxxMapper.xml】
+    3. 代码测试
+        1. 所有的实体类先实现序列化接口
+        2. 测试代码
+5. 结论
+    1. 只要开启了二级缓存，我们在同一个 Mapper 中的查询，可以在二级缓存中拿到数据
+    2. 查出的数据都会被默认先放在一级缓存中
+    3. 只有会话提交或者关闭以后，一级缓存中的数据才会转到二级缓存中
+![1658731691685](image/mybatis-0/1658731691685.png)
+#### EnCache
+1. 第三方缓存实现 --EhCache: 查看百度百科
+2. Ehcache 是一种广泛使用的 java 分布式缓存，用于通用缓存；
+3. 步骤
+    1. 要在应用程序中使用 Ehcache，需要引入依赖的 jar 包
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.mybatis.caches/mybatis-ehcache -->
+        <dependency>
+        <groupId>org.mybatis.caches</groupId>
+        <artifactId>mybatis-ehcache</artifactId>
+        <version>1.1.0</version>
+        </dependency>
+        ```
+    2. 在 mapper.xml 中使用对应的缓存即可
+        ```xml
+        <mapper namespace = “org.acme.FooMapper” >
+        <cache type = “org.mybatis.caches.ehcache.EhcacheCache” />
+        </mapper>
+        ```
+    3. 编写 ehcache.xml 文件，如果在加载时未找到 /ehcache.xml 资源或出现问题，则将使用默认配置。
+        ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+                updateCheck="false">
+        <!--
+            diskStore：为缓存路径，ehcache分为内存和磁盘两级，此属性定义磁盘的缓存位置。参数解释如下：
+            user.home – 用户主目录
+            user.dir – 用户当前工作目录
+            java.io.tmpdir – 默认临时文件路径
+            -->
+        <diskStore path="./tmpdir/Tmp_EhCache"/>
+        
+        <defaultCache
+                eternal="false"
+                maxElementsInMemory="10000"
+                overflowToDisk="false"
+                diskPersistent="false"
+                timeToIdleSeconds="1800"
+                timeToLiveSeconds="259200"
+                memoryStoreEvictionPolicy="LRU"/>
+
+        <cache
+                name="cloud_user"
+                eternal="false"
+                maxElementsInMemory="5000"
+                overflowToDisk="false"
+                diskPersistent="false"
+                timeToIdleSeconds="1800"
+                timeToLiveSeconds="1800"
+                memoryStoreEvictionPolicy="LRU"/>
+        <!--
+            defaultCache：默认缓存策略，当ehcache找不到定义的缓存时，则使用这个缓存策略。只能定义一个。
+            -->
+        <!--
+            name:缓存名称。
+            maxElementsInMemory:缓存最大数目
+            maxElementsOnDisk：硬盘最大缓存个数。
+            eternal:对象是否永久有效，一但设置了，timeout将不起作用。
+            overflowToDisk:是否保存到磁盘，当系统当机时
+            timeToIdleSeconds:设置对象在失效前的允许闲置时间（单位：秒）。仅当eternal=false对象不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大。
+            timeToLiveSeconds:设置对象在失效前允许存活时间（单位：秒）。最大时间介于创建时间和失效时间之间。仅当eternal=false对象不是永久有效时使用，默认是0.，也就是对象存活时间无穷大。
+            diskPersistent：是否缓存虚拟机重启期数据 Whether the disk store persists between restarts of the Virtual Machine. The default value is false.
+            diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区。
+            diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒。
+            memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）。
+            clearOnFlush：内存数量最大时是否清除。
+            memoryStoreEvictionPolicy:可选策略有：LRU（最近最少使用，默认策略）、FIFO（先进先出）、LFU（最少访问次数）。
+            FIFO，first in first out，这个是大家最熟的，先进先出。
+            LFU， Less Frequently Used，就是上面例子中使用的策略，直白一点就是讲一直以来最少被使用的。如上面所讲，缓存的元素有一个hit属性，hit值最小的将会被清出缓存。
+            LRU，Least Recently Used，最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。
+        -->
+
+        </ehcache>
+        ```
