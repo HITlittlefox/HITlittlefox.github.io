@@ -555,7 +555,7 @@ Dao 层，Service 层，Controller 层
         }
         ```
 5. 设置  
-    1. 这是 Mybatis 中极为重要的调整设置，他们会改变 Mybatis 的运行是行为。![1658632015356](image/mybatis-0/1658632015356.png)
+    1. 这是 Mybatis 中极为重要的调整设置，他们会改变 Mybatis 的运行是行为。![1658632015356](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658632015356.png)
 6. 其他配置  
     1. typeHandlers（类型处理器）
     2. objectFactory（对象工厂）
@@ -595,7 +595,7 @@ Dao 层，Service 层，Controller 层
         接口和他的 Mapper 配置文件必须同名  
         接口和他的配置文件必须在同一个包下
 8. **生命周期和作用域**
-![1658634486715](image/mybatis-0/1658634486715.png)
+![1658634486715](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658634486715.png)
 不同作用域和生命周期类别是至关重要的，因为错误的使用会导致非常严重的并发问题。
     1. SqlSessionFactoryBuilder：
         1. 一旦创建了 SqlSessionFactory，就不再需要它了
@@ -609,12 +609,12 @@ Dao 层，Service 层，Controller 层
         1. 连接到连接池的一个请求！
         2. SqlSession 的实例不是线程安全的，因此是不能被共享的，所以它的最佳的作用域是请求或方法作用域。
         3. 用完之后需要赶紧关闭，否则资源被占用！
-![1658634628191](image/mybatis-0/1658634628191.png)
+![1658634628191](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658634628191.png)
    
 ### 5 解决属性名和字段名不一致的问题
 1. 问题
-    1. 数据库中的字段:![1658645920547](image/mybatis-0/1658645920547.png)
-    2. 实体类(没有一一对应):![1658645951393](image/mybatis-0/1658645951393.png)
+    1. 数据库中的字段:![1658645920547](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658645920547.png)
+    2. 实体类(没有一一对应):![1658645951393](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658645951393.png)
     3. 出现的问题:会报错
     4. 简单粗暴的解决办法:起别名：
         ```xml
@@ -671,7 +671,7 @@ Dao 层，Service 层，Controller 层
             }
         }
         ``` 
-    5. 结果:![1658646243642](image/mybatis-0/1658646243642.png)
+    5. 结果:![1658646243642](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658646243642.png)
     6. 总结:
         1. resultMap 元素是 MyBatis 中最重要最强大的元素。
         2. ResultMap 的设计思想是，对简单的语句做到零配置，对于复杂一点的语句，只需要描述语句之间的关系就行了。
@@ -701,7 +701,7 @@ Dao 层，Service 层，Controller 层
 1. 日志工厂
     1. 如果一个数据库操作，出现了异常，我们需要排错。日志就是最好的助手！
     2. 曾经：sout、debug
-    3. 现在：日志工厂！![1658647224859](image/mybatis-0/1658647224859.png)
+    3. 现在：日志工厂！![1658647224859](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658647224859.png)
 SLF4J  
 LOG4J 【掌握】  
 LOG4J2  
@@ -763,7 +763,7 @@ NO_LOGGING
             <setting name="logImpl" value="log4j"/>
         </settings>
         ```
-    5. 查询测试![1658649411144](image/mybatis-0/1658649411144.png)
+    5. 查询测试![1658649411144](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658649411144.png)
     6. 简单使用
         ```java
         public class UserMapper04Test {
@@ -931,7 +931,7 @@ NO_LOGGING
             private String password;
         }
         ```
-![1658675040090](image/mybatis-0/1658675040090.png)
+![1658675040090](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658675040090.png)
 3. 常用注解
     @Data  
     @AllArgsConstructor  
@@ -942,7 +942,7 @@ NO_LOGGING
 
 ### 10 多对一处理
 1. 重点提醒:(关键看xml所在位置,以及config文件中的mapper怎么写的)
-    1. ![1658711594659](image/mybatis-0/1658711594659.png)
+    1. ![1658711594659](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658711594659.png)
 2. 多对一
 3. 回顾 Mysql 多对一方式
     1. 子查询
@@ -999,7 +999,7 @@ NO_LOGGING
             <mapper class="com.lxl.dao.TeacherMapper"/>
         </mappers>
         ```
-        ![1658710362961](image/mybatis-0/1658710362961.png)
+        ![1658710362961](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658710362961.png)
         
     5. 测试查询是否成功
         ```java
@@ -1375,7 +1375,7 @@ NO_LOGGING
     1. 只要开启了二级缓存，我们在同一个 Mapper 中的查询，可以在二级缓存中拿到数据
     2. 查出的数据都会被默认先放在一级缓存中
     3. 只有会话提交或者关闭以后，一级缓存中的数据才会转到二级缓存中
-![1658731691685](image/mybatis-0/1658731691685.png)
+![1658731691685](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/mybatis-0/1658731691685.png)
 #### EnCache
 1. 第三方缓存实现 --EhCache: 查看百度百科
 2. Ehcache 是一种广泛使用的 java 分布式缓存，用于通用缓存；

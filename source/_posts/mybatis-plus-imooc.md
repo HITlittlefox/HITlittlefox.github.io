@@ -16,5 +16,5 @@ tags:
 
 
 ### SSM传统编程模式
-![1659064590801](image/1659064590801.png)
+![1659064590801](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/1659064590801.png)
 

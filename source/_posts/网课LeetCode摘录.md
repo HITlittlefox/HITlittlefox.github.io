@@ -228,7 +228,7 @@ public List<List<Integer>> levelOrderBottom(TreeNode root) {
 1. 题目:https://leetcode.cn/problems/balanced-binary-tree/
 2. 如何判断一颗二叉树是否是平衡二叉树? (二叉树题目 套路)
    1. 每一棵子树的 `|左树高度-右树高度|<=1`
-3. 图图解释:![](image/2022-07-03-18-38-26.png)
+3. 图图解释:![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-03-18-38-26.png)
 4. 代码:
 ```java
 // 以某个节点为头的时候
@@ -282,7 +282,7 @@ public static Info process(TreeNode root) {
       1. 是不是搜索二叉树
       2. max
       3. min
-5. 图图解释:![](image/2022-07-03-19-35-29.png)
+5. 图图解释:![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-03-19-35-29.png)
 6. 代码:
 ```java
 // 递归函数同等全：都拿到三个信息

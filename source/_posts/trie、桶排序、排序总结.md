@@ -16,7 +16,7 @@ tags:
     - 字符放在路上，结点上有专属的数据项（常见的是pass和end值）；
     - 所有样本都这样添加，如果没有路就新建，如有路就复用；
     - 沿途结点的pass值增加1，每个字符串结束时来到的结点end值增加1。
-![](image/2022-07-06-11-16-36.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-11-16-36.png)
 
 
 
@@ -30,13 +30,13 @@ tags:
     1. 0~9有10个桶,先进先出(队列)
     2. (先个位进桶,再出桶,再十位,再百位)
     3. 先按个位情况排个序,再用十位情况排序,再用百位排序
-![](image/2022-07-06-14-33-22.png)![](image/2022-07-06-14-34-18.png)![](image/2022-07-06-14-34-44.png)![](image/2022-07-06-14-34-55.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-14-33-22.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-14-34-18.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-14-34-44.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-14-34-55.png)
 
-![](image/2022-07-06-23-21-21.png)![](image/2022-07-06-23-21-41.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-21-21.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-21-41.png)
 
-![](image/2022-07-06-23-21-50.png)![](image/2022-07-06-23-22-18.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-21-50.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-22-18.png)
 
-![](image/2022-07-06-23-22-43.png)![](image/2022-07-06-23-22-56.png)![](image/2022-07-06-23-23-06.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-22-43.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-22-56.png)![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-23-06.png)
 
 ## 排序算法的稳定性
 1. 稳定性是指同样大小的样本再排序之后不会改变相对次序；
@@ -62,7 +62,7 @@ tags:
 6. 额外空间复杂度
     1. 归并排序需要准备额外空间做merge
     2. 随机快排,根据每种情况权重只占1/n算的长期期望
-![](image/2022-07-06-23-25-10.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-06-23-25-10.png)
 
 ### 排序算法的常见坑
 1. 归并排序的额外空间复杂度可以变成O(1)：“归并排序：内部缓存法”，但是将变得不再稳定。（为什么不直接用堆呢？）
@@ -77,4 +77,4 @@ tags:
     1. 快排/归并/堆,O(N*logN),调度优秀,常数项大
     2. 考虑不同排序算法的常数项时间，有的算法数据量一上去，常数项时间就上去了，
     3. 但是有的算法数据虽然时间复杂度为O(N^2)，但是常数时间很少。
-![](image/2022-07-07-00-15-43.png)
+![](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-07-00-15-43.png)

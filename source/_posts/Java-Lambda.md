@@ -123,4 +123,4 @@ public class LambdaTest {
 
 }
 ```
-输出：![1659078602568](image/Java-Lambda-表达式/1659078602568.png)![1659078676206](image/Java-Lambda-表达式/1659078676206.png)![1659078687509](image/Java-Lambda-表达式/1659078687509.png)
+输出：![1659078602568](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/Java-Lambda-表达式/1659078602568.png)![1659078676206](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/Java-Lambda-表达式/1659078676206.png)![1659078687509](https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/Java-Lambda-表达式/1659078687509.png)
