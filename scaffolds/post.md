@@ -2,5 +2,5 @@
 title: {{ title }}
 date: {{ date }}
 tags:
-category: 我要就业
+category: 微信小程序入门与实战
 ---
