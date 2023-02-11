@@ -6,15 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="第12章电影列表与电影搜索 | fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="上滑加载更多数据（1）onReachBottom (12:16) 上滑加载更多数据（2）showloading 提示 (06:15) 下拉刷新数据（1） (11:58) 配置标题与动态配置标题 (13:19) 谈组件的独立性 (06:52) 自定义组件的自定义事件产生 (09:27) 获取自定义组件的 detail 参数 (07:19) 同时获取自定义属性和自定义组件的 detail 参数 (1">
+<meta name="description" content="上滑加载更多数据（1）onReachBottom (12:16) onReachBottom() {}   上滑加载更多数据（2）showloading 提示 (06:15) wx.showNavigationBarLoading(); wx.hideNavigationBarLoading();   下拉刷新数据（1） (11:58) .json 配置 “enablePullDownRefre">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第13章电影详情与滑动加载数据、下拉刷新数据">
 <meta property="og:url" content="http://example.com/2023/02/09/%E7%AC%AC13%E7%AB%A0%E7%94%B5%E5%BD%B1%E8%AF%A6%E6%83%85%E4%B8%8E%E6%BB%91%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E3%80%81%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="fox_blog">
-<meta property="og:description" content="上滑加载更多数据（1）onReachBottom (12:16) 上滑加载更多数据（2）showloading 提示 (06:15) 下拉刷新数据（1） (11:58) 配置标题与动态配置标题 (13:19) 谈组件的独立性 (06:52) 自定义组件的自定义事件产生 (09:27) 获取自定义组件的 detail 参数 (07:19) 同时获取自定义属性和自定义组件的 detail 参数 (1">
+<meta property="og:description" content="上滑加载更多数据（1）onReachBottom (12:16) onReachBottom() {}   上滑加载更多数据（2）showloading 提示 (06:15) wx.showNavigationBarLoading(); wx.hideNavigationBarLoading();   下拉刷新数据（1） (11:58) .json 配置 “enablePullDownRefre">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-02-09T13:02:30.000Z">
-<meta property="article:modified_time" content="2023-02-09T13:05:12.112Z">
+<meta property="article:modified_time" content="2023-02-11T04:34:35.687Z">
 <meta property="article:author" content="HITlittlefox">
 <meta name="twitter:card" content="summary">
 
@@ -210,7 +210,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="137">
-<input type="hidden" id="yelog_site_word_count" value="159.2k">
+<input type="hidden" id="yelog_site_word_count" value="160k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -1396,12 +1396,12 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2023-02-09 21:05:07'>2023-02-09 21:02</time>
+            Created At : <time class="date" title='Updated At: 2023-02-10 22:41:20'>2023-02-09 21:02</time>
         
     </div>
     <div class="article-meta">
         
-        <span>Count:159</span>
+        <span>Count:486</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1437,17 +1437,130 @@
     <div class="article-entry" itemprop="articleBody">
       
         <ol>
-<li>wx.request 的更多参数讲解 (05:59)</li>
-<li>更多电影（1）分析更多电影页面的逻辑 (10:02)</li>
-<li>更多电影（2）加载更多数据 (08:53)</li>
-<li>更多电影（3）Flex-Wrap 的应用 (08:33)</li>
-<li>更多电影（4）Flex 布局对于普通样式类的影响 (06:52)</li>
-<li>更多电影（5）加载不同类型的电影数据 (08:43)</li>
-<li>使用 LinUI 快速构建搜索栏 (07:52)</li>
-<li>向服务器请求搜索数据 (09:45)</li>
-<li>搜索结果与电影数据的切换显示 (07:56)</li>
-<li>显示搜索的电影数据 (07:31)</li>
-<li>修复 Space-Between2 个元素两端分布的问题 (05:31)</li>
+<li><p>wx.request 的更多参数讲解 (05:59)</p>
+<ol>
+<li>GET 方式可以用 data 传参数</li>
+</ol>
+</li>
+<li><p>更多电影（1）分析更多电影页面的逻辑 (10:02)</p>
+<ol>
+<li>more-movie</li>
+</ol>
+</li>
+<li><p>更多电影（2）加载更多数据 (08:53)</p>
+<ol>
+<li><p>记得从<code>const app = getApp();</code>导入地址</p>
+</li>
+<li><p>因为是更多所以加载多条数据(比如 12 条)</p>
+</li>
+<li><p>把从服务器得到的数据传给 data</p>
+<pre><code class="JavaScript">data: &#123;
+movies: [],
+&#125;,
+
+/**
+* 生命周期函数--监听页面加载
+*/
+onLoad(options) &#123;
+// 正在热映
+wx.request(&#123;
+    url: app.gBaseUrl + &quot;in_theaters&quot;,
+    data: &#123;
+    start: 0,
+    count: 12,
+    &#125;,
+    success: (res) =&gt; &#123;
+    console.log(res);
+    this.setData(&#123;
+        movies: res.data.subjects,
+    &#125;);
+    &#125;,
+&#125;);
+&#125;,
+</code></pre>
+</li>
+<li><p>列表循环要用 block 和 wx:for</p>
+<ol>
+<li>遍历 movies 里面的 item</li>
+<li><code>&lt;movie /&gt;</code>是自定义标签 5.</li>
+</ol>
+</li>
+<li><p>先加载数据,再写 css</p>
+</li>
+</ol>
+</li>
+<li><p>更多电影（3）Flex-Wrap 的应用 (08:33)</p>
+<ol>
+<li>自适应排布</li>
+</ol>
+</li>
+<li><p>更多电影（4）Flex 布局对于普通样式类的影响 (06:52)</p>
+<ol>
+<li>不生效,需要外部样式类 externalClasses</li>
+</ol>
+</li>
+<li><p>更多电影（5）加载不同类型的电影数据 (08:43)</p>
+<ol>
+<li>event 怎么看?<ol>
+<li>console.log(event)然后找 currentTarget</li>
+</ol>
+</li>
+<li>movie.js 内自定义属性 data-type<pre><code class="JavaScript">onGotoMore(event) &#123;
+    console.log(event);
+    const type = event.currentTarget.dataset.type;
+    wx.navigateTo(&#123;
+    url: &quot;/pages/more-movie/more-movie?type=&quot; + type,
+    &#125;);
+&#125;,
+</code></pre>
+</li>
+<li>more-movie.js 内用 type 去请求数据<code>const type = options.type;</code></li>
+</ol>
+</li>
+<li><p>使用 LinUI 快速构建搜索栏 (07:52)</p>
+<ol>
+<li>json 引入 l-search-bar 组件</li>
+</ol>
+</li>
+<li><p>向服务器请求搜索数据 (09:45)</p>
+<ol>
+<li>前端获得用户搜索内容,发给服务器</li>
+<li>服务器把搜索结果发给前端</li>
+<li>前端展现</li>
+</ol>
+</li>
+<li><p>搜索结果与电影数据的切换显示 (07:56)</p>
+<ol>
+<li>同一个页面结果切换</li>
+</ol>
+</li>
+<li><p>显示搜索的电影数据 (07:31)</p>
+<ol>
+<li>搜索,search</li>
+<li>参数是 q</li>
+<li>搜索结果,类似于 more-movie</li>
+<li>F12 AppData 显示所有绑定数据</li>
+</ol>
+</li>
+<li><p>修复 Space-Between2 个元素两端分布的问题 (05:31)</p>
+<ol>
+<li><p>尾类</p>
+<pre><code class="css">.search-container &#123;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 30rpx 28rpx;
+  justify-content: space-between;
+&#125;
+
+.search-container::after &#123;
+  content: &quot;&quot;;
+  width: 200rpx;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
 </ol>
 
       

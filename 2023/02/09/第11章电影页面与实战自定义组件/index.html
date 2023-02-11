@@ -6,15 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="第11章电影页面与实战自定义组件 | fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="上滑加载更多数据（1）onReachBottom (12:16) 上滑加载更多数据（2）showloading 提示 (06:15) 下拉刷新数据（1） (11:58) 配置标题与动态配置标题 (13:19) 谈组件的独立性 (06:52) 自定义组件的自定义事件产生 (09:27) 获取自定义组件的 detail 参数 (07:19) 同时获取自定义属性和自定义组件的 detail 参数 (1">
+<meta name="description" content="上滑加载更多数据（1）onReachBottom (12:16) onReachBottom() {}   上滑加载更多数据（2）showloading 提示 (06:15) wx.showNavigationBarLoading(); wx.hideNavigationBarLoading();   下拉刷新数据（1） (11:58) .json 配置 “enablePullDownRefre">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第13章电影详情与滑动加载数据、下拉刷新数据">
 <meta property="og:url" content="http://example.com/2023/02/09/%E7%AC%AC13%E7%AB%A0%E7%94%B5%E5%BD%B1%E8%AF%A6%E6%83%85%E4%B8%8E%E6%BB%91%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E3%80%81%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="fox_blog">
-<meta property="og:description" content="上滑加载更多数据（1）onReachBottom (12:16) 上滑加载更多数据（2）showloading 提示 (06:15) 下拉刷新数据（1） (11:58) 配置标题与动态配置标题 (13:19) 谈组件的独立性 (06:52) 自定义组件的自定义事件产生 (09:27) 获取自定义组件的 detail 参数 (07:19) 同时获取自定义属性和自定义组件的 detail 参数 (1">
+<meta property="og:description" content="上滑加载更多数据（1）onReachBottom (12:16) onReachBottom() {}   上滑加载更多数据（2）showloading 提示 (06:15) wx.showNavigationBarLoading(); wx.hideNavigationBarLoading();   下拉刷新数据（1） (11:58) .json 配置 “enablePullDownRefre">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-02-09T13:02:30.000Z">
-<meta property="article:modified_time" content="2023-02-09T13:05:12.112Z">
+<meta property="article:modified_time" content="2023-02-11T04:34:35.687Z">
 <meta property="article:author" content="HITlittlefox">
 <meta name="twitter:card" content="summary">
 
@@ -210,7 +210,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="137">
-<input type="hidden" id="yelog_site_word_count" value="159.2k">
+<input type="hidden" id="yelog_site_word_count" value="160k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -1396,12 +1396,12 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2023-02-09 21:05:04'>2023-02-09 21:02</time>
+            Created At : <time class="date" title='Updated At: 2023-02-10 21:42:34'>2023-02-09 21:02</time>
         
     </div>
     <div class="article-meta">
         
-        <span>Count:174</span>
+        <span>Count:311</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1442,13 +1442,42 @@
 <li>简易评分组件的实现思路（选看） (04:20)</li>
 <li>巧用 Flex 布局的 Space-Between 进行分布排列 (08:41)</li>
 <li>调整自定义组件间距 (07:04)</li>
-<li>外部样式类 externalClasses 的使用 (13:22)</li>
+<li>外部样式类 externalClasses 的使用 (13:22)<ol>
+<li>写在.js的<code>Component&#123;externalClasses: [&quot;f-class&quot;],&#125;</code></li>
+</ol>
+</li>
 <li>小试牛刀访问服务端数据 (08:34)</li>
 <li>从服务器加载数据分页数据并传入自定义组件 (12:20)</li>
 <li>使用 ES6 箭头函数解决 this 指代的问题 (08:26)</li>
 <li>绑定电影数据（1）两种不同的评分方式 (06:55)</li>
-<li>绑定服务端电影数据（2） (07:34)</li>
-<li>完成即将上映和 top250 (09:51)</li>
+<li>绑定服务端电影数据（2） (07:34)<ol>
+<li>返回数据有时候要处理<ol>
+<li>wxs<ol>
+<li>只支持 es5(写起来比较麻烦)</li>
+<li>wxml 不能写 script 一些函数</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>在 js 中处理好,再去绑定</li>
+</ol>
+</li>
+<li>完成即将上映和 top250 (09:51)<ol>
+<li>从服务器请求数据:movie.js 写 wx.request</li>
+<li>总框架中写绑定数据:movie.wxml </li>
+<li>自定义组件适配<ol>
+<li>movie-list,data-type,movies,title</li>
+<li>f-class 是外部样式类</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>重构<ol>
+<li>提取服务器内容(基地址)到 app.js</li>
+<li>url 后的<code>?start=0&amp;count=3</code>提取到 wx.request 的 data 参数</li>
+<li>method 不写就是默认 GET</li>
+</ol>
+</li>
 </ol>
 
       
