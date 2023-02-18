@@ -2,5 +2,5 @@
 title: {{ title }}
 date: {{ date }}
 tags:
-category: 微信小程序入门与实战
+category: PythonFlask构建微信小程序订餐系统
 ---
