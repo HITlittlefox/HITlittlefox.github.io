@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Java-promote-MOOC | fox_blog</title>
+  <title>LabVIEW学习-labview编程经验 | fox_blog</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Java-promote-MOOC | fox_blog">
+  <meta name="description" content="LabVIEW学习-labview编程经验 | fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="LabView编程基础 数值和布尔数据 数组和循环结构 凡是循环内需要使用变量的地方，首先应考虑使用移位寄存器 使用移位寄存器时要切记：在循环结构外，给移位寄存器左侧端传入一个初始值，除非能够确定程序的确不需要给移位寄存器赋初值 移位寄存器的左侧接线端可以多于一个 即使子 VI 在不同的循环中被调用，它们也都是共用同一个移位寄存器 只有把子 VI 设置成为每个实例都生成副本的 可重入运行方式 时，">
 <meta property="og:type" content="article">
@@ -1524,9 +1524,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-Java-promote-MOOC" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-LabVIEW学习-labview编程经验" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Java-promote-MOOC</h1>
+        <h1 class="article-title">LabVIEW学习-labview编程经验</h1>
     
     <div class="article-meta">
         
@@ -1536,7 +1536,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="Java">Java</a>
+            <a  data-rel="LabVIEW">LabVIEW</a>
             
         </span>
         
@@ -1544,12 +1544,12 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2022-02-22 20:16:26'>2021-08-10 00:00</time>
+            Created At : <time class="date" title='Updated At: 2023-04-17 23:39:34'>2023-04-15 17:14</time>
         
     </div>
     <div class="article-meta">
         
-        <span>Count:2.7k</span>
+        <span>Count:232</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1568,7 +1568,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E5%9C%B0%E7%82%B9%EF%BC%9A%E4%B8%AD%E5%9B%BD%E5%A4%A7%E5%AD%A6MOOC-%E7%BF%81%E6%81%BA%E8%80%81%E5%B8%88-%E3%80%8A%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E2%80%94%E2%80%94Java%E8%AF%AD%E8%A8%80%E3%80%8B"><span class="toc-text">学习地点：中国大学MOOC 翁恺老师 《面向对象程序设计——Java语言》</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LabView%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-text">LabView编程基础</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -1584,244 +1584,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="学习地点：中国大学MOOC-翁恺老师-《面向对象程序设计——Java语言》"><a href="#学习地点：中国大学MOOC-翁恺老师-《面向对象程序设计——Java语言》" class="headerlink" title="学习地点：中国大学MOOC 翁恺老师 《面向对象程序设计——Java语言》"></a>学习地点：中国大学MOOC 翁恺老师 《面向对象程序设计——Java语言》</h3><ol>
-<li><p>类与对象</p>
-<ol>
-<li>用类制造对象<ol>
-<li>类是规范，根据类的定义来创建对象。</li>
-<li>对象是实体，需要被创建，可以为我们做事情；</li>
-<li>对象&#x3D;属性+服务，数据表示属性或形态，例如画圆时的圆心和半径，</li>
-<li>把数据和对数据的操作放在一起，称为封装。</li>
+        <h2 id="LabView编程基础"><a href="#LabView编程基础" class="headerlink" title="LabView编程基础"></a>LabView编程基础</h2><ol>
+<li>数值和布尔数据</li>
+<li>数组和循环结构<ol>
+<li>凡是循环内需要使用变量的地方，首先应考虑使用移位寄存器</li>
+<li>使用移位寄存器时要切记：在循环结构外，给移位寄存器左侧端传入一个初始值，除非能够确定程序的确不需要给移位寄存器赋初值</li>
+<li>移位寄存器的左侧接线端可以多于一个</li>
+<li>即使子 VI 在不同的循环中被调用，它们也都是共用同一个移位寄存器</li>
+<li>只有把子 VI 设置成为每个实例都生成副本的 可重入运行方式 时，不同的子 VI 实例才具有独立的移位寄存器</li>
 </ol>
 </li>
-<li>定义类<ol>
-<li>类由两种东西构成：</li>
-<li>表示对象有什么成员变量；</li>
-<li>表示对象能做什么成员函数；</li>
-</ol>
-</li>
-<li>成员变量和成员函数<ol>
-<li>成员<ol>
-<li>类才具有成员，包括”成员变量“和“成员函数”；</li>
-<li>类中的成员变量是一个声明；变量不在类里，</li>
-<li>变量在每一个对象里；</li>
-</ol>
-</li>
-<li>本地变量：<ol>
-<li>定义在类的函数（方法）内部的变量；</li>
-<li>本地变量的作用域和生存期在函数的内部。</li>
-</ol>
-</li>
-<li>成员变量：<ol>
-<li>类定义了对象中所具有的变量，这些变量称作成员变量；</li>
-<li>写在类里的变量，生存期是对象的生存期，作用域是类内部的成员函数。</li>
-<li>每个对象都有自己的变量，和同一个类的其他对象是分开的。</li>
-<li>（本地变量和成员变量的区别？）</li>
-</ol>
-</li>
-<li>函数与成员变量<ol>
-<li>在函数中，可以直接写成员变量的名字来访问成员变量；</li>
-<li>this是成员函数特殊的（固有的）本地变量，它表达了调用这个函数时的那个对象；</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>对象初始化<ol>
-<li>Java可以给每个成员变量默认的“0”值、定义初始化和构造函数</li>
-<li>成员变量定义和初始化</li>
-<li>成员变量在定义的地方就可以给出初始值；</li>
-<li>未给出初始值的成员变量会自动获得0值；</li>
-<li>构造函数</li>
-<li>在构造（对象）的时候会自动调用的函数叫作构造函数；构造函数不能有返回类型。</li>
-<li>函数重载（方法重载）</li>
-<li>一个类里的同名但参数表不同的函数构成了重载关系（overload）</li>
-<li>创建对象的时候给出不同的参数值，就会自动调用不同的构造函数；</li>
-<li>(?)通过this()还可以调用其它构造函数；</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>对象交互</p>
-<ol>
-<li>对象交互<ol>
-<li>对象的识别</li>
-<li>对象的交互<br>Display有两个对象hour、minute在Clock类中，使用clock中的一个start方法使得“minute的增加可以导致hour的增加”</li>
-<li>高内聚低耦合:<br>低耦合:是对象和对象之间的耦合尽可能的松，平行的对象要尽量减少直接联系，让更高层次的对象来提供通信服务。</li>
-</ol>
-</li>
-<li>访问属性<ol>
-<li>private</li>
-<li>只有这个类内部可以访问</li>
-<li>类内部指类的成员函数和定义初始化</li>
-<li>这个限制是对类的而不是对对象的</li>
-<li>同一个类的不同的对象之间可以互相访问别人的私有的成员</li>
-<li>私有是针对类而不是针对对象</li>
-<li>public</li>
-<li>任何类的函数或定义初始化种都可以调用、访问或定义变量。</li>
-<li>类的前面通常也会加public，表明任何人都可以用类的定义来定义变量； 但是加了public的类必须保存在同名的.java文件里，否则会报错；</li>
-</ol>
-</li>
-<li>包package 点 com.fox.www</li>
-<li>类变量<ol>
-<li>static变量是类的变量。</li>
-<li>类函数：static函数是类的函数。可以在类函数中调用其他类函数</li>
-<li>static的成员变量只会在类进入程序里面的时候（类的装载）被初始化，在后面不会初始化</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>对象容器</p>
-<ol>
-<li>ArrayList 类 表示用来存放string的arraylist<pre><code>private ArrayList&lt;String&gt; notes = new ArrayList&lt;String&gt;();
-</code></pre>
-ArrayList是容器的类型、尖括号里面的是元素的类型</li>
-<li>对象数组中的每个元素都是对象的管理者而非对象本身</li>
-</ol>
-</li>
-<li><p>继承与多态</p>
-<ol>
-<li>父类的东西都继承给了子类，子类都得到了，但是如果父类的东西是private的，子类自己不能碰，可是可以通过父类的函数去碰，在谁的函数里面指的成员变量就是谁的；</li>
-<li>如果父类与子类出现同名的成员变量，子类函数里面所指的成员变量就是子类自己的；父类函数里面所指的就是父类自己的，他们之间无联系。</li>
-<li>多态： Java的对象变量是多态的，它们能保存不止一种类型的对象<br>它们可以保存的是声明类型的对象，或声明类型的子类的对象<br>当把子类的对象赋给父类的变量的时候，就发生了向上造型</li>
-<li>造型cast：<ol>
-<li>子类的对象可以赋值给父类的变量；父类的对象不能赋值给子类的变量!</li>
-<li>注意! Java中不存在对象对对象的赋值!</li>
-<li>把子类的对象赋给父类的变量是安全的</li>
-<li>把父类的对象赋给子类的变量是不行的。</li>
-<li>用括号围起类型放在值的前面</li>
-<li>对象本身并没有发生任何变化，所以不是“类型转换”</li>
-<li>运行时有机制来检查这样的转化是否合理<br>classCastException</li>
-</ol>
-</li>
-<li>类型转换与造型的区别？<br>类型转换是改变了原值<pre><code>int i = (int)10.2;
-</code></pre>
-造型只是把这个对象当作造型后的来看待，没有改变对象的值。<pre><code>CD cc = (CD)item;
-</code></pre>
-</li>
-<li>向上造型<ol>
-<li>拿一个子类的对象，</li>
-<li>当作父类的对象来用向上造型是默认的，</li>
-<li>不需要运算符</li>
-<li>向上造型总是安全的</li>
-</ol>
-</li>
-<li>函数调用的绑定<ol>
-<li>当通过对象变量调用函数的时候，调用哪个函数这件事情叫做绑定</li>
-<li>静态绑定:根据变量的声明类型来决定</li>
-<li>动态绑定:根据变量的动态类型来决定</li>
-<li>在成员函数中调用其他成员函数也是通过this这个对象变量来调用的</li>
-</ol>
-</li>
-<li>覆盖override<ol>
-<li>子类和父类中存在名称和参数表完全相同的函数，这一对函数构成覆盖关系</li>
-<li>通过父类的变量调用存在覆盖关系的函数时会调用变量当时所管理的对象所属的类的函数</li>
-</ol>
-</li>
-<li>类型系统<ol>
-<li>单根结构：所有的类都是继承自Object的</li>
-<li>object类</li>
-<li>toString();</li>
-<li>equals();</li>
-<li>增加新的媒体类型</li>
-<li>代码不需要进行修改就可以扩展适应新的数据和内容叫做可扩展性</li>
-<li>代码需要进行修改就可以扩展适应新的数据和内容叫做可维护性</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>设计原则（城堡游戏）</p>
-<ol>
-<li>增加可扩展性<ol>
-<li>可以运行的代码!&#x3D;良好的代码</li>
-<li>对代码做维护的时候最能看出代码的质量</li>
-</ol>
-</li>
-<li>用封装来降低耦合<ol>
-<li>Room类和Game类都有大量的代码和出口相关</li>
-<li>尤其是Game类中大量使用了Room类的成员变量</li>
-<li>类和类之间的关系称作耦合</li>
-<li>耦合越低越好，保持距离是形成良好代码的关键</li>
-<li>用接口来实现聚合</li>
-<li>给Room类实现的新方法，把方向的细节彻底隐藏在Room类内部了</li>
-<li>今后方向如何实现就和外部无关了</li>
-<li>用容器来实现灵活性</li>
-<li>Room的方向是用成员变量表示的，增加或减少方向就要改变代码</li>
-<li>如果用Hash表来表示方向，那么方向就不是“硬编码”的了</li>
-<li>以框架+数据来提高可扩展性</li>
-<li>命令的解析是否可以脱离if-else</li>
-<li>定义一个Handler来处理命令</li>
-<li>用Hash表来保存命令和Handler之间的关系</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>抽象与接口</p>
-<ol>
-<li>抽象函数、抽象类<ol>
-<li>抽象函数——表达概念而无法实现具体代码的函数</li>
-<li>抽象类——表达概念而无法构造出实体的类</li>
-<li>带有abstract修饰符的函数</li>
-<li>有抽象函数的类一定是抽象类</li>
-<li>抽象类不能制造对象但是可以定义变量<br>任何继承了抽象类的非抽象类的对象可以付给这个变量</li>
-</ol>
-</li>
-<li>实现抽象函数<br>继承自抽象类的子类必须覆盖父类中的抽象函数，父类的抽象方法全都要用！如果不用，那就得把该子类变成abstract，但是抽象后就不能制造对象了嗷。</li>
-<li>数据与表现分离<ol>
-<li>程序的业务逻辑与表现无关</li>
-<li>表现可以是图形的也可以是文本的</li>
-<li>表现可以是当地的也可以是远程的</li>
-</ol>
-</li>
-<li>责任驱动的设计<br>将程序要实现的功能分配到合适的类&#x2F;对象中去是设计中非常重要的一环</li>
-<li>网格化<br>图形界面本身有更高的解析度<br>但是将画面网格化以后，数据就更容易处理了</li>
-<li>面向接口的编程方式<ol>
-<li>设计程序时先定义接口，再实现类</li>
-<li>任何需要在函数间传入传出的一定是接口而不是具体的类</li>
-<li>是Java成功的关键之一，因为极适合多人同时写要给大程序</li>
-<li>也是Java被批评的要点之一，因为代码量膨胀起来很快</li>
-</ol>
-</li>
-<li>内部类<ol>
-<li>定义在别的类内部、函数内部的类</li>
-<li>内部类能直接访问外部的全部资源</li>
-<li>包括任何私有的成员</li>
-<li>外部是函数时，只能访问那个函数里final的变量</li>
-</ol>
-</li>
-<li>匿名类</li>
-<li>在new对象的时候给出的类的定义形成了匿名</li>
-<li>匿名类可以继承某类，也可以实现某接口</li>
-<li>Swing的消息机制广泛使用匿名类</li>
-</ol>
-</li>
-<li><p>控制反转与MVC模式</p>
-<ol>
-<li>注入反转<br>由按钮公布一个守听者接口和一对注册&#x2F;注销函数<br>你的代码实现那个接口，将守听者对象注册在按钮上<br>一旦按钮被按下，就会反过来调用你的守听者对象的某个函数</li>
-<li>MVC模式<ol>
-<li>JTable：用JTable类可以以表格的形式显示和编辑数据。JTable类的对象并不存储数据，它只是数据的表现。（数据和表现分开了）</li>
-<li>数据、表现和控制三者分离，各负其责。</li>
-<li>M&#x3D;Model(模型),V&#x3D;View(表现),C&#x3D;Control(控制)</li>
-<li>模型：保存和维护数据，提供接口让外部修改数据，通知表现需要刷新。</li>
-<li>表现：从模型获得数据，根据数据画出表现。</li>
-<li>控制：从用户得到输入，根据输入调整数据。</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>异常处理与输入输出</p>
-<ol>
-<li>异常</li>
-<li>异常机制</li>
-<li>什么可以扔? 任何继承了Throwable类的对象。</li>
-<li>吧啦吧啦吧啦~</li>
-</ol>
-</li>
-<li><p>流stream</p>
-<ol>
-<li>有时候需要try except</li>
-<li>可以套娃！</li>
-</ol>
-</li>
+<li>字符串和路径数据</li>
+<li>图形化显示数据</li>
+<li>条件结构和顺序结构</li>
+<li>用户自定义控件</li>
+<li>控件的局部变量和属性</li>
 </ol>
 
       
