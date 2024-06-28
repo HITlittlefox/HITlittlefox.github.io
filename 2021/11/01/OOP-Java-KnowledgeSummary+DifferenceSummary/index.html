@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OOP-Java-KnowledgeSummary+DifferenceSummary | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="OOP-Java-KnowledgeSummary+DifferenceSummary | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KMP">
+<meta property="og:url" content="http://example.com/2024/06/25/KMP/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-24T16:35:00.000Z">
+<meta property="article:modified_time" content="2024-06-26T16:01:54.606Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(96)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(46)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(8)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(34)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Compose">
+                        
+                        Compose
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="KMP">
+                        
+                        KMP
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="96">
+<input type="hidden" id="yelog_site_word_count" value="141.5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All KMP "
+           href="/2024/06/25/KMP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="KMP">KMP</span>
+            <span class="post-date" title="2024-06-25 00:35:00">2024/06/25</span>
+        </a>
+        
+        <a  class="All Compose "
+           href="/2024/06/23/ComposeLearn/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ComposeLearn">ComposeLearn</span>
+            <span class="post-date" title="2024-06-23 13:41:00">2024/06/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2023/02/09/%E5%AF%92%E5%81%87%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="寒假做了什么？">寒假做了什么？</span>
+            <span class="post-date" title="2023-02-09 20:18:39">2023/02/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/15/SSM%E7%9B%B8%E5%85%B3/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="SSM相关">SSM相关</span>
+            <span class="post-date" title="2022-09-15 22:04:31">2022/09/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/12/%E4%BB%8E%E5%BF%AB%E6%8E%92%E6%83%B3%E5%88%B0%E7%9A%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="从快排想到的">从快排想到的</span>
+            <span class="post-date" title="2022-09-12 20:13:59">2022/09/12</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="设计模式复习">设计模式复习</span>
+            <span class="post-date" title="2022-09-06 20:34:29">2022/09/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/08/15/springboot%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springboot笔记">springboot笔记</span>
+            <span class="post-date" title="2022-08-15 10:15:52">2022/08/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/Java-Lambda/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-Lambda">Java-Lambda</span>
+            <span class="post-date" title="2022-07-29 15:01:54">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/mybatis-plus-imooc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-plus-imooc">mybatis-plus-imooc</span>
+            <span class="post-date" title="2022-07-29 11:15:19">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/28/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法-代码随想录">贪心算法-代码随想录</span>
+            <span class="post-date" title="2022-07-28 09:33:13">2022/07/28</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-labuladong/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-labuladong">二叉树知识点-labuladong</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E5%9B%9E%E6%BA%AF%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="回溯三部曲-代码随想录">回溯三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E9%80%92%E5%BD%92%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="递归三部曲-代码随想录">递归三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/23/mybatis-westos/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-西部开源">mybatis-西部开源</span>
+            <span class="post-date" title="2022-07-23 11:03:24">2022/07/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/19/mysql%E7%B4%A2%E5%BC%95%E4%B8%93%E9%A1%B9%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mysql索引专项学习">mysql索引专项学习</span>
+            <span class="post-date" title="2022-07-19 09:35:48">2022/07/19</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据库系统04">数据库系统04</span>
+            <span class="post-date" title="2022-04-26 11:00:58">2022/04/26</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%9803/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据仓库与数据挖掘03">数据仓库与数据挖掘03</span>
+            <span class="post-date" title="2022-04-26 10:39:42">2022/04/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/20/DesignPatterns-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-12">DesignPatterns-12</span>
+            <span class="post-date" title="2021-12-20 17:12:51">2021/12/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/17/DataStructure-review-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DataStructure-review-01">DataStructure-review-01</span>
+            <span class="post-date" title="2021-12-17 15:48:17">2021/12/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/16/%E7%BB%84%E7%BB%87%E8%A1%8C%E4%B8%BA%E5%AD%A6%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="组织行为学复习">组织行为学复习</span>
+            <span class="post-date" title="2021-12-16 09:57:02">2021/12/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/15/DesignPatterns-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-11">DesignPatterns-11</span>
+            <span class="post-date" title="2021-12-15 16:25:09">2021/12/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/13/DesignPatterns-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-10">DesignPatterns-10</span>
+            <span class="post-date" title="2021-12-13 16:40:53">2021/12/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/08/DesignPatterns-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-09">DesignPatterns-09</span>
+            <span class="post-date" title="2021-12-08 17:05:30">2021/12/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/06/DesignPatterns-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-08">DesignPatterns-08</span>
+            <span class="post-date" title="2021-12-06 17:06:45">2021/12/06</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/03/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8407/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构07">数据结构07</span>
+            <span class="post-date" title="2021-12-03 16:09:44">2021/12/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/01/DesignPatterns-07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-07">DesignPatterns-07</span>
+            <span class="post-date" title="2021-12-01 17:04:33">2021/12/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/29/DesignPatterns-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-06">DesignPatterns-06</span>
+            <span class="post-date" title="2021-11-29 16:31:28">2021/11/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/DesignPatterns-05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-05">DesignPatterns-05</span>
+            <span class="post-date" title="2021-11-22 16:52:16">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8406/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构06">数据结构06</span>
+            <span class="post-date" title="2021-11-22 16:11:05">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8403/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构03">数据结构03</span>
+            <span class="post-date" title="2021-11-18 23:30:54">2021/11/18</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8405/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构05">数据结构05</span>
+            <span class="post-date" title="2021-11-17 10:19:16">2021/11/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构02">数据结构02</span>
+            <span class="post-date" title="2021-11-16 16:30:28">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8401/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构01">数据结构01</span>
+            <span class="post-date" title="2021-11-16 15:12:13">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="大话数据结构笔记">大话数据结构笔记</span>
+            <span class="post-date" title="2021-11-15 23:06:10">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/DesignPatterns-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-04">DesignPatterns-04</span>
+            <span class="post-date" title="2021-11-15 16:13:39">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/08/DesignPatterns-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-03">DesignPatterns-03</span>
+            <span class="post-date" title="2021-11-08 17:33:15">2021/11/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/03/DesignPatterns-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-02">DesignPatterns-02</span>
+            <span class="post-date" title="2021-11-03 17:11:32">2021/11/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/DesignPatterns-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-01">DesignPatterns-01</span>
+            <span class="post-date" title="2021-11-01 16:31:01">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-03">OOP-Java-03</span>
+            <span class="post-date" title="2021-10-26 16:11:58">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-02">OOP-Java-02</span>
+            <span class="post-date" title="2021-10-26 16:11:55">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-01">OOP-Java-01</span>
+            <span class="post-date" title="2021-10-26 16:11:51">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-00/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-00">OOP-Java-00</span>
+            <span class="post-date" title="2021-10-26 16:11:33">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/22/OOP-Java-13/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-13">OOP-Java-13</span>
+            <span class="post-date" title="2021-10-22 10:06:08">2021/10/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/Java-review-schedule/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java review schedule">Java review schedule</span>
+            <span class="post-date" title="2021-10-19 21:56:20">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/OOP-Java-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-12">OOP-Java-12</span>
+            <span class="post-date" title="2021-10-19 15:34:09">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/17/OOP-Java-08plus/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08plus">OOP-Java-08plus</span>
+            <span class="post-date" title="2021-10-17 17:02:36">2021/10/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-11">OOP-Java-11</span>
+            <span class="post-date" title="2021-10-15 18:02:25">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-10">OOP-Java-10</span>
+            <span class="post-date" title="2021-10-15 18:02:18">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-09">OOP-Java-09</span>
+            <span class="post-date" title="2021-10-15 18:02:10">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08">OOP-Java-08</span>
+            <span class="post-date" title="2021-10-15 18:02:03">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/13/OOP-Java-06&07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-06&amp;07">OOP-Java-06&amp;07</span>
+            <span class="post-date" title="2021-10-13 21:39:54">2021/10/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/11/OOP-Java-04&05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-04&amp;05">OOP-Java-04&amp;05</span>
+            <span class="post-date" title="2021-10-11 21:01:14">2021/10/11</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/22/HeadFirst-Java-Notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HeadFirst-Java-Notes">HeadFirst-Java-Notes</span>
+            <span class="post-date" title="2021-09-22 17:03:32">2021/09/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/15/HITWH-Resources-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HITWH-Resources-Java">HITWH-Resources-Java</span>
+            <span class="post-date" title="2021-09-15 08:23:46">2021/09/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/07/Spring-boot-Web-Develop/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-boot-Web-Develop">Spring-boot-Web-Develop</span>
+            <span class="post-date" title="2021-09-07 08:01:15">2021/09/07</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/10/Java-promote-MOOC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-promote-MOOC">Java-promote-MOOC</span>
+            <span class="post-date" title="2021-08-10 00:00:00">2021/08/10</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/05/Java-basic-bilibili/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-basic-bilibili">Java-basic-bilibili</span>
+            <span class="post-date" title="2021-08-05 00:00:00">2021/08/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-OOP-Java-KnowledgeSummary+DifferenceSummary" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">OOP-Java-KnowledgeSummary+DifferenceSummary</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Java">Java</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-10 20:47:33'>2021-11-01 21:30</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:10.6k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1"><span class="toc-text">1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2"><span class="toc-text">2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3"><span class="toc-text">3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4"><span class="toc-text">4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5"><span class="toc-text">5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6"><span class="toc-text">6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7"><span class="toc-text">7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8"><span class="toc-text">8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9"><span class="toc-text">9</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10"><span class="toc-text">10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11"><span class="toc-text">11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12"><span class="toc-text">12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13"><span class="toc-text">13</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- todo：1~7的课本代码 -->
+<!-- doing：整理1~7知识点+**区别**，todo：补充ppt知识点 -->
+<h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><ol>
+<li>Java语言的九大特点p1<ol>
+<li>简单、面向对象、平台无关、分布、可靠、安全、多线程、网络编程、编译+解释</li>
+</ol>
+</li>
+<li>Java程序的运行过程p3<ol>
+<li>先编译后解释</li>
+<li>开发与运行Java程序需要经过的三个主要步骤为“编辑源程序”、“编译生成字节码”、“解释运行字节码”。</li>
+</ol>
+</li>
+<li><em>Java应用程序与Java小程序的<strong>区别</strong>：</em><ol>
+<li>小程序和应用程序之间的技术差别在于运行环境。</li>
+<li>由于小程序和应用程序的执行环境不同，它们的最低要求也不同。在应用方面，WWW使小程序的发布十分便利，因此小程序更适合在Internet上使用；相反，非网络系统和内存较小的系统更适合使用Java应用程序。</li>
+<li>Java 小程序可以直接利用浏览器或appletviewer 提供的图形用户界面，而Java应用程序则必须另外书写专用代码来营建自己的图形界面。</li>
+<li>小程序的主类（程序执行的入口点）必须是一个继承自系统类Applet的子类，且该类必须是public类。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><hr>
+<h2 id="3"><a href="#3" class="headerlink" title="3"></a>3</h2><ol>
+<li><em>基本数据类型和引用数据类型的<strong>区别</strong>p17</em><ol>
+<li>前者在内存中存放数据值</li>
+<li>后者在内存中存放指向该数据的地址</li>
+</ol>
+</li>
+<li>标识符的规定p20<ol>
+<li>字母、数字、下划线、美元符号</li>
+<li>字母、下划线、美元符号开头，不可以用数字开头</li>
+</ol>
+</li>
+<li>命名习惯p20<ol>
+<li><strong>类名首字母大写</strong></li>
+<li><strong>变量、方法及对象首字母小写</strong></li>
+<li><strong>Java中包名使用小写字母表示</strong></li>
+</ol>
+</li>
+<li>程序中使用常量的两点好处p21<ol>
+<li>可读性</li>
+<li>可维护性</li>
+</ol>
+</li>
+<li>使用变量的原则p22<ol>
+<li>先声明后使用</li>
+</ol>
+</li>
+<li>数据类型转换的2方式 p23两个小标题<ol>
+<li>数值型不同类型数据的转换：自动、强制</li>
+<li>字符串型数据与整型数据相互转换parse、+</li>
+</ol>
+</li>
+<li>数值型数据自动类型转换的条件p23<ol>
+<li>转换前后类型兼容</li>
+<li>后比前大</li>
+</ol>
+</li>
+<li>Java语言对+运算符的拓展p32：字符串连接</li>
+<li>浮点数之间不能做“&#x3D;&#x3D;”的比较p33：有误差</li>
+<li>简洁与&amp;&amp;、简洁或||p33<ol>
+<li>&amp;&amp;两个操作数均为true，结果才为true，如果左边false，直接false</li>
+<li>||两个操作数均为false，结果才为false，如果左边true，直接true</li>
+</ol>
+</li>
+<li>异或运算一句话p33：<ol>
+<li>两个值不同，值为真；</li>
+<li>两个值相同，值为假</li>
+</ol>
+</li>
+<li><em>简洁运算(&amp;&amp;、||)与非简洁运算(&amp;、|)的<strong>区别</strong>在于：</em><blockquote>
+<ol>
+<li>非简洁运算在必须计算完左右两个表达式之后，才取结果值；</li>
+<li>而简洁运算可能只计算左边的表达式而不计算右边的表达式，</li>
+<li>即对于&amp;&amp;，只要左边表达式为false，就不计算右边表达式，则整个表达式为false；</li>
+<li>对于||，只要左边表达式为true，就不计算右边表达式，则整个表达式为true。</li>
+</ol>
+</blockquote>
+</li>
+<li>编码习惯：<ol>
+<li><strong>类名首字母大写</strong></li>
+<li><strong>变量、方法及对象首字母小写</strong></li>
+<li><strong>Java中包名使用小写字母表示</strong></li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="4"><a href="#4" class="headerlink" title="4"></a>4</h2><ol>
+<li>三种基本流程结构p39：顺序、分支、循环</li>
+<li>Java三种循环语句p45：while、do-while、for</li>
+<li><em>do-while和while的<strong>区别</strong>p48</em><ol>
+<li>do-while:先执行一遍循环体，再来判断条件表达式的值，若真，则继续，否则跳出</li>
+<li>do-while特点：循环体至少被执行过一次</li>
+<li>while:先计算条件表达式的值</li>
+</ol>
+</li>
+<li>Java三种无条件转移语句p53<ol>
+<li>break</li>
+<li>continue</li>
+<li>return</li>
+</ol>
+</li>
+<li><em>break和continue和return的<strong>区别</strong>p54</em><ol>
+<li>break强行跳离switch或循环，转去执行下一条语句</li>
+<li>continue强行跳到循环开始处执行下一轮循环</li>
+<li>return使程序从方法中返回</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="5"><a href="#5" class="headerlink" title="5"></a>5</h2><ol>
+<li>Java两种内存p56<ol>
+<li>栈内存</li>
+<li>堆内存</li>
+</ol>
+</li>
+<li>数组3特点p57<ol>
+<li>相同数据类型元素的集合</li>
+<li>各元素有先后顺序，按顺序连续存放在一起</li>
+<li>数组元素用整个数组的名字和自己再数组中的顺序位置来表示</li>
+</ol>
+</li>
+<li>使用数组3步骤p57<ol>
+<li>声明数组</li>
+<li>分配空间</li>
+<li>创建数组元素并赋值</li>
+</ol>
+</li>
+<li><em>堆内存和栈内存的<strong>区别</strong></em><ol>
+<li>栈内存：<strong>定义的基本类型的变量</strong>和<strong>对象的引用变量</strong>，超出作用域将自动释放。</li>
+<li>堆内存：存放由new运算符创建的<strong>对象</strong>和<strong>数组</strong>。由Java虚拟机的自动垃圾回收器来管理。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="6"><a href="#6" class="headerlink" title="6"></a>6</h2><ol>
+<li>OOP最核心的概念p73<ol>
+<li>类和对象</li>
+</ol>
+</li>
+<li>类修饰符p75<ol>
+<li>public公共类在所有类中可见，在其他包中可以用import导入。</li>
+<li>abstract抽象类，不能新建对象</li>
+<li>final最终类，表示该类不能被继承</li>
+<li>缺省:没有修饰符，在同一个包中的类中可见，在其他包中不能用import导入。</li>
+</ol>
+</li>
+<li>成员变量修饰符p75<ol>
+<li>public在任何类中可见</li>
+<li>private只在本类中可见，子类中也不可见</li>
+<li>protected在子类中或同一个包中可见</li>
+<li>缺省:在同一个包中可见，子类不在一个包中，子类中也不可见  </li>
+<li>final常量，定义后不能修改</li>
+<li>static静态变量，被类的所有实例共享</li>
+<li>transient告诉编译器，在类对象序列化的时候，此变量不需要持久保存</li>
+<li>volatile指出可能有多个线程修改此变量，要求编译器优化以保证对此变量的修改能够被正确的处理</li>
+</ol>
+</li>
+<li>成员方法修饰符p76<ol>
+<li>public在任何类中可见</li>
+<li>private只在本类中可见，子类中也不可见</li>
+<li>protected在子类中或同一个包中可见</li>
+<li>缺省:在同一个包中可见，子类不在一个包中，子类中也不可见</li>
+<li>final最终方法，所有子类不能覆盖该方法，但可以重载</li>
+<li>static静态方法，并不需要创建类的实例就可以访问静态方法</li>
+<li>abstract抽象方法，在抽象类中没有实现的方法</li>
+<li>synchronized在多线程中，synchronized方法调用时，其他所有方法不能调用该方法</li>
+<li>native本地方法，外部编写</li>
+</ol>
+</li>
+<li><em>成员变量和局部变量的<strong>区别</strong>p77</em><ol>
+<li>类中定义成员变量、方法中定义局部变量</li>
+<li>语法：<ol>
+<li>成员变量属于类，局部变量属于方法</li>
+<li>成员变量可以被public、private、static修饰，局部变量不能被访问控制修饰符及static修饰</li>
+<li>都可以被final修饰</li>
+</ol>
+</li>
+<li>存储方式：成员变量跟着对象存放在堆；局部变量存在于栈</li>
+<li>内存中的生存方式：成员变量随着对象创建而存在；局部变量随着方法调用而产生，方式结束而消失</li>
+<li>自动赋值<strong>区别</strong>：成员变量自动赋值；局部变量必须显式赋值</li>
+</ol>
+</li>
+<li>创建对象的步骤p78<ol>
+<li>声明指向由类所创建的对象的变量</li>
+<li>利用new运算符创建新的对象，并指派给前面所创建的变量</li>
+</ol>
+</li>
+<li>一个对象的生命周期p77<ol>
+<li>创建、使用、销毁</li>
+</ol>
+</li>
+<li>使用匿名对象的情况p88</li>
+<li><em>使用匿名对象的情况：</em></li>
+<li><strong>如果对一个对象只需要进行一次方法调用。</strong></li>
+<li><strong>将匿名对象做为实参传递给一个方法调用。</strong></li>
+</ol>
+<hr>
+<h2 id="7"><a href="#7" class="headerlink" title="7"></a>7</h2><ol>
+<li>方法重载的定义p95<ol>
+<li>同一类内定义多个名称相同的方法，然后根据其参数的不同（参数个数、参数类型）来设计不同的功能，以适应编程的需要</li>
+</ol>
+</li>
+<li>构造方法的特殊性p96<ol>
+<li>方法名&#x3D;类名</li>
+<li>无返回值，不能写void</li>
+<li>作用：完成类对象的初始化</li>
+<li>不能显示调用，而是使用new调用</li>
+<li>自动调用构造方法为新对象初始化</li>
+</ol>
+</li>
+<li><em>静态成员(类成员)和实例成员的<strong>区别</strong>p101</em><ol>
+<li>前者被static修饰、隶属于类、可被<code>类名.静态变量名</code>调用</li>
+<li>后者不被static修饰，属于对象</li>
+</ol>
+</li>
+<li>静态方法的含义p104<ol>
+<li>被static修饰、属于类</li>
+<li>不能访问实例变量与实例方法</li>
+<li>不能用this或super</li>
+<li>类名.静态方法名(); 对象名.静态方法名();</li>
+</ol>
+</li>
+<li><em>静态初始化器和构造方法的<strong>区别</strong>p106</em><ol>
+<li>初始化对象不同</li>
+<li>执行时间不同</li>
+<li>调用次数不同</li>
+<li>性质不同（静态初始化器不是方法）</li>
+</ol>
+</li>
+<li>用数组存放对象的步骤p110<ol>
+<li>声明数组，new分配空间</li>
+<li>创建对象，分配内存空间，并让数组元素在指向它</li>
+</ol>
+</li>
+<li>垃圾回收的好处p112<ol>
+<li>从复杂的内存追踪、监测、释放工作中解放程序员</li>
+<li>防止内存非法释放，提高系统稳定性</li>
+</ol>
+</li>
+<li>垃圾回收的特点p112<ol>
+<li>对象不被引用类型变量使用时，才被回收</li>
+<li>不能强迫回收</li>
+<li>先finalize()方法</li>
+</ol>
+</li>
+<li>实例变量：<strong>没有static修饰</strong>的变量</li>
+<li>静态变量（也叫类变量）:声明时需<strong>加static修饰符</strong></li>
+<li><code>成员变量(静态变量、类变量)与局部变量（实例变量）的</code><strong><strong>区别</strong></strong></li>
+<li>从语法形式上看，<strong>成员变量属于类</strong>，而<strong>局部变量是方法中定义的变量或方法的参数</strong>；</li>
+<li>再从语法形式上看，<strong>成员变量可以被public、private和static等修饰</strong>，<strong>而局部变量则不能</strong>，<strong>二者都可以被final修饰</strong>。</li>
+<li>从变量在内存中的存储方式看，<strong>成员变量是对象的一部分，对象是存储在堆内存的</strong>，<strong>局部变量存于栈</strong>。</li>
+<li>从变量在内存中的生存时间上看，<strong>成员变量是对象的一部分，它随着对象的创建而存在</strong>；<strong>局部变量随着方法的调用而产生，随着方法调用的结束而消失</strong>。</li>
+<li><strong>成员变量若没有被赋初值，则自动初始化默认为0</strong>（用final修饰的但没有被static修饰的成员变量必须显式赋值）；<strong>局部变量不会自动赋值，必须显式赋值</strong>。</li>
+<li><strong>实例方法：声明时前面不加static修饰符;</strong></li>
+<li><strong>静态方法：表示类中对象的共有行为，声明时前面需加static修饰符；</strong></li>
+<li><em>静态初始化器与构造方法<strong>区别</strong></em>：<ol>
+<li>初始化对象不同：构造方法是对每个新创建的<strong>对象</strong>初始化，而静态初始化器对整个<strong>类</strong>自身进行初始化，包括static成员变量赋初值。</li>
+<li>执行时机不同：构造方法是在用new创建新对象时由系统自动执行，而静态初始化器一般不能由程序来调用，它是在所属的类被加载入内存时由系统调用执行。</li>
+<li>执行次数不同：用new创建多少个新对象，构造方法就调用多少次，但静态初始化器则在类被加载入内存时只执行一次。</li>
+<li>静态初始化器不是方法，它没有方法名、返回值和参数。</li>
+<li>如果有多个静态初始化器，则它们在类的初始化时会依次执行。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="8"><a href="#8" class="headerlink" title="8"></a>8</h2><ol>
+<li>java子类自动调用父类的无参构造方法的目的p117 p151<ol>
+<li>初始化继承父类的成员</li>
+</ol>
+</li>
+<li>怎样在子类中调用父类构造方法<code>super()</code>p119</li>
+<li>覆盖overriding的定义p121<ol>
+<li>在子类中定义名称、参数个数、类型均和父类中完全相同的方法，用来重写父类中同名方法。</li>
+</ol>
+</li>
+<li>通过父类对象访问子类方法的条件p124<ol>
+<li>只限于“覆盖”情况发生</li>
+</ol>
+</li>
+<li>最终类的概念p125<ol>
+<li>被final修饰符修饰，不能被其他类继承，不能有子类</li>
+</ol>
+</li>
+<li>“即是”原则p128<ol>
+<li>所有类都是Object类的子类，根据即是原则，所有类的对象即是Object类的对象。</li>
+</ol>
+</li>
+<li>抽象类定义p130<ol>
+<li>abstract修饰，不能创建实例对象，能被继承</li>
+<li>tips：<ol>
+<li>包含抽象方法的类一定是抽象类</li>
+<li>抽象类中不一定有抽象方法</li>
+<li>子类必须实现父类的所有抽象方法，才能产生对象</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><em>接口与抽象类的<strong>区别</strong>p132</em><ol>
+<li>接口中所有数据成员都是静态且必须初始化，都是静态常量</li>
+<li>接口有抽象方法、可以有静态方法、默认方法</li>
+</ol>
+</li>
+<li>接口特点p133<ol>
+<li>抽象方法只需要声明，不需要方法体</li>
+<li>数据成员必须是静态常量</li>
+<li>都是公共成员，所以省略public，实现抽象方法时，不能省略public</li>
+<li>接口是一种特殊的抽象类</li>
+</ol>
+</li>
+<li>接口命名惯例p133TODO:<ol>
+<li>接口中的常量通常都使用大写字母命名</li>
+</ol>
+</li>
+<li>接口的实现的定义p133<ol>
+<li>利用接口创建新类的过程</li>
+</ol>
+</li>
+<li>类实现接口需要注意的问题p134<ol>
+<li>如果实现接口的类不是抽象类，则需要实现指定接口的所有抽象方法。</li>
+<li>实现接口的抽象方法的时候，需要完全相同的方法头。</li>
+<li>public</li>
+<li>每个接口都被编译成独立的.class文件</li>
+</ol>
+</li>
+<li>接口可以作为一种引用类型p134<ol>
+<li>可以声明接口类型的变量或数组，并用它来访问实现该接口的类的对象</li>
+</ol>
+</li>
+<li><em>接口与继承的<strong>区别</strong>p135</em><ol>
+<li>一个接口可以有一个以上的父接口，他们之间用逗号分隔，形成父接口列表。</li>
+<li>新接口将继承父接口中的常量、抽象方法、默认方法，但是不能继承父接口中的静态方法，也不能被实现类所继承。</li>
+<li>只能最多继承一个父类，不能多重继承。</li>
+</ol>
+</li>
+<li>单继承性的优点p137<ol>
+<li>结构简单、层次清楚、易于管理、更安全可靠</li>
+</ol>
+</li>
+<li>接口主要作用p137<ol>
+<li>帮助实现类似于类的多重继承功能</li>
+</ol>
+</li>
+<li>Java如何实现多重继承p137<ol>
+<li>一个类实现多个接口，implements中用逗号分隔各个接口名，如果把接口理解为特殊的类，那么这个类利用接口就获得了多个父类，实现了多重继承</li>
+</ol>
+</li>
+<li>在多个父接口的实现类中，如何解决同名默认方法p140<ol>
+<li>tips静态方法不能被继承，默认方法可以被继承</li>
+<li>提供同名方法的一个新实现</li>
+<li>委托一个父接口的默认方法</li>
+</ol>
+</li>
+<li><em>枚举类与普通类的<strong>区别</strong>p141</em><ol>
+<li>枚举可实现接口，不可显式继承父类</li>
+<li>枚举默认final</li>
+<li>不能new</li>
+<li>private</li>
+<li>所有枚举成员必须在枚举体第一行显式列出</li>
+</ol>
+</li>
+<li>p151</li>
+<li>this()和super()的相似之处   <ol>
+<li>如果构造方法有重载，两者都可以根据所给予的参数类型和个数，正确执行对应构造方法</li>
+<li>都需要第一行</li>
+</ol>
+</li>
+<li>protect()的好处<ol>
+<li>兼顾安全与便利性</li>
+</ol>
+</li>
+<li><em>重载与覆盖的<strong>区别</strong></em><ol>
+<li>重载：同一类内定义多个名称相同的方法，然后根据其参数的不同（参数个数、参数类型）来设计不同的功能</li>
+<li>覆盖：在子类中定义名称、参数个数、类型均和父类中完全相同的方法，用来重写父类中同名方法。</li>
+</ol>
+</li>
+<li>父类方法如何不被覆盖：final</li>
+<li>变量怎么变常量：final</li>
+<li>所有类都继承自？Object</li>
+<li>抽象类的目的：要用户根据他的格式来修改并创建新的类</li>
+<li>抽象类中的2类方法<ol>
+<li>一般方法</li>
+<li>抽象方法</li>
+</ol>
+</li>
+<li><em>接口与抽象类的<strong>区别</strong></em><ol>
+<li>接口的数据成员都是静态且初始化</li>
+<li>接口抽象方法必须都是public abstract</li>
+</ol>
+</li>
+<li>Java如何实现多重继承</li>
+<li>枚举类型名的2层含义<ol>
+<li>枚举名</li>
+<li>枚举数据类型</li>
+</ol>
+</li>
+<li>如何访问不同package下的类？<ol>
+<li>目标类public</li>
+<li>正确路径</li>
+</ol>
+</li>
+<li>怎么导入包里的某个类？<ol>
+<li>import 包名.类名</li>
+</ol>
+</li>
+<li><strong>覆盖:指在子类中，定义名称、参数个数与类型均与父类完全相同的方法，用以重写父类里同名方法的功能</strong></li>
+<li><strong>重载:是指在同一个类定义名称相同，参数列表不同的方法。</strong></li>
+<li><em>接口与抽象类非常相似，<strong>区别</strong>：</em><ol>
+<li>接口的数据成员都是静态常量；</li>
+<li>接口中除了抽象方法外，还可以定义<strong>默认方法</strong>和<strong>静态方法</strong>，但不能有普通方法。</li>
+</ol>
+</li>
+<li><em>接口继承与类继承的<strong>区别</strong>：</em>一个接口可以有一个以上的父接口，它们之间用逗号隔开，形成父接口列表。</li>
+<li><em>StringBuilder与StringBuffer<strong>区别</strong></em><ol>
+<li>两者最大的不同在于 StringBuilder 的方法不是线程安全的（不能同步访问）。</li>
+<li>StringBuilder 有速度优势，所以多数情况下建议使用 StringBuilder 类。</li>
+<li>在应用程序要求线程安全的情况下，必须使用 StringBuffer 类。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="9"><a href="#9" class="headerlink" title="9"></a>9</h2><ol>
+<li>按错误的性质可将程序错误分为3类 p154 语法错、语义错、逻辑错</li>
+<li>根据错误严重程度的不同，把错分为两类：p154 错误和异常</li>
+<li>Java通过什么处理异常？什么是抛出异常？什么叫捕获异常？p154<ol>
+<li>通过Java异常处理机制处理异常</li>
+<li><strong>抛出异常</strong>：<strong>产生一个代表该异常的对象，并把它提交给运行系统的过程</strong>（异常对象可由应用程序本身产生，也可能由JVM产生）。</li>
+<li><strong>捕获异常</strong>：<strong>异常抛出后，运行系统从生成异常对象的代码开始，沿方法的调用栈逐层回溯查找，直到找到包含相应异常处理的方法，并把异常对象提交给该方法为止，这个过程称为捕获(catch)异常。</strong></li>
+</ol>
+</li>
+<li>什么是Java语言异常处理机制？p155<ol>
+<li><strong>Java异常处理机制</strong>：<strong>每当Java程序运行过程中产生一个可识别的运行错误时，系统都会产生一个相应的该异常类的对象。一旦一个异常对象产生了，系统中就一定有相应的机制来处理它，从而保证整个程序运行的安全性。</strong></li>
+</ol>
+</li>
+<li>异常处理3步骤？p155<ol>
+<li>“抛出”一个异常，</li>
+<li>运行系统“捕获”该异常，</li>
+<li>并交由程序员编写的相应代码进行异常处理。</li>
+</ol>
+</li>
+<li>异常类的层次结构图？p156</li>
+<li>程序对错误与异常的3种处理方式？p157<ol>
+<li><strong>程序不能处理的错误，交操作系统处理</strong>；</li>
+<li><strong>程序应避免而可以不去捕获的运行时异常（RuntimeException）</strong></li>
+<li><strong>必须捕获（使用try-catch-final）的非运行时异常</strong>。</li>
+</ol>
+</li>
+<li>捕获异常的意义所在p157<ol>
+<li>需要能让程序来接收和处理异常对象，从而不会影响其他语句的执行</li>
+</ol>
+</li>
+<li>多异常处理的定义p158<ol>
+<li><strong>通过一个try块后面定义若干catch块来实现的，每个catch块用来接收和处理一种特定的异常对象</strong></li>
+</ol>
+</li>
+<li>抛出异常的分类p161</li>
+<li>系统自动抛出的异常</li>
+<li>指定方法抛出异常</li>
+<li>所有系统定义的运作时异常都可以由系统自动抛出，指定方法抛出异常需要使用关键字throw或throws来明确指定在方法内抛出异常。</li>
+<li>抛出异常的方法、处理异常的方法p161<ol>
+<li>在方法体内使用throw语句抛出异常对象</li>
+<li>在方法头部添加throws子句表示方法将抛出对象</li>
+</ol>
+</li>
+<li>自动资源管理语句p167try-with-resources</li>
+<li>自定义异常类的作用p168</li>
+<li>对异常处理的方式p169</li>
+<li>p170</li>
+<li>异常发生时的2种处理方式</li>
+<li>默认异常处理机制</li>
+<li>try-catch-finally步骤</li>
+<li>检查型异常和非检查型异常的<strong>区别</strong></li>
+<li>抛出异常的两种方式</li>
+</ol>
+<hr>
+<h2 id="10"><a href="#10" class="headerlink" title="10"></a>10</h2><ol>
+<li>按照数据的传输方向，流可分为输入流和输出流</li>
+<li>流式输入输出的最大特点p173<ol>
+<li>数据的获取和发送是沿着数据序列顺序进行的</li>
+</ol>
+</li>
+<li>缓冲流的目的p173<ol>
+<li>提高数据的传输效率</li>
+</ol>
+</li>
+<li>缓冲区是怎么运作的？p173<ol>
+<li>写入数据时，先发送数据到缓冲区，满了后再一起发送到外部设备</li>
+<li>读取数据时，从缓冲区读取数据</li>
+</ol>
+</li>
+<li>根据输入输出数据类型的不同，输入输出流按处理数据的类型分为两种：字节流和字符流</li>
+<li>字节流和字符流的<strong>区别</strong>p174<ol>
+<li>字符流：针对字符数据特点优化</li>
+</ol>
+</li>
+<li>输入输出流的类层次结构图p175</li>
+<li>处理字节流的类和处理字符流的类</li>
+<li>p197</li>
+<li>流的好处<ol>
+<li>无论是什么形式的输入输出，只要针对流进行处理就可以了。</li>
+</ol>
+</li>
+<li>BufferedWriter.newLine()</li>
+<li>File对象</li>
+<li>随机访问文件类是什么RandomAccessFile</li>
+<li>BufferedReader从键盘读入信息用一行表达式实现：<pre><code class="java">//从键盘读入信息
+BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+</code></pre>
+</li>
+<li>BufferedWriter写入，用一行表达式实现：<pre><code class="java">//BufferedWriter写入
+BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+</code></pre>
+</li>
+<li>BufferedReader从文件读取，一行表达式实现：<pre><code class="java">//BufferedReader读取方法：
+BufferedReader bfr = new BufferedReader(new FileReader(fileName)); 
+</code></pre>
+</li>
+<li><!-- TODO:文本文件的复制--></li>
+</ol>
+<hr>
+<h2 id="11"><a href="#11" class="headerlink" title="11"></a>11</h2><ol>
+<li>多线程的主要目的p199<ol>
+<li>将一个程序中的各个“程序段”并发化。</li>
+</ol>
+</li>
+<li>什么是多线程？p199<ol>
+<li>同一个进程中同时存在几个执行体按几条不同的执行路径同时工作的情况。</li>
+</ol>
+</li>
+<li>多线程编程p199<ol>
+<li>将一个程序任务分成几个可以同时并发执行的子任务</li>
+</ol>
+</li>
+<li><em>线程和进程的<strong>区别</strong>p201</em><ol>
+<li>进程：资源分配的单位；同一段时间内，可以同时执行一个以上的程序</li>
+<li>线程：处理器调度的基本单位；同意程序内同时执行一个以上的程序段</li>
+<li>各进程是独立的，各线程不一定</li>
+</ol>
+</li>
+<li>多线程是什么？<ol>
+<li>CPU在同一时间段内执行一个程序中的多个程序段来完成工作</li>
+</ol>
+</li>
+<li><em>多任务和多线程的<strong>区别</strong>p201</em><ol>
+<li>多任务是相对操作系统而言的，表示操作系统可以同时运行多个应用程序</li>
+<li>多线程是相对一个进程而言的，表示在一个进程内部可以同时执行多个线程</li>
+</ol>
+</li>
+<li>线程的生命周期与线程的状态(图)p201<ol>
+<li>新建、就绪、执行、阻塞、消亡</li>
+</ol>
+</li>
+<li>线程阻塞的条件p202<ol>
+<li>调用sleep()或者yield()</li>
+<li>等待一个条件变量，wait()</li>
+<li>被join()</li>
+</ol>
+</li>
+<li>线程消亡的原因p202<ol>
+<li>完成工作</li>
+<li>被迫停止</li>
+</ol>
+</li>
+<li>怎么改变线程的优先级？p203<ol>
+<li>setPriority()</li>
+</ol>
+</li>
+<li>什么是线程的调度？p203<ol>
+<li>在各个线程之间分配CPU资源</li>
+</ol>
+</li>
+<li>抢占式调度模型是什么？p203<ol>
+<li>一旦活动线程获得执行权，将一直执行，直到执行完或放弃执行权</li>
+<li>一般会时不时进入睡眠状态</li>
+</ol>
+</li>
+<li>实现多线程的方法？p203<ol>
+<li>继承Thread类</li>
+<li>实现Runnable接口</li>
+</ol>
+</li>
+<li>继承Thread类激活线程的前置？p204<ol>
+<li>继承Thread类</li>
+<li>执行代码写在run()内</li>
+</ol>
+</li>
+<li><em>run()和start()的<strong>区别</strong>？p205</em><ol>
+<li>run()规定了线程要执行的任务</li>
+<li>start()启动线程</li>
+</ol>
+</li>
+<li>两种多线程方法的<strong>区别</strong>？p207<ol>
+<li>直接继承Thread类的特点是：<ol>
+<li>编写简单，可以直接操纵线程；</li>
+<li>但缺点是若继承Thread类，就不能再继承其他类。</li>
+</ol>
+</li>
+<li>使用Runnable接口的特点是：<ol>
+<li>可以将Thread类与所要处理的任务的类分开，形成清晰的模型；</li>
+<li>还可以从其他类继承，从而实现多重继承的功能</li>
+<li>相比于Thread类，Runnable更适合于多个线程处理同一资源。</li>
+<li>几乎所有多线程应用都可以用实现Runnable接口的方式来实现</li>
+<li>主要<strong>区别</strong>就在于对<strong>数据的共享</strong>上。使用Runnable接口可以轻松实现<strong>多个线程共享相同数据</strong>，只要用同一个实现了Runnable接口的类的对象作为参数创建多个线程就可以了</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>两种方式的特点？p208</li>
+<li><em>线程异步和同步的<strong>区别</strong>？p212</em><ol>
+<li>异步执行：包含了运行时所需要的数据或方法的线程，不必关心其他线程的状态或行为，称这样的线程为<strong>独立的、不同步的、异步执行的</strong>。</li>
+<li>线程的同步：当一个线程对共享的数据进行操作时，应使之成为一个“原子操作”，即在没有完成相关操作之前，<strong>不允许其他线程打断它</strong>，否则就会破坏数据的完整性，必然会得到错误的处理结果，这就是<strong>线程的同步</strong>。（处理数据的线程，不能处理其他线程当前还没有处理结束的数据，但是可以处理其他的数据）</li>
+</ol>
+</li>
+<li>什么是线程的同步？p212</li>
+<li><em>同步与共享数据的<strong>区别</strong>？p212</em><ol>
+<li>共享：线程之间对内存数据的共享</li>
+<li>同步是在共享的基础上，针对多个线程共享会导致数据不一致而提出来的。</li>
+<li>线程之间彼此不独立、需要进行同步控制</li>
+<li>同时运行的几个线程需要共享一些数据</li>
+</ol>
+</li>
+<li>临界资源(同步资源)概念？p214</li>
+<li>临界代码(临界区)？p214</li>
+<li>互斥锁机制p214</li>
+<li>synchronized关键字p214</li>
+<li>synchronized功能p215<ol>
+<li>首先判断对象或方法的互斥锁是否存在，若在就获得互斥锁，然后就可以执行紧随其后的临界代码段或方法体；</li>
+<li>如果对象或方法的互斥锁不存在（已被其他线程拿走），就进入等待状态，知道获得互斥锁。</li>
+</ol>
+</li>
+<li>什么时候会自动释放互斥锁？p215<ol>
+<li>当被synchronized限定的代码段执行完，就自动释放互斥锁。</li>
+</ol>
+</li>
+<li>synchronized特点p216<ol>
+<li>临界代码</li>
+<li>越少越好</li>
+<li>可交替穿插</li>
+<li>非同步可自由调用</li>
+<li>一个对象的互斥锁只能被一个线程拥有</li>
+<li>执行完才会释放</li>
+<li>共享变量private</li>
+<li>只能用临界代码方法访问共享变量</li>
+</ol>
+</li>
+<li>线程间通信的方法？及其使用条件？p217<ol>
+<li>java.lang.Object类的<code>wait()</code>、<code>notify()</code>、<code>notifyAll()</code>等方法为线程间的通信提供了有效手段。</li>
+<li>上三方法只能在同步代码块里调用</li>
+</ol>
+</li>
+<li>p219</li>
+<li>多任务和多线程的<strong>区别</strong></li>
+<li>创建线程的2方法</li>
+<li>run()</li>
+<li>激活线程前置</li>
+<li>线程5状态：新建、就绪、执行、阻塞、消亡</li>
+<li>阻塞</li>
+<li>解除阻塞</li>
+<li>sleep()</li>
+<li>异步</li>
+<li>同步控制</li>
+<li>原子操作：线程的同步：当一个线程对共享的数据进行操作时，应使之成为一个“原子操作”，即在没有完成相关操作之前，<strong>不允许其他线程打断它</strong>，否则就会破坏数据的完整性，必然会得到错误的处理结果，这就是<strong>线程的同步</strong>。</li>
+<li><em><em><strong>区别</strong>：</em>**两种创建线程对象的方式的特点</em>：<blockquote>
+<ol>
+<li>直接继承Thread类的特点是：</li>
+<li>编写简单，可以直接操纵线程；</li>
+<li>但缺点是若继承Thread类，就不能再继承其他类。</li>
+<li>使用Runnable接口的特点是：</li>
+<li>可以将Thread类与所要处理的任务的类分开，形成清晰的模型；</li>
+<li>还可以从其他类继承，从而实现多重继承的功能</li>
+<li>相比于Thread类，Runnable更适合于多个线程处理同一资源。</li>
+<li>几乎所有多线程应用都可以用实现Runnable接口的方式来实现</li>
+<li>主要<strong>区别</strong>就在于对<strong>数据的共享</strong>上。使用Runnable接口可以轻松实现<strong>多个线程共享相同数据</strong>，只要用同一个实现了Runnable接口的类的对象作为参数创建多个线程就可以了</li>
+</ol>
+</blockquote>
+</li>
+<li><strong>区分</strong><em>（异步与同步的区分）</em><blockquote>
+<ol>
+<li>异步执行：包含了运行时所需要的数据或方法的线程，不必关心其他线程的状态或行为，称这样的线程为<strong>独立的、不同步的、异步执行的</strong>。</li>
+<li>线程的同步：当一个线程对共享的数据进行操作时，应使之成为一个“原子操作”，即在没有完成相关操作之前，<strong>不允许其他线程打断它</strong>，否则就会破坏数据的完整性，必然会得到错误的处理结果，这就是<strong>线程的同步</strong>。（处理数据的线程，不能处理其他线程当前还没有处理结束的数据，但是可以处理其他的数据）</li>
+</ol>
+</blockquote>
+</li>
+<li><strong>区分</strong> <em>同步与共享数据</em><ol>
+<li>共享：线程之间对内存数据的共享</li>
+<li>同步是在共享的基础上，针对多个线程共享会导致数据不一致而提出来的。</li>
+<li>线程之间彼此不独立、需要进行同步控制</li>
+<li>同时运行的几个线程需要共享一些数据</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="12"><a href="#12" class="headerlink" title="12"></a>12</h2><ol>
+<li>运用泛型意味着什么？p222<ol>
+<li>编写的代码可以被很多类型不同的对象所重用，从而减少数据类型转换的潜在错误</li>
+</ol>
+</li>
+<li>使用泛型的优点p222<ol>
+<li>能够在编译时而不是在运行时检测出错误</li>
+</ol>
+</li>
+<li>类型参数？</li>
+<li>泛型的实质？<ol>
+<li><strong>数据类型参数化</strong></li>
+</ol>
+</li>
+<li><em>自动包装和自动解包p224</em><ol>
+<li>当编译器发现程序在应该使用<code>包装类对象</code>的地方却使用<code>基本数据类型的数据</code>时，编译器将自动把<code>该数据</code>包装为<code>该基本类型对应的包装类的对象</code>，这个过程称为自动包装。</li>
+<li>当编译器发现在应该使用<code>基本类型数据</code>的地方却使用了<code>包装类的对象</code>，则会把<code>该包装类对象</code>解包，从中取出<code>所包含的基本类型数据</code>，这个过程称为自动解包。</li>
+</ol>
+</li>
+<li>类型推断什么时候有效？p225、p226<ol>
+<li>类型推断只对赋值操作有效。</li>
+</ol>
+</li>
+<li>设计泛型方法的目的p226<ol>
+<li>针对具有容器类型参数的方法</li>
+</ol>
+</li>
+<li><em>泛型方法和泛型类之间的<strong>区别</strong>p227</em></li>
+<li>对于泛型方法，不需要传递实际的类型</li>
+<li>泛型类必须要传递实际的类型</li>
+<li>泛型限制的关键字p227<ol>
+<li>extends</li>
+</ol>
+</li>
+<li>泛型不是协变的p228<ol>
+<li>若泛型的实际参数的类之间有<code>父子关系</code>时，参数化后得到的泛型类之间并<strong>不会</strong>具有同样的父子类关系，即子类泛型“并不是一种”父类泛型。</li>
+</ol>
+</li>
+<li>通配符“？”的作用p228<ol>
+<li>创建可重新赋值但不可修改其内容的泛型对象</li>
+<li>用在方法的参数中，限制传入不想要的类型实参。</li>
+</ol>
+</li>
+<li>使用通配符“？”的条件p228<ol>
+<li>只知道通配符“?”表示时<code>某个类</code>又或是<code>继承该类的子类</code>又或是<code>实现某个接口的类</code>，但具体是什么类型不知道。</li>
+</ol>
+</li>
+<li>直接使用通配符&lt;?&gt;创建泛型对象，的2个特点？p230<ol>
+<li>具有通用性，即该泛型类的其他对象可以赋值给用通配符<code>?</code>创建的泛型对象，因为<code>?</code>等价于<code>? exends Object</code>，反之不可。</li>
+<li>用通配符<code>?</code>创建的泛型对象，只能获取或删除其中的信息，但不可为其添加新的信息。</li>
+</ol>
+</li>
+<li>上限通配、下限通配p230<ol>
+<li>上限通配：<code>? exends Object</code>中，T被认为是类型参数<code>?</code>的上限。</li>
+<li>下限通配：<code>? super Object</code>中，T被认为是类型参数<code>?</code>的下限，（T或T的一个未知父类型）。</li>
+</ol>
+</li>
+<li>引入通配符的主要目的p230 <strong>支持泛型中的子类，实现多态</strong></li>
+<li><em>通配符与类型参数的<strong>区别</strong>p230</em> <ol>
+<li>泛型方法中<strong>类型参数</strong>的优势：可以表达多个参数之间或参数与返回值之间的类型依赖关系。</li>
+<li>如果方法中并不存在类型之间的依赖关系，则可以不使用泛型方法，而选用<strong>通配符</strong>。</li>
+<li><strong>通配符</strong>更清晰、简明，在程序开发过程中建议尽量采用通配符。</li>
+</ol>
+</li>
+<li>JVM编译对泛型安全检查的特点p231<ol>
+<li>不能使用泛型的类型参数T创建对象。</li>
+<li>在泛型中可以用类型参数T声明一个数组，但不能使用类型参数T创建数组对象。</li>
+<li>不能在静态环境中使用泛型类的类型参数T。</li>
+<li>异常类不能是泛型的，即泛型类不能继承java.lang.Throwable类。</li>
+</ol>
+</li>
+<li>什么是容器、什么是集合p232<ol>
+<li>collection</li>
+<li>set</li>
+</ol>
+</li>
+<li>容器框架中的接口和实现接口的类的继承关系(图)p233</li>
+<li>选用LinkedList、还是ArrayList的原则？<em>LinkedList、ArrayList的<strong>区别</strong>！</em>p235<ol>
+<li>若要通过下标随机访问元素，但除了在末尾处之外，不在其他位置插入或删除元素，应该选择ArrayList类</li>
+<li>若要在线性表的任意位置上进行插入或删除元素，则应选择LinkedList类</li>
+</ol>
+</li>
+<li>什么叫做遍历？p237<ol>
+<li><strong>对容器中元素进行访问，经常需要按照某种次序对容器中的每个元素访问且仅访问一次，这就是遍历，也称为迭代。</strong></li>
+<li><strong>遍历是指从容器中获得当前元素的后续元素。</strong></li>
+</ol>
+</li>
+<li>遍历的方式？p237<ol>
+<li><code>foreach</code>循环语句</li>
+<li>使用<code>Collection</code>接口中定义的<code>toArray()</code>方法将容器对象转换为数组，然后再利用循环语句对数组中的每个元素进行访问。</li>
+<li>利用<code>size()</code>和<code>get()</code>方法进行遍历，先获取容器内的总个数，然后依次取出每个位置上的元素并访问，如下面的代码段。</li>
+<li>使用java提供的迭代功能。</li>
+</ol>
+</li>
+<li><strong>ListIterator支持对List对象的双向遍历p238</strong></li>
+<li>集合接口Set p239</li>
+<li>如何比较两个加入哈希集合HashSet中的元素是否相同p239</li>
+<li>构造方法上座率p240</li>
+<li><strong>LinkedHashSet让元素有序输出p241</strong></li>
+<li><strong>TreeSet让元素有序p241</strong></li>
+<li>p245</li>
+<li>什么是泛型实例化？</li>
+<li>泛型实例化中的实际类型是什么类型？</li>
+<li><em>泛型方法与泛型类的<strong>区别</strong>？</em></li>
+<li>并不能使用泛型的类型参数创建对象</li>
+<li>三种泛型类通配符</li>
+<li>迭代</li>
+<li>List\Map\Set的对象的<strong>区别</strong></li>
+<li>List</li>
+<li>LinkedList</li>
+<li>ArrayList</li>
+<li>Set</li>
+<li>HashSet</li>
+<li>TreeSet</li>
+<li>Map</li>
+<li>HashMap</li>
+<li>TreeMap</li>
+<li><em>通配符与类型参数的<strong>区别</strong>：</em><ol>
+<li>泛型方法中<strong>类型参数</strong>的优势：可以表达多个参数之间或参数与返回值之间的类型依赖关系。</li>
+<li>如果方法中并不存在类型之间的依赖关系，则可以不使用泛型方法，而选用<strong>通配符</strong>。</li>
+<li><strong>通配符</strong>更清晰、简明，在程序开发过程中建议尽量采用通配符。</li>
+</ol>
+</li>
+<li><strong>区别</strong><em><strong>Vector<E>与ArrayList<E>的</strong>区别</em><em>与联系</em><ol>
+<li>Vector与ArrayList一样，都是通过数组实现的，都有一个初始的容量大小，并可以设置初始的空间大小，当存储的空间不够时，需要增加存储空间，Vector默认增长原来的一倍，而ArrayList是原来的的0.5倍。</li>
+<li><strong>Vector支持线程的同步</strong>，即某一时刻只有一个线程能够写Vector，避免多线程同时写而引起的不一致性</li>
+<li><strong>ArrayList是异步的</strong>，不是线程安全的，但是因为同步影响执行效率，所以ArrayList比Vector性能好。</li>
+</ol>
+</li>
+<li><em>区别*****HashSet与TreeSet的抉择</em><ol>
+<li>如果排序很重要，就选择TreeSet，否则应该选用HashSet。</li>
+<li>HashSet与LinkedHashSet的抉择：如果一定要让元素有序输出，就要使用LinkedHashSet！</li>
+</ol>
+</li>
+<li><strong>区别</strong>哈希表存储对象的方式与前面所讲的数组与Vector及ArrayList不同：<ol>
+<li>数组、Vector及ArrayList中对象的存储位置是随机的，即对象本身与其存储位置之间没有必然的联系。因此查找一个对象时，只能以某种顺序（如顺序查找，二分查找）与各个元素进行比较，如果数组或向量中的元素数量很庞大时，查找的效率必然降低；</li>
+<li>哈希表中，对象的存储位置和对象的关键属性k之间有一个特定的对应关系f，我们称之为哈希(Hash)函数。它使每个对象与一个唯一的存储位置相对应。因而在查找时，只要根据待查对象的关键属性k，计算f(k)的值即可知其存储位置。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="13"><a href="#13" class="headerlink" title="13"></a>13</h2><ol>
+<li>基本注解p249</li>
+<li>元注解(元数据注解)p250</li>
+<li>自定义注解p251</li>
+<li>反射机制、定义p252</li>
+<li>在Java程序中获得Class类的3种方式p253</li>
+<li>内部类定义p258</li>
+<li>内部类作用p258</li>
+<li>内部类与普通类的<strong>区别</strong>p258</li>
+<li>外部类与内部类的访问原则p259</li>
+<li>内部类特性p260</li>
+<li>匿名内部类定义p260</li>
+<li>函数式接口p263</li>
+<li>lambda表达式p263</li>
+</ol>
+<hr>
+<ol>
+<li>选择、填空<ol>
+<li>抽象方法在“抽象”类，<ol>
+<li>包含抽象方法的类一定是抽象类</li>
+<li>抽象类中不一定有抽象方法</li>
+<li>子类必须实现父类的所有抽象方法，才能产生对象</li>
+</ol>
+</li>
+<li>OOP特点，<ol>
+<li><strong>封装</strong>、<strong>继承</strong>、<strong>多态</strong></li>
+</ol>
+</li>
+<li>在堆栈哪里、<ol>
+<li>栈内存：<strong>定义的基本类型的变量</strong>和<strong>对象的引用变量</strong>，超出作用域将自动释放。</li>
+<li>堆内存：存放由new运算符创建的<strong>对象</strong>和<strong>数组</strong>。由Java虚拟机的自动垃圾回收器来管理。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>简答<ol>
+<li><em>容器几个的<strong>区别</strong></em><ol>
+<li>Collection<ol>
+<li>List:可重复，通过索引取出加入数据，顺序与插入顺序一致，可含null<ol>
+<li>ArrayList:底层array,查询速度快，增删改慢,随机访问速度极快</li>
+<li>Vector:底层array,查询速度快，增删改慢</li>
+<li>LinkedList:底层链表，增删速度快，查询稍慢</li>
+<li><em>ArrayList与Vector的<strong>区别</strong>：</em><br>1.如果集合中的元素数量大于当前集合数组的长度时，Vector的增长率是目前数组长度的100%，而ArryaList增长率为目前数组长度的50%。所以，如果集合中使用数据量比较大的数据，用Vector有一定优势<br>2.线程同步ArrayList是线程不同步，所以Vector线程安全，但是因为每个方法都加上了synchronized，所以在效率上小于ArrayList</li>
+</ol>
+</li>
+<li>Set:数据无序且唯一,实现类都不是线程安全的类<ol>
+<li>HashSet:查询速度，插入的速度也是比较快，但是适用于少量数据的插入操作</li>
+<li>LinkedHashSet:保持数据的先后添加顺序、元素不重复、</li>
+<li>TreeSet:排序</li>
+</ol>
+</li>
+<li>Map:Map中的键是唯一的，但值可以不唯一<ol>
+<li>HashMap<ol>
+<li><strong>HashMap类允许有空的关键字</strong>，</li>
+<li><strong>而HashTable类不允许空关键字，且线程安全</strong>。</li>
+</ol>
+</li>
+<li>TreeMap<ol>
+<li>实现了SortedMap接口；</li>
+<li>TreeMap类中<strong>关键字不允许为空</strong>且<strong>升序排列</strong>。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><em>多线程函数的<strong>区别</strong></em><ol>
+<li>将一个程序任务分成几个可以同时并发执行的子任务</li>
+</ol>
+</li>
+<li>内部类、匿名内部类、lambda表达式</li>
+<li>如果处理继承的父类和实现的父接口有同样的方法名？<ol>
+<li>提供同名方法的一个新实现</li>
+<li>委托一个父接口的默认方法</li>
+</ol>
+</li>
+<li><em>（重载和重写的<strong>区别</strong>）</em><ol>
+<li>重载：同一类内定义多个名称相同的方法，然后根据其参数的不同（参数个数、参数类型）来设计不同的功能</li>
+<li>覆盖：在子类中定义名称、参数个数、类型均和父类中完全相同的方法，用来重写父类中同名方法。</li>
+</ol>
+</li>
+<li>（构造方法）</li>
+<li>（类的声明里面调用该类，this，调用父类super）</li>
+<li>（static和default、final）（访问权限控制符）</li>
+<li>（abstract、static、）（修饰成员变量的关键词）（实例变量与局部变量的<strong>区别</strong>）</li>
+<li><em>（生命周期和作用域的<strong>区别</strong>）</em><ol>
+<li>对象</li>
+<li>变量</li>
+</ol>
+</li>
+<li>（object类的<strong>区别</strong>、超类、父类，都会继承<strong>Object类</strong>）</li>
+<li><em>（thread类和runnable接口，实现多线程的两个方法的<strong>区别</strong>）</em><ol>
+<li>直接继承Thread类的特点是：<ol>
+<li>编写简单，可以直接操纵线程；</li>
+<li>但缺点是若继承Thread类，就不能再继承其他类。</li>
+</ol>
+</li>
+<li>使用Runnable接口的特点是：<ol>
+<li>可以将Thread类与所要处理的任务的类<strong>分开</strong>，形成清晰的模型；</li>
+<li>还可以从其他类继承，从而实现<strong>多重继承</strong>的功能</li>
+<li>相比于Thread类，Runnable<strong>更适合于多个线程</strong>处理同一资源。</li>
+<li><strong>几乎所有多线程应用</strong>都可以用实现Runnable接口的方式来实现</li>
+<li>主要<strong>区别</strong>就在于对<strong>数据的共享</strong>上。使用Runnable接口可以轻松实现<strong>多个线程共享相同数据</strong>，只要用同一个实现了Runnable接口的类的对象作为参数创建多个线程就可以了</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><em>（自动装箱和拆箱）</em><ol>
+<li>当编译器发现程序在应该使用<code>包装类对象</code>的地方却使用<code>基本数据类型的数据</code>时，编译器将自动把<code>该数据</code>包装为<code>该基本类型对应的包装类的对象</code>，这个过程称为自动包装。</li>
+<li>当编译器发现在应该使用<code>基本类型数据</code>的地方却使用了<code>包装类的对象</code>，则会把<code>该包装类对象</code>解包，从中取出<code>所包含的基本类型数据</code>，这个过程称为自动解包。</li>
+</ol>
+</li>
+<li>（基本数据类型有什么）<ol>
+<li>数值、字符、布尔</li>
+</ol>
+</li>
+<li>（容器几个的<strong>区别</strong>、多线程函数的<strong>区别</strong>、内部类、匿名内部类、lambda表达式）、</li>
+</ol>
+</li>
+<li>阅读补充程序（判断1~n有几个素数）、<pre><code class="java">package test;
+
+public class test10 &#123;
+   public static int SingleTest(int n, int amount) &#123;
+      int j = 2;
+      //3--&gt;n-1
+      for (; j &lt; n; j++) &#123;
+            //只要有一个余数是0，他就不是素数
+            if (n % j == 0) &#123;
+               break;
+            &#125;
+      &#125;
+      //如果刚才循环没有break，j一直增长到了n，那么n就是素数
+      if (n == j) &#123;
+            amount++;
+      &#125;
+      return amount;
+   &#125;
+
+   public static void main(String[] args) &#123;
+
+      int n = 100;
+      int amount = 0;
+      for (int i = 1; i &lt; n; i++) &#123;
+            amount = SingleTest(i, amount);
+      &#125;
+      System.out.println(n + &quot;&#39;s prime number amount is &quot; + amount);
+
+   &#125;
+&#125;
+
+</code></pre>
+</li>
+<li>应用编程题(多线程互斥锁、三层循环—深度优先搜索（算法）)</li>
+<li>Java怎么运行？<strong>先编译后解释</strong></li>
+</ol>
+<p>选择、填空<br>实现什么作用的关键字是什么？<br>以下哪一个命名方法不对<br>子类、父类  Father A &#x3D; new Son(); 用父类引用子类对象<br>Package包命名和project命名都纯小写、类命名大驼峰、变量和方法命名小驼峰<br>位运算不会考；<br>标准输入输出有哪三个。<br>Java是行主序<br>匿名内部类会考<br>静态代码块的关键字<br>字节流和字符流的<strong>区别</strong>，节点流和处理流<br>异常处理一定会考（异常处理的三种方法、try catch final、throw、throws）<br>自定义的exception<br>输入输出，文件<br>通配符</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

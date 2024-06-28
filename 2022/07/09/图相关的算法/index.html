@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>图相关的算法 | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="图相关的算法 | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KMP">
+<meta property="og:url" content="http://example.com/2024/06/25/KMP/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-24T16:35:00.000Z">
+<meta property="article:modified_time" content="2024-06-26T16:01:54.606Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(96)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(46)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(8)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(34)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Compose">
+                        
+                        Compose
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="KMP">
+                        
+                        KMP
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="96">
+<input type="hidden" id="yelog_site_word_count" value="141.5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All KMP "
+           href="/2024/06/25/KMP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="KMP">KMP</span>
+            <span class="post-date" title="2024-06-25 00:35:00">2024/06/25</span>
+        </a>
+        
+        <a  class="All Compose "
+           href="/2024/06/23/ComposeLearn/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ComposeLearn">ComposeLearn</span>
+            <span class="post-date" title="2024-06-23 13:41:00">2024/06/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2023/02/09/%E5%AF%92%E5%81%87%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="寒假做了什么？">寒假做了什么？</span>
+            <span class="post-date" title="2023-02-09 20:18:39">2023/02/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/15/SSM%E7%9B%B8%E5%85%B3/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="SSM相关">SSM相关</span>
+            <span class="post-date" title="2022-09-15 22:04:31">2022/09/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/12/%E4%BB%8E%E5%BF%AB%E6%8E%92%E6%83%B3%E5%88%B0%E7%9A%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="从快排想到的">从快排想到的</span>
+            <span class="post-date" title="2022-09-12 20:13:59">2022/09/12</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="设计模式复习">设计模式复习</span>
+            <span class="post-date" title="2022-09-06 20:34:29">2022/09/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/08/15/springboot%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springboot笔记">springboot笔记</span>
+            <span class="post-date" title="2022-08-15 10:15:52">2022/08/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/Java-Lambda/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-Lambda">Java-Lambda</span>
+            <span class="post-date" title="2022-07-29 15:01:54">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/mybatis-plus-imooc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-plus-imooc">mybatis-plus-imooc</span>
+            <span class="post-date" title="2022-07-29 11:15:19">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/28/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法-代码随想录">贪心算法-代码随想录</span>
+            <span class="post-date" title="2022-07-28 09:33:13">2022/07/28</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-labuladong/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-labuladong">二叉树知识点-labuladong</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E5%9B%9E%E6%BA%AF%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="回溯三部曲-代码随想录">回溯三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E9%80%92%E5%BD%92%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="递归三部曲-代码随想录">递归三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/23/mybatis-westos/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-西部开源">mybatis-西部开源</span>
+            <span class="post-date" title="2022-07-23 11:03:24">2022/07/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/19/mysql%E7%B4%A2%E5%BC%95%E4%B8%93%E9%A1%B9%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mysql索引专项学习">mysql索引专项学习</span>
+            <span class="post-date" title="2022-07-19 09:35:48">2022/07/19</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据库系统04">数据库系统04</span>
+            <span class="post-date" title="2022-04-26 11:00:58">2022/04/26</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%9803/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据仓库与数据挖掘03">数据仓库与数据挖掘03</span>
+            <span class="post-date" title="2022-04-26 10:39:42">2022/04/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/20/DesignPatterns-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-12">DesignPatterns-12</span>
+            <span class="post-date" title="2021-12-20 17:12:51">2021/12/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/17/DataStructure-review-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DataStructure-review-01">DataStructure-review-01</span>
+            <span class="post-date" title="2021-12-17 15:48:17">2021/12/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/16/%E7%BB%84%E7%BB%87%E8%A1%8C%E4%B8%BA%E5%AD%A6%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="组织行为学复习">组织行为学复习</span>
+            <span class="post-date" title="2021-12-16 09:57:02">2021/12/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/15/DesignPatterns-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-11">DesignPatterns-11</span>
+            <span class="post-date" title="2021-12-15 16:25:09">2021/12/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/13/DesignPatterns-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-10">DesignPatterns-10</span>
+            <span class="post-date" title="2021-12-13 16:40:53">2021/12/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/08/DesignPatterns-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-09">DesignPatterns-09</span>
+            <span class="post-date" title="2021-12-08 17:05:30">2021/12/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/06/DesignPatterns-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-08">DesignPatterns-08</span>
+            <span class="post-date" title="2021-12-06 17:06:45">2021/12/06</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/03/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8407/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构07">数据结构07</span>
+            <span class="post-date" title="2021-12-03 16:09:44">2021/12/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/01/DesignPatterns-07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-07">DesignPatterns-07</span>
+            <span class="post-date" title="2021-12-01 17:04:33">2021/12/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/29/DesignPatterns-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-06">DesignPatterns-06</span>
+            <span class="post-date" title="2021-11-29 16:31:28">2021/11/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/DesignPatterns-05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-05">DesignPatterns-05</span>
+            <span class="post-date" title="2021-11-22 16:52:16">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8406/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构06">数据结构06</span>
+            <span class="post-date" title="2021-11-22 16:11:05">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8403/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构03">数据结构03</span>
+            <span class="post-date" title="2021-11-18 23:30:54">2021/11/18</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8405/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构05">数据结构05</span>
+            <span class="post-date" title="2021-11-17 10:19:16">2021/11/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构02">数据结构02</span>
+            <span class="post-date" title="2021-11-16 16:30:28">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8401/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构01">数据结构01</span>
+            <span class="post-date" title="2021-11-16 15:12:13">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="大话数据结构笔记">大话数据结构笔记</span>
+            <span class="post-date" title="2021-11-15 23:06:10">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/DesignPatterns-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-04">DesignPatterns-04</span>
+            <span class="post-date" title="2021-11-15 16:13:39">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/08/DesignPatterns-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-03">DesignPatterns-03</span>
+            <span class="post-date" title="2021-11-08 17:33:15">2021/11/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/03/DesignPatterns-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-02">DesignPatterns-02</span>
+            <span class="post-date" title="2021-11-03 17:11:32">2021/11/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/DesignPatterns-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-01">DesignPatterns-01</span>
+            <span class="post-date" title="2021-11-01 16:31:01">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-03">OOP-Java-03</span>
+            <span class="post-date" title="2021-10-26 16:11:58">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-02">OOP-Java-02</span>
+            <span class="post-date" title="2021-10-26 16:11:55">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-01">OOP-Java-01</span>
+            <span class="post-date" title="2021-10-26 16:11:51">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-00/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-00">OOP-Java-00</span>
+            <span class="post-date" title="2021-10-26 16:11:33">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/22/OOP-Java-13/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-13">OOP-Java-13</span>
+            <span class="post-date" title="2021-10-22 10:06:08">2021/10/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/Java-review-schedule/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java review schedule">Java review schedule</span>
+            <span class="post-date" title="2021-10-19 21:56:20">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/OOP-Java-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-12">OOP-Java-12</span>
+            <span class="post-date" title="2021-10-19 15:34:09">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/17/OOP-Java-08plus/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08plus">OOP-Java-08plus</span>
+            <span class="post-date" title="2021-10-17 17:02:36">2021/10/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-11">OOP-Java-11</span>
+            <span class="post-date" title="2021-10-15 18:02:25">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-10">OOP-Java-10</span>
+            <span class="post-date" title="2021-10-15 18:02:18">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-09">OOP-Java-09</span>
+            <span class="post-date" title="2021-10-15 18:02:10">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08">OOP-Java-08</span>
+            <span class="post-date" title="2021-10-15 18:02:03">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/13/OOP-Java-06&07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-06&amp;07">OOP-Java-06&amp;07</span>
+            <span class="post-date" title="2021-10-13 21:39:54">2021/10/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/11/OOP-Java-04&05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-04&amp;05">OOP-Java-04&amp;05</span>
+            <span class="post-date" title="2021-10-11 21:01:14">2021/10/11</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/22/HeadFirst-Java-Notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HeadFirst-Java-Notes">HeadFirst-Java-Notes</span>
+            <span class="post-date" title="2021-09-22 17:03:32">2021/09/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/15/HITWH-Resources-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HITWH-Resources-Java">HITWH-Resources-Java</span>
+            <span class="post-date" title="2021-09-15 08:23:46">2021/09/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/07/Spring-boot-Web-Develop/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-boot-Web-Develop">Spring-boot-Web-Develop</span>
+            <span class="post-date" title="2021-09-07 08:01:15">2021/09/07</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/10/Java-promote-MOOC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-promote-MOOC">Java-promote-MOOC</span>
+            <span class="post-date" title="2021-08-10 00:00:00">2021/08/10</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/05/Java-basic-bilibili/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-basic-bilibili">Java-basic-bilibili</span>
+            <span class="post-date" title="2021-08-05 00:00:00">2021/08/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-图相关的算法" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">图相关的算法</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="我要就业">我要就业</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-10 20:47:34'>2022-07-09 18:08</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:3.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%AE%97%E6%B3%95"><span class="toc-text">图相关算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-text">图的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%BD%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86BFS"><span class="toc-text">宽度优先遍历BFS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86DFS"><span class="toc-text">深度优先遍历DFS</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-text">图的拓扑排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95"><span class="toc-text">图的最小生成树算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95"><span class="toc-text">图的最短路径算法</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="图相关算法"><a href="#图相关算法" class="headerlink" title="图相关算法"></a>图相关算法</h2><ol>
+<li>图的概念<ol>
+<li>由点的集合和边的集合构成</li>
+<li>虽然存在有向图和无向图的概念，<ol>
+<li>但实际上都可以用有向图来表达</li>
+<li>无向图可以理解为两个联通点互相指向</li>
+</ol>
+</li>
+<li>边上可能带有权值</li>
+</ol>
+</li>
+<li>图的表示方法(连接与否,权重)<ol>
+<li>邻接表表示法(代价可封装上去)<ol>
+<li>从A点出发能到的直接邻居</li>
+</ol>
+</li>
+<li>邻接矩阵表示法(全连接)<ol>
+<li>列二维表格,表格中填写权重,如果AB不相邻,就是正无穷</li>
+</ol>
+</li>
+<li>其他方式</li>
+<li>笔试面试常见结构:边的权重，从from节点指向to节点<img src="https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/2022-07-09-21-07-26.png"></li>
+<li>图的结构有很多,我们确定一种自己熟悉的图结构,以不变应万变,无论来的什么结构,写一个转换类,任意图结构的描述,都向我们上述的图结构转化：</li>
+</ol>
+</li>
+<li><strong>大一统图图</strong><ol>
+<li>点结构的描述：</li>
+<li>边结构的描述：</li>
+<li>图结构的描述：</li>
+</ol>
+</li>
+<li>图算法并不难，难点在于图有很多种表示方式，表达一张图的篇幅比较大，coding容易出错。我们的套路就是<ol>
+<li>先用自己最熟练的方式，实现图结构的表达</li>
+<li>在自己熟悉的结构上，实现所有常用的图算法作为模板</li>
+<li>把面试题提供的图结构转化为自己熟悉的图结构，再调用模板或改写即可</li>
+</ol>
+</li>
+</ol>
+<h3 id="图的遍历"><a href="#图的遍历" class="headerlink" title="图的遍历"></a>图的遍历</h3><h4 id="宽度优先遍历BFS"><a href="#宽度优先遍历BFS" class="headerlink" title="宽度优先遍历BFS"></a>宽度优先遍历BFS</h4><ol>
+<li>(<code>Code01_BFS</code>)<ol>
+<li>利用队列实现</li>
+<li>从源节点开始依次按照宽度进队列，然后弹出</li>
+<li>每弹出一个点，把该节点所有没有进过队列的邻接点放入队列</li>
+<li>直到队列变空</li>
+</ol>
+</li>
+<li>宽度优先的思路：实质先遍历自己，再遍历自己的下一跳节点(同一层节点的顺序无需关系)，再下下跳节点…<img src="https://img-blog.csdnimg.cn/20191127135310793.gif"></li>
+<li>步骤实现:我们从A点开始遍历：<ol>
+<li>A进队列–&gt; Q[A]；A进入Set–&gt; S[A]</li>
+<li>A出队：Q[],打印A；A直接邻居为BCD,都不在Set中，进入队列Q[D,C,B], 进入S[A,B,C,D]</li>
+<li>B出队：Q[D,C], B有CE三个邻居，C已经在Set中, 放入E, S[A,B,C,D,E]，队列放E, Q[E,D,C]</li>
+<li>C出队，周而复始</li>
+</ol>
+</li>
+</ol>
+<h4 id="深度优先遍历DFS"><a href="#深度优先遍历DFS" class="headerlink" title="深度优先遍历DFS"></a>深度优先遍历DFS</h4><ol>
+<li><code>Code02_DFS</code><ol>
+<li>利用栈实现</li>
+<li>从源节点开始把节点按照深度放入栈，然后弹出  </li>
+<li>每弹出一个点，把该节点下一个没有进过栈的邻接点放入栈</li>
+<li>直到栈变空</li>
+</ol>
+</li>
+<li>深度优先思路：表示从某个节点一直往下深入，知道没有路了，返回。我们的栈实质记录的是我们深度优先遍历的路径</li>
+<li>步骤实现:我们从A点开始遍历：<ol>
+<li>A进栈，Stack[A] 打印A。弹出A，当前弹出的节点A去枚举它的后代BCD，B没加入过栈中。压入A再压入B,Stack[B,A]。打印B</li>
+<li>弹出B,B的直接后代邻居为CE,C再栈中而E不在栈中。重新压B,压E，Stack[E,B,A]。打印E</li>
+<li>弹出E,E有邻居D,D不在栈中。压回E，再压D,此时Stack[D,E,B,A]。打印D</li>
+<li>弹出D,D的直接邻居是A,A已经在栈中了。说明A-B-E-D这条路径走到了尽头。弹出D之后，当前循环结束。继续while栈不为空，重复操作</li>
+</ol>
+</li>
+</ol>
+<h3 id="图的拓扑排序"><a href="#图的拓扑排序" class="headerlink" title="图的拓扑排序"></a>图的拓扑排序</h3><ol>
+<li>解释:当前工作需要依赖之前的工作(需要前面工作都完成)<ol>
+<li>在图中找到所有入度为0的点输出</li>
+<li>把所有入度为0的点在图中删掉，消除这些点的边的影响。继续找入度为0的点输出，删除，消边，周而复始</li>
+<li>图的所有点都被删除后，依次输出的顺序就是图的拓扑排序<img src="https://img-blog.csdnimg.cn/20191211183802856.gif"></li>
+</ol>
+</li>
+<li>要求：<strong>有向图</strong>且其中<strong>没有环</strong></li>
+<li>应用：事件安排，编译顺序   </li>
+<li>代码<pre><code class="java">// 有向无环图，返回拓扑排序的顺序list
+public static List&lt;Node&gt; sortedTopology(Graph graph) &#123;
+
+    // key：某一个node
+    // value：该节点剩余的入度
+    HashMap&lt;Node, Integer&gt; inMap = new HashMap&lt;&gt;();
+
+    // 只有剩余入度为0的点，才能进这个队列
+    Queue&lt;Node&gt; zeroInQueue = new LinkedList&lt;&gt;();
+
+    // 拿到该图中所有的点集
+    for (Node node : graph.nodes.values()) &#123;
+        // 初始化每个点，每个点的入度是原始节点的入度信息
+        // 加入inMap
+        inMap.put(node, node.in);
+        // 由于是有向无环图，则必定有入度为0的起始点。放入到zeroInQueue
+        if (node.in == 0) &#123;
+            zeroInQueue.add(node);
+        &#125;
+    &#125;
+
+    // 拓扑排序的结果，依次加入result
+    List&lt;Node&gt; result = new ArrayList&lt;&gt;();
+
+    while (!zeroInQueue.isEmpty()) &#123;
+        // 该有向无环图初始入度为0的点，直接弹出放入结果集中
+        Node cur = zeroInQueue.poll();
+        result.add(cur);
+        // 该节点的下一层邻居节点，更新：入度减1
+        for (Node next : cur.nexts) &#123;
+            inMap.put(next, inMap.get(next) - 1);
+            // 如果下一层存在入度变为0的节点，加入到0入度的队列中
+            if (inMap.get(next) == 0) &#123;
+                zeroInQueue.add(next);
+            &#125;
+        &#125;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+</li>
+</ol>
+<h3 id="图的最小生成树算法"><a href="#图的最小生成树算法" class="headerlink" title="图的最小生成树算法"></a>图的最小生成树算法</h3><ol>
+<li><p>最小生成树解释</p>
+<ol>
+<li>就是在不破坏原有图点与点的连通性基础上，让连通的边的整体权值最小。返回最小权值或者边的集合</li>
+</ol>
+</li>
+<li><p>Kruskal（克鲁斯卡尔）算法:<strong>连通性借助并查集实现</strong></p>
+<ol>
+<li>先把所有边,根据权值,由小到大排序,总是从权值最小的边开始考虑，依次考察权值依次变大的边</li>
+<li>当前的边<ol>
+<li>要么进入最小生成树的集合:如果当前的边进入最小生成树的集合中不会形成环，就要当前边</li>
+<li>要么丢弃:如果当前的边进入最小生成树的集合中会形成环，就不要当前边</li>
+</ol>
+</li>
+<li>考察完所有边之后，最小生成树的集合也就得到了<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/26a466580dfe4ff7aeb362e1e79a9067~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></li>
+<li>代码分为两部分,一部分是<strong>并查集</strong>,一部分是Kruskal<pre><code class="java">// K算法
+public static Set&lt;Edge&gt; kruskalMST(Graph graph) &#123;
+    // 先拿到并查集结构
+    UnionFind unionFind = new UnionFind();
+    // 该图的所有点加入到并查集结构
+    unionFind.makeSets(graph.nodes.values());
+    // 边按照权值从小到大**排序**，加入到小根堆
+    PriorityQueue&lt;Edge&gt; priorityQueue =
+            new PriorityQueue&lt;&gt;(new EdgeComparator());
+
+    for (Edge edge : graph.edges) &#123; // M 条边
+        priorityQueue.add(edge);  // O(logM)
+    &#125;
+
+    Set&lt;Edge&gt; result = new HashSet&lt;&gt;();
+    // 堆不为空，弹出小根堆的堆顶
+    while (!priorityQueue.isEmpty()) &#123;
+        // 假设M条边，O(logM)
+        Edge edge = priorityQueue.poll();
+
+        // 如果该边的左右两侧不在同一个集合中
+        if (!unionFind.isSameSet(edge.from, edge.to)) &#123; // O(1)
+            // 要这条边
+            result.add(edge);
+            // 联合from和to
+            unionFind.union(edge.from, edge.to);
+        &#125;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Prim算法</p>
+<ol>
+<li>P算法无需并查集结构，普通set即可满足</li>
+<li>过程(有两个东西:被解锁的点,被解锁的边)<ol>
+<li>任意指定一个出发点,譬如A,A的直接边被解锁</li>
+<li>在A解锁的边里选择一个<strong>最小的边</strong>,该边两侧有没有新节点,如果有选择该边,没有就舍弃该边</li>
+<li>在被选择的新节点中再解锁该节点的直接边</li>
+<li>周而复始，直到所有点被解锁</li>
+</ol>
+</li>
+<li>代码<pre><code class="java">public static class EdgeComparator implements Comparator&lt;Edge&gt; &#123;
+
+    @Override
+    public int compare(Edge o1, Edge o2) &#123;
+        return o1.weight - o2.weight;
+    &#125;
+
+&#125;
+
+public static Set&lt;Edge&gt; primMST(Graph graph) &#123;
+    // 解锁的边进入小根堆
+    PriorityQueue&lt;Edge&gt; priorityQueue = new PriorityQueue&lt;&gt;(new EdgeComparator());
+
+    // 哪些点被解锁出来了
+    HashSet&lt;Node&gt; nodeSet = new HashSet&lt;&gt;();
+    // 已经考虑过的边，不要重复考虑
+    Set&lt;Edge&gt; edgeSet = new HashSet&lt;&gt;();
+    // 依次挑选的的边在result里
+    Set&lt;Edge&gt; result = new HashSet&lt;&gt;();
+    // 随便挑了一个点,进入循环处理完后直接break
+    for (Node node : graph.nodes.values()) &#123;
+
+
+        // node 是开始点
+        if (!nodeSet.contains(node)) &#123;
+            // 开始节点保留
+            nodeSet.add(node);
+
+            // 开始节点的所有邻居节点全部放到小根堆
+            // 即由一个点，解锁所有相连的边
+            for (Edge edge : node.edges) &#123;
+                // 没加入到小根堆的边，才会加入（最终，所有边都会加入）
+                if (!edgeSet.contains(edge)) &#123;
+                    edgeSet.add(edge);
+                    priorityQueue.add(edge);
+                &#125;
+            &#125;
+
+            while (!priorityQueue.isEmpty()) &#123;
+                // 弹出解锁的边中，最小的边
+                Edge edge = priorityQueue.poll();
+                // 可能的一个新的点,from已经被考虑了，只需要看to
+                Node toNode = edge.to;
+                // 如果发现to不在集合中，就是新的点，加入已解锁点集合，并且把边加入结果
+                if (!nodeSet.contains(toNode)) &#123;
+                    nodeSet.add(toNode);
+                    result.add(edge);
+                    for (Edge nextEdge : toNode.edges) &#123;
+                        // 没加过的，放入小根堆
+                        if (!edgeSet.contains(nextEdge)) &#123;
+                            edgeSet.add(nextEdge);
+                            priorityQueue.add(nextEdge);
+                        &#125;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        // 直接break意味着我们不用考虑森林的情况
+        // 如果不加break我们可以兼容多个无向图的森林的生成树
+        // break;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="图的最短路径算法"><a href="#图的最短路径算法" class="headerlink" title="图的最短路径算法"></a>图的最短路径算法</h3><ol>
+<li><p>Dijkstra(迪杰特斯拉)算法</p>
+<ol>
+<li>求解单元点的最短路径问题：给定带权有向图G和源点v，求v到G中其他顶点的最短路径</li>
+<li>限制条件：图G中不存在负权值的边</li>
+</ol>
+</li>
+<li><p>步骤</p>
+<ol>
+<li>Dijkstra算法必须指定一个源点</li>
+<li>生成一个源点到各个点的最小距离表，一开始只有一条记录，即原点到自己的最小距离为0，源点到其他所有点的最小距离都是∞正无穷大</li>
+<li>从距离表中拿出没拿过记录里的最小记录，通过这个点出发的边，更新<strong>源点</strong>到各个点的最小距离表，不断重复这一步</li>
+<li>源点到所有的点记录如果都被拿过一遍，过程停止，最小距离表得到了<img src="https://img-blog.csdnimg.cn/2020032815461889.png?x-oss-process=https://raw.githubusercontent.com/HITlittlefox/HITlittlefox.github.io/main/source/_posts/image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQ1ODc3NTI0,size_16,color_FFFFFF,t_70"></li>
+</ol>
+</li>
+<li><p>另一种描述:</p>
+<ol>
+<li>不断运行广度优先算法找可见点，计算可见点到源点的距离长度</li>
+<li>从当前已知的路径中选择长度最短的将其顶点加入S作为确定找到的最短路径的顶点。</li>
+</ol>
+</li>
+<li><p>代码:未优化:更新表单采用正常找最小</p>
+<pre><code class="java">// 返回的map表就是从from到表中每个key的最小距离
+// 某个点不在map中记录，则from到该点位正无穷
+public static HashMap&lt;Node, Integer&gt; dijkstra1(Node from) &#123;
+
+    // 从from出发到所有点的最小距离表
+    HashMap&lt;Node, Integer&gt; distanceMap = new HashMap&lt;&gt;();
+
+    // from到from距离为0
+    distanceMap.put(from, 0);
+
+    // 已经求过距离的节点，存在selectedNodes中，以后再也不碰
+    HashSet&lt;Node&gt; selectedNodes = new HashSet&lt;&gt;();
+
+    // from 0 得到没选择过的点中的最小距离
+    Node minNode =
+            getMinDistanceAndUnselectedNode(distanceMap, selectedNodes);
+
+    // 得到minNode之后
+    while (minNode != null) &#123;
+
+        // 把minNode对应的距离取出,此时minNode就是桥连点 就是 原点---桥连点 的距离
+        int distance = distanceMap.get(minNode);
+
+        // 把minNode上所有的邻边拿出来
+        // 这里就是要拿到例如A到C和A到桥连点B再到C哪个距离小的距离
+        for (Edge edge : minNode.edges) &#123;
+            // 某条边对应的下一跳节点toNode
+            Node toNode = edge.to;
+
+            // 如果关于from的distencMap中没有去toNode的记录，表示正无穷，直接添加该条
+            if (!distanceMap.containsKey(toNode)) &#123;
+                // 如果没有，直接添加
+                // from到minNode的距离 加上 minNode到当前to节点的边距离
+                distanceMap.put(toNode, distance + edge.weight);
+
+                // 如果有，看该距离是否更小，更小就更新
+            &#125; else &#123;
+                // 老的距离，取代，新的距离
+                distanceMap.put(edge.to,
+                        Math.min(distanceMap.get(toNode), distance + edge.weight));
+            &#125;
+        &#125;
+        // 锁上minNode，表示from通过minNode到其他节点的最小值已经找到
+        // minNode将不再使用
+        selectedNodes.add(minNode);
+        // 再在没有选择的节点中挑选MinNode当成from的桥接点
+        minNode = getMinDistanceAndUnselectedNode(distanceMap, selectedNodes);
+    &#125;
+    // 最终distanceMap全部更新，返回
+    return distanceMap;
+&#125;
+
+
+// 得到没选择过的点的最小距离
+public static Node getMinDistanceAndUnselectedNode(
+        HashMap&lt;Node, Integer&gt; distanceMap,
+        HashSet&lt;Node&gt; touchedNodes) &#123;
+
+    Node minNode = null;
+    int minDistance = Integer.MAX_VALUE;
+    // 遍历该表，确保没有被选过，并且距离最小
+    for (Entry&lt;Node, Integer&gt; entry : distanceMap.entrySet()) &#123;
+        Node node = entry.getKey();
+        int distance = entry.getValue();
+        // 没有被选择过，且距离最小
+        if (!touchedNodes.contains(node) &amp;&amp; distance &lt; minDistance) &#123;
+            minNode = node;
+            minDistance = distance;
+        &#125;
+    &#125;
+    // 抓出来这个点，返回
+    return minNode;
+&#125;
+</code></pre>
+</li>
+<li><p>更新后的代码:更新表单采用自己写的小根堆</p>
+<ol>
+<li>自定义小根堆</li>
+<li>dijkstra过程</li>
+</ol>
+</li>
+</ol>
+<pre><code class="java">// 自定义小根堆结构
+// 需要提供add元素的方法，和update元素的方法
+// 需要提供ignore方法，表示我们已经找到from到某节点的最短路径
+// 再出现from到该节点的其他路径距离，我们直接忽略
+public static class NodeHeap &#123;
+    private Node[] nodes; // 实际的堆结构
+    // key 某一个node， value 上面堆中的位置
+    // 如果节点曾经进过堆，现在不在堆上，则node对应-1
+    // 用来找需要ignore的节点
+    private HashMap&lt;Node, Integer&gt; heapIndexMap;
+    // key 某一个节点， value 从源节点出发到该节点的目前最小距离
+    private HashMap&lt;Node, Integer&gt; distanceMap;
+    private int size; // 堆上有多少个点
+
+    public NodeHeap(int size) &#123;
+        nodes = new Node[size];
+        heapIndexMap = new HashMap&lt;&gt;();
+        distanceMap = new HashMap&lt;&gt;();
+        size = 0;
+    &#125;
+
+    // 该堆是否空
+    public boolean isEmpty() &#123;
+        return size == 0;
+    &#125;
+
+    // 有一个点叫node，现在发现了一个从源节点出发到达node的距离为distance
+    // 判断要不要更新，如果需要的话，就更新
+    public void addOrUpdateOrIgnore(Node node, int distance) &#123;
+        // 如果该节点在堆上，就看是否需要更新
+        if (inHeap(node)) &#123;
+            distanceMap.put(node, Math.min(distanceMap.get(node), distance));
+            // 该节点进堆，判断是否需要调整
+            insertHeapify(node, heapIndexMap.get(node));
+        &#125;
+        // 如果没有进入过堆。新建，进堆
+        if (!isEntered(node)) &#123;
+            nodes[size] = node;
+            heapIndexMap.put(node, size);
+            distanceMap.put(node, distance);
+            insertHeapify(node, size++);
+        &#125;
+        // 如果不在堆上，且进来过堆上，什么也不做，ignore
+    &#125;
+
+    // 弹出from到堆顶节点的元素，获取到该元素的最小距离，再调整堆结构
+    public NodeRecord pop() &#123;
+        NodeRecord nodeRecord = new NodeRecord(nodes[0], distanceMap.get(nodes[0]));
+        // 把最后一个元素放在堆顶，进行heapify
+        swap(0, size - 1);
+        heapIndexMap.put(nodes[size - 1], -1);
+        distanceMap.remove(nodes[size - 1]);
+        // free C++同学还要把原本堆顶节点析构，对java同学不必
+        nodes[size - 1] = null;
+        heapify(0, --size);
+        return nodeRecord;
+    &#125;
+
+    private void insertHeapify(Node node, int index) &#123;
+        while (distanceMap.get(nodes[index])
+                &lt; distanceMap.get(nodes[(index - 1) / 2])) &#123;
+            swap(index, (index - 1) / 2);
+            index = (index - 1) / 2;
+        &#125;
+    &#125;
+
+    private void heapify(int index, int size) &#123;
+        int left = index * 2 + 1;
+        while (left &lt; size) &#123;
+            int smallest = left + 1 &lt; size &amp;&amp; distanceMap.get(nodes[left + 1]) &lt; distanceMap.get(nodes[left])
+                    ? left + 1
+                    : left;
+            smallest = distanceMap.get(nodes[smallest])
+                    &lt; distanceMap.get(nodes[index]) ? smallest : index;
+            if (smallest == index) &#123;
+                break;
+            &#125;
+            swap(smallest, index);
+            index = smallest;
+            left = index * 2 + 1;
+        &#125;
+    &#125;
+
+    // 判断node是否进来过堆
+    private boolean isEntered(Node node) &#123;
+        return heapIndexMap.containsKey(node);
+    &#125;
+
+    // 判断某个节点是否在堆上
+    private boolean inHeap(Node node) &#123;
+        return isEntered(node) &amp;&amp; heapIndexMap.get(node) != -1;
+    &#125;
+
+    private void swap(int index1, int index2) &#123;
+        heapIndexMap.put(nodes[index1], index2);
+        heapIndexMap.put(nodes[index2], index1);
+        Node tmp = nodes[index1];
+        nodes[index1] = nodes[index2];
+        nodes[index2] = tmp;
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="java">// 使用自定义小根堆，改进后的dijkstra算法
+// 从from出发，所有from能到达的节点，生成到达每个节点的最小路径记录并返回
+public static HashMap&lt;Node, Integer&gt; dijkstra2(Node from, int size) &#123;
+    // 申请堆
+    NodeHeap nodeHeap = new NodeHeap(size);
+    // 在堆上添加from节点到from节点距离为0
+    nodeHeap.addOrUpdateOrIgnore(from, 0);
+    // 最终的结果集
+    HashMap&lt;Node, Integer&gt; result = new HashMap&lt;&gt;();
+    while (!nodeHeap.isEmpty()) &#123;
+        // 每次在小根堆弹出堆顶元素
+        NodeRecord record = nodeHeap.pop();
+        // 拿出的节点
+        Node cur = record.node;
+        // from到该节点的距离
+        int distance = record.distance;
+        // 以此为桥接点，找是否有更小的距离到该节点的其他to节点
+        // addOrUpdateOrIgnore该方法保证
+        // 如果from到to的节点没有，就add
+        // 如果有,看是否需要Ignore，如果不需要Ignore且更小，就Update
+        for (Edge edge : cur.edges) &#123;
+            nodeHeap.addOrUpdateOrIgnore(edge.to, edge.weight + distance);
+        &#125;
+        result.put(cur, distance);
+    &#125;
+    return result;
+&#125;
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

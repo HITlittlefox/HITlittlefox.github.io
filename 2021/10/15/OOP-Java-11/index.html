@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OOP-Java-11 | fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="OOP-Java-11 | fox_blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KMP">
+<meta property="og:url" content="http://example.com/2024/06/25/KMP/index.html">
+<meta property="og:site_name" content="fox_blog">
+<meta property="og:description" content="KMP 有什么用 KMP 主要应用在字符串匹配上。  KMP 的主要思想是当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。所以如何记录已经匹配的文本内容，是 KMP 的重点，也是next 数组肩负的重任。  next 数组就是一个前缀表（prefix table）。  文本串和模式串  前缀表是如何记录的呢  首先要知道前缀表的任务是当前位置匹配失">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-24T16:35:00.000Z">
+<meta property="article:modified_time" content="2024-06-26T16:01:54.606Z">
+<meta property="article:author" content="HITlittlefox">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>HITlittlefox</span>
+</div>
+
+<div class="icon">
+    
+        
+            <a title="rss"
+               href="/atom.xml"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-rss"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="github"
+               href="https://github.com/HITlittlefox"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+            <a title="qq"
+               href="http://wpa.qq.com/msgrd?v=3&uin=963614756&site=qq&menu=yes"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                
+            </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(96)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                <li>
+                    <div data-rel="Java">
+                        
+                        Java
+                        <small>(46)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Life">
+                        
+                        Life
+                        <small>(6)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="大三下">
+                        
+                        大三下
+                        <small>(8)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="我要就业">
+                        
+                        我要就业
+                        <small>(34)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="Compose">
+                        
+                        Compose
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+        
+            
+                <li>
+                    <div data-rel="KMP">
+                        
+                        KMP
+                        <small>(1)</small>
+                        
+                    </div>
+                    
+                </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+            <a class="about  hasFriend  site_url"
+               
+               href="/about">About</a>
+        
+        <a style="width: 50%"
+                
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="96">
+<input type="hidden" id="yelog_site_word_count" value="141.5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="All KMP "
+           href="/2024/06/25/KMP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="KMP">KMP</span>
+            <span class="post-date" title="2024-06-25 00:35:00">2024/06/25</span>
+        </a>
+        
+        <a  class="All Compose "
+           href="/2024/06/23/ComposeLearn/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ComposeLearn">ComposeLearn</span>
+            <span class="post-date" title="2024-06-23 13:41:00">2024/06/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2023/02/09/%E5%AF%92%E5%81%87%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="寒假做了什么？">寒假做了什么？</span>
+            <span class="post-date" title="2023-02-09 20:18:39">2023/02/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/15/SSM%E7%9B%B8%E5%85%B3/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="SSM相关">SSM相关</span>
+            <span class="post-date" title="2022-09-15 22:04:31">2022/09/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/12/%E4%BB%8E%E5%BF%AB%E6%8E%92%E6%83%B3%E5%88%B0%E7%9A%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="从快排想到的">从快排想到的</span>
+            <span class="post-date" title="2022-09-12 20:13:59">2022/09/12</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/09/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="设计模式复习">设计模式复习</span>
+            <span class="post-date" title="2022-09-06 20:34:29">2022/09/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/08/15/springboot%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="springboot笔记">springboot笔记</span>
+            <span class="post-date" title="2022-08-15 10:15:52">2022/08/15</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/Java-Lambda/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-Lambda">Java-Lambda</span>
+            <span class="post-date" title="2022-07-29 15:01:54">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/29/mybatis-plus-imooc/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-plus-imooc">mybatis-plus-imooc</span>
+            <span class="post-date" title="2022-07-29 11:15:19">2022/07/29</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/28/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法-代码随想录">贪心算法-代码随想录</span>
+            <span class="post-date" title="2022-07-28 09:33:13">2022/07/28</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-labuladong/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-labuladong">二叉树知识点-labuladong</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E5%9B%9E%E6%BA%AF%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="回溯三部曲-代码随想录">回溯三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E9%80%92%E5%BD%92%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="递归三部曲-代码随想录">递归三部曲-代码随想录</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/23/mybatis-westos/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mybatis-西部开源">mybatis-西部开源</span>
+            <span class="post-date" title="2022-07-23 11:03:24">2022/07/23</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/19/mysql%E7%B4%A2%E5%BC%95%E4%B8%93%E9%A1%B9%E5%AD%A6%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mysql索引专项学习">mysql索引专项学习</span>
+            <span class="post-date" title="2022-07-19 09:35:48">2022/07/19</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E5%88%B7%E9%A2%98%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%80%9D%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="刷题顺序与思路">刷题顺序与思路</span>
+            <span class="post-date" title="2022-07-10 14:00:22">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归到动态优化">暴力递归到动态优化</span>
+            <span class="post-date" title="2022-07-10 11:56:48">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/10/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="暴力递归">暴力递归</span>
+            <span class="post-date" title="2022-07-10 11:02:09">2022/07/10</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%9B%BE%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="图相关的算法">图相关的算法</span>
+            <span class="post-date" title="2022-07-09 18:08:15">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E5%B9%B6%E6%9F%A5%E9%9B%86%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="并查集结构">并查集结构</span>
+            <span class="post-date" title="2022-07-09 16:25:53">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E5%A5%97%E8%B7%AF%E8%A7%A3%E9%A2%98%E5%AE%9E%E6%88%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法套路解题实战">贪心算法套路解题实战</span>
+            <span class="post-date" title="2022-07-09 11:36:35">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/09/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="贪心算法">贪心算法</span>
+            <span class="post-date" title="2022-07-09 11:08:38">2022/07/09</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的递归套路">二叉树的递归套路</span>
+            <span class="post-date" title="2022-07-08 08:56:31">2022/07/08</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树的基本算法">二叉树的基本算法</span>
+            <span class="post-date" title="2022-07-07 16:23:26">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/07/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表相关面试题">链表相关面试题</span>
+            <span class="post-date" title="2022-07-07 08:27:54">2022/07/07</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/06/trie%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="trie、桶排序、排序总结">trie、桶排序、排序总结</span>
+            <span class="post-date" title="2022-07-06 11:04:26">2022/07/06</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器与堆">比较器与堆</span>
+            <span class="post-date" title="2022-07-05 22:03:27">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/05/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序与随机排序">归并排序与随机排序</span>
+            <span class="post-date" title="2022-07-05 14:34:29">2022/07/05</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E9%93%BE%E8%A1%A8%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E3%80%81%E9%80%92%E5%BD%92%E8%A1%8C%E4%B8%BA%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表结构、栈、队列、递归行为、哈希表">链表结构、栈、队列、递归行为、哈希表</span>
+            <span class="post-date" title="2022-07-04 23:56:48">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E8%AE%A4%E8%AF%86%E5%A4%8D%E6%9D%82%E5%BA%A6%E3%80%81%E5%AF%B9%E6%95%B0%E5%99%A8%E3%80%81%E4%BA%8C%E5%88%86%E6%B3%95%E4%B8%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="认识复杂度、对数器、二分法与异或运算">认识复杂度、对数器、二分法与异或运算</span>
+            <span class="post-date" title="2022-07-04 15:02:24">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/04/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="归并排序和快速排序">归并排序和快速排序</span>
+            <span class="post-date" title="2022-07-04 09:14:13">2022/07/04</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E7%BD%91%E8%AF%BELeetCode%E6%91%98%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="网课LeetCode摘录">网课LeetCode摘录</span>
+            <span class="post-date" title="2022-07-03 14:15:06">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/03/%E6%AF%94%E8%BE%83%E5%99%A8%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="比较器、优先级队列、二叉树">比较器、优先级队列、二叉树</span>
+            <span class="post-date" title="2022-07-03 10:12:35">2022/07/03</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E4%BD%8D%E5%9B%BE%E3%80%81%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%87%8F%E4%B9%98%E9%99%A4/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="位图、位运算实现加减乘除">位图、位运算实现加减乘除</span>
+            <span class="post-date" title="2022-07-01 23:56:00">2022/07/01</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/01/%E9%93%BE%E8%A1%A8%E9%97%AE%E9%A2%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="链表问题">链表问题</span>
+            <span class="post-date" title="2022-07-01 09:05:26">2022/07/01</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/29/Spring-AOP/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-AOP">Spring-AOP</span>
+            <span class="post-date" title="2022-06-29 19:26:09">2022/06/29</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/28/Spring-IoC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-IoC">Spring-IoC</span>
+            <span class="post-date" title="2022-06-28 19:37:56">2022/06/28</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/27/JavaGuide-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-collection">JavaGuide-collection</span>
+            <span class="post-date" title="2022-06-27 16:13:08">2022/06/27</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/25/JavaGuide-javabasic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JavaGuide-javabasic">JavaGuide-javabasic</span>
+            <span class="post-date" title="2022-06-25 22:59:38">2022/06/25</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/23/algorithm01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="algorithm01">algorithm01</span>
+            <span class="post-date" title="2022-06-23 10:00:06">2022/06/23</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/06/19/mall-notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mall-notes">mall-notes</span>
+            <span class="post-date" title="2022-06-19 18:37:36">2022/06/19</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据库系统04">数据库系统04</span>
+            <span class="post-date" title="2022-04-26 11:00:58">2022/04/26</span>
+        </a>
+        
+        <a  class="All 大三下 "
+           href="/2022/04/26/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%9803/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据仓库与数据挖掘03">数据仓库与数据挖掘03</span>
+            <span class="post-date" title="2022-04-26 10:39:42">2022/04/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/20/DesignPatterns-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-12">DesignPatterns-12</span>
+            <span class="post-date" title="2021-12-20 17:12:51">2021/12/20</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/17/DataStructure-review-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DataStructure-review-01">DataStructure-review-01</span>
+            <span class="post-date" title="2021-12-17 15:48:17">2021/12/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/16/%E7%BB%84%E7%BB%87%E8%A1%8C%E4%B8%BA%E5%AD%A6%E5%A4%8D%E4%B9%A0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="组织行为学复习">组织行为学复习</span>
+            <span class="post-date" title="2021-12-16 09:57:02">2021/12/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/15/DesignPatterns-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-11">DesignPatterns-11</span>
+            <span class="post-date" title="2021-12-15 16:25:09">2021/12/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/13/DesignPatterns-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-10">DesignPatterns-10</span>
+            <span class="post-date" title="2021-12-13 16:40:53">2021/12/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/08/DesignPatterns-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-09">DesignPatterns-09</span>
+            <span class="post-date" title="2021-12-08 17:05:30">2021/12/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/06/DesignPatterns-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-08">DesignPatterns-08</span>
+            <span class="post-date" title="2021-12-06 17:06:45">2021/12/06</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/03/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8407/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构07">数据结构07</span>
+            <span class="post-date" title="2021-12-03 16:09:44">2021/12/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/12/01/DesignPatterns-07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-07">DesignPatterns-07</span>
+            <span class="post-date" title="2021-12-01 17:04:33">2021/12/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/29/DesignPatterns-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-06">DesignPatterns-06</span>
+            <span class="post-date" title="2021-11-29 16:31:28">2021/11/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/DesignPatterns-05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-05">DesignPatterns-05</span>
+            <span class="post-date" title="2021-11-22 16:52:16">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/22/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8406/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构06">数据结构06</span>
+            <span class="post-date" title="2021-11-22 16:11:05">2021/11/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8403/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构03">数据结构03</span>
+            <span class="post-date" title="2021-11-18 23:30:54">2021/11/18</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8405/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构05">数据结构05</span>
+            <span class="post-date" title="2021-11-17 10:19:16">2021/11/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8402/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构02">数据结构02</span>
+            <span class="post-date" title="2021-11-16 16:30:28">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/16/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%8401/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="数据结构01">数据结构01</span>
+            <span class="post-date" title="2021-11-16 15:12:13">2021/11/16</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="大话数据结构笔记">大话数据结构笔记</span>
+            <span class="post-date" title="2021-11-15 23:06:10">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/15/DesignPatterns-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-04">DesignPatterns-04</span>
+            <span class="post-date" title="2021-11-15 16:13:39">2021/11/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/08/DesignPatterns-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-03">DesignPatterns-03</span>
+            <span class="post-date" title="2021-11-08 17:33:15">2021/11/08</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/03/DesignPatterns-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-02">DesignPatterns-02</span>
+            <span class="post-date" title="2021-11-03 17:11:32">2021/11/03</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/OOP-Java-KnowledgeSummary+DifferenceSummary/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-KnowledgeSummary+DifferenceSummary">OOP-Java-KnowledgeSummary+DifferenceSummary</span>
+            <span class="post-date" title="2021-11-01 21:30:29">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/11/01/DesignPatterns-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="DesignPatterns-01">DesignPatterns-01</span>
+            <span class="post-date" title="2021-11-01 16:31:01">2021/11/01</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/29/Guide2Vue/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide2Vue">Guide2Vue</span>
+            <span class="post-date" title="2021-10-29 20:37:52">2021/10/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-03">OOP-Java-03</span>
+            <span class="post-date" title="2021-10-26 16:11:58">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-02">OOP-Java-02</span>
+            <span class="post-date" title="2021-10-26 16:11:55">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-01">OOP-Java-01</span>
+            <span class="post-date" title="2021-10-26 16:11:51">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/26/OOP-Java-00/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-00">OOP-Java-00</span>
+            <span class="post-date" title="2021-10-26 16:11:33">2021/10/26</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/22/OOP-Java-13/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-13">OOP-Java-13</span>
+            <span class="post-date" title="2021-10-22 10:06:08">2021/10/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/Java-review-schedule/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java review schedule">Java review schedule</span>
+            <span class="post-date" title="2021-10-19 21:56:20">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/19/OOP-Java-12/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-12">OOP-Java-12</span>
+            <span class="post-date" title="2021-10-19 15:34:09">2021/10/19</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/17/OOP-Java-08plus/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08plus">OOP-Java-08plus</span>
+            <span class="post-date" title="2021-10-17 17:02:36">2021/10/17</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-11/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-11">OOP-Java-11</span>
+            <span class="post-date" title="2021-10-15 18:02:25">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-10/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-10">OOP-Java-10</span>
+            <span class="post-date" title="2021-10-15 18:02:18">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-09/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-09">OOP-Java-09</span>
+            <span class="post-date" title="2021-10-15 18:02:10">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/15/OOP-Java-08/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-08">OOP-Java-08</span>
+            <span class="post-date" title="2021-10-15 18:02:03">2021/10/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/13/OOP-Java-06&07/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-06&amp;07">OOP-Java-06&amp;07</span>
+            <span class="post-date" title="2021-10-13 21:39:54">2021/10/13</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/12/Ajax/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Ajax">Ajax</span>
+            <span class="post-date" title="2021-10-12 08:19:33">2021/10/12</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/10/11/OOP-Java-04&05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP-Java-04&amp;05">OOP-Java-04&amp;05</span>
+            <span class="post-date" title="2021-10-11 21:01:14">2021/10/11</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/22/HeadFirst-Java-Notes/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HeadFirst-Java-Notes">HeadFirst-Java-Notes</span>
+            <span class="post-date" title="2021-09-22 17:03:32">2021/09/22</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/15/HITWH-Resources-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="HITWH-Resources-Java">HITWH-Resources-Java</span>
+            <span class="post-date" title="2021-09-15 08:23:46">2021/09/15</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/07/Spring-boot-Web-Develop/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Spring-boot-Web-Develop">Spring-boot-Web-Develop</span>
+            <span class="post-date" title="2021-09-07 08:01:15">2021/09/07</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/09/06/OOP-Courses-Java/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="OOP Courses(Java)">OOP Courses(Java)</span>
+            <span class="post-date" title="2021-09-06 10:54:02">2021/09/06</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/05/A-study-plan-in-every-sense/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-study-plan-in-every-sense">A-study-plan-in-every-sense</span>
+            <span class="post-date" title="2021-09-05 00:00:00">2021/09/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/04/A-new-lifestyle-in-my-mind/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="A-new-lifestyle-in-my-mind">A-new-lifestyle-in-my-mind</span>
+            <span class="post-date" title="2021-09-04 00:00:00">2021/09/04</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/09/01/First-try-in-Tampermonkey/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="First-try-in-Tampermonkey">First-try-in-Tampermonkey</span>
+            <span class="post-date" title="2021-09-01 00:00:00">2021/09/01</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/30/Summary-of-the-summer-holiday-in-2021/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Summary-of-the-summer-holiday-in-2021">Summary-of-the-summer-holiday-in-2021</span>
+            <span class="post-date" title="2021-08-30 00:00:00">2021/08/30</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/29/Guide-to-frontend-development-of-one-of-Labs/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Guide-to-frontend-development-of-one-of-Labs">Guide-to-frontend-development-of-one-of-Labs</span>
+            <span class="post-date" title="2021-08-29 00:00:00">2021/08/29</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/25/git-note/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="git-note">git-note</span>
+            <span class="post-date" title="2021-08-25 00:00:00">2021/08/25</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/10/Java-promote-MOOC/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-promote-MOOC">Java-promote-MOOC</span>
+            <span class="post-date" title="2021-08-10 00:00:00">2021/08/10</span>
+        </a>
+        
+        <a  class="All Java "
+           href="/2021/08/05/Java-basic-bilibili/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Java-basic-bilibili">Java-basic-bilibili</span>
+            <span class="post-date" title="2021-08-05 00:00:00">2021/08/05</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/02/Memory-of-my-lost-articles/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Memory-of-my-lost-articles">Memory-of-my-lost-articles</span>
+            <span class="post-date" title="2021-08-02 00:00:00">2021/08/02</span>
+        </a>
+        
+        <a  class="All Life "
+           href="/2021/08/01/hello-world/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Hello-World">Hello-World</span>
+            <span class="post-date" title="2021-08-01 00:00:00">2021/08/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-OOP-Java-11" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">OOP-Java-11</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Java">Java</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-10 20:47:33'>2021-10-15 18:02</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:5.7k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC11%E7%AB%A0-%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-text">第11章 多线程</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第11章-多线程"><a href="#第11章-多线程" class="headerlink" title="第11章 多线程"></a>第11章 多线程</h2><ol>
+<li><p>线程的概念</p>
+<ol>
+<li>程序、进程、多任务与线程<ol>
+<li>程序:<strong>由指令和数据构成的完成某种功能的文件</strong>；</li>
+<li>进程:<strong>一个独立程序的每一次运行</strong>；</li>
+<li>多任务:<strong>在一个系统中可以同时运行多个进程</strong>；</li>
+<li>线程:<strong>一个进程中可以同时执行的子任务；</strong></li>
+</ol>
+</li>
+<li>线程的状态与生命周期<ol>
+<li>要实现多线程，必须在<strong>主线程</strong>中创建<strong>新的线程对象</strong>，Java语言使用<strong>Thread类及其子类的对象</strong>来表示线程，新建线程在它的生命周期内通常要经历五种状态。<ol>
+<li><strong>新建状态–&gt;就绪状态–&gt;运行状态–&gt;阻塞状态（Blocked）–&gt;消亡状态</strong></li>
+<li>start()–run()–wait()–notify()–Synchronized()–run()–yield()–run()–sleep()–run()–run()</li>
+<li>通过线程的<strong>控制</strong>与<strong>调度</strong>可使线程在这几种状态间转化。</li>
+</ol>
+</li>
+<li><strong>线程生命周期：线程从产生到消亡的过程。</strong></li>
+<li><img src="https://pic.imgdb.cn/item/616ace6a2ab3f51d91cd9290.jpg" alt="线程生命周期"></li>
+</ol>
+</li>
+<li>线程的优先级<ol>
+<li>每个Java线程都有一个<strong>优先级</strong>，其范围都在1和10之间，数字越大优先级越高。默认情况下，每个线程的优先级都设置为5；</li>
+<li>在线程A运行过程中创建的新的线程对象B，初始状态具有和线程A相同的优先级；</li>
+<li>可在线程创建之后的任何时候，通过<code>setPriority(int priority)</code>方法改变其原来的优先级。</li>
+<li><strong>调度：指在各个线程之间分配CPU资源。</strong><ol>
+<li>线程调度有两种模型：<ol>
+<li>分时模型</li>
+<li>抢占模型</li>
+<li>Java语言支持<strong>抢占式调度模型</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>基于线程优先级的线程调度：<ol>
+<li>具有较高优先级的线程比优先级较低的线程优先执行；</li>
+<li><strong>对具有相同优先级的线程，Java的处理是随机的</strong>；</li>
+<li>底层操作系统支持的优先级可能要少于10个，这样会造成一些混乱。因此，只能将优先级作为一种很粗略的工具使用。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>线程的创建</p>
+<blockquote>
+<p>在Java中创建多线程有<strong>继承java.lang包中的Thread类</strong>和<strong>实现Runnable接口</strong>两种方法。</p>
+</blockquote>
+<ol>
+<li>利用Thread类的子类来创建线程<ol>
+<li>Thread类的<strong>构造方法</strong>见教材表11.1所示</li>
+<li>Thread类的其<strong>常用方法</strong>如表11.2所示。</li>
+<li>TODO:<em>由Thread类创建多线程的方法:</em><ol>
+<li>从Thread类派生一个子类，并创建这个子类的对象，就可以产生一个新的线程；</li>
+<li>这个子类应该重写Thread类的<code>run()</code>方法，在run方法中写入需要在新线程中执行的语句段；</li>
+<li>这个子类的对象需要调用<code>start()</code>方法来启动，新线程将自动进入run方法。原线程将同时继续往下执行。</li>
+<li><blockquote>
+<p>案例1：例11.1由Thread类创建多线程的方法:</p>
+</blockquote>
+<pre><code class="java">package JavaBook.chap11;
+
+//由Thread类创建多线程的方法:
+//从Thread类派生一个子类，并创建这个子类的对象，就可以产生一个新的线程；
+//这个子类应该重写Thread类的run()方法，在run方法中写入需要在新线程中执行的语句段；
+//这个子类的对象需要调用start()方法来启动，新线程将自动进入run方法。原线程将同时继续往下执行。
+
+//使用Thread类的子类来创建线程
+class MyThread extends Thread &#123;
+   private final String who;
+
+   public MyThread(String str) &#123;
+      who = str;
+   &#125;
+
+   public void run() &#123;
+      for (int i = 0; i &lt; 5; i++) &#123;
+            try &#123;
+               int num = (int) (1000 * Math.random());
+               System.out.println(num);
+               sleep(num);
+            &#125; catch (InterruptedException e) &#123;
+               e.printStackTrace();
+            &#125;
+            System.out.println(who + &quot;is running!&quot;);
+      &#125;
+   &#125;
+&#125;
+
+public class App11_1 &#123;
+   public static void main(String[] args) &#123;
+
+      MyThread you = new MyThread(&quot;you&quot;);
+      MyThread she = new MyThread(&quot;she&quot;);
+      you.start();
+      she.start();
+      System.out.println(&quot;main() ran over!&quot;);
+   &#125;
+&#125;
+</code></pre>
+</li>
+<li><blockquote>
+<p>案例2：例:创建两个具有不同优先级的线程，都从1递增到200000，每增加50000显示一次。</p>
+</blockquote>
+<pre><code class="java">package JavaBook.chap10;
+
+//例:创建两个具有不同优先级的线程，都从1递增到200000，每增加50000显示一次。
+class TestThread extends Thread &#123;
+   private int tick = 1;
+   private int num;
+
+   public TestThread(int i) &#123;
+      this.num = i;
+   &#125;
+
+   public void run() &#123;
+      while (tick &lt; 200000) &#123;
+            tick++;
+            //每隔5000进行显示
+            if ((tick % 50000) == 0) &#123;
+               System.out.println(&quot;Thread #&quot; + num + &quot;, tick = &quot; + tick);
+               //放弃执行权
+               Thread.yield();
+               try &#123;
+                  sleep(1);
+               &#125; catch (InterruptedException e) &#123;
+                  e.printStackTrace();
+               &#125;
+            &#125;
+      &#125;
+   &#125;
+
+&#125;
+
+
+public class ex7_5 &#123;
+   public static void main(String[] args) &#123;
+      TestThread[] runners = new TestThread[2];
+      for (int i = 0; i &lt; 2; i++) &#123;
+            //创造多线程
+            runners[i] = new TestThread(i);
+      &#125;
+      //设置第一个线程优先级为2
+      runners[0].setPriority(2);
+      //设置第二个线程优先级为3
+      runners[1].setPriority(2);
+      for (int i = 0; i &lt; 2; i++) &#123;
+            //start多线程
+            runners[i].start();
+      &#125;
+   &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>利用Runnable接口创建线程<ol>
+<li>TODO:<em>由Runnable接口创建多线程的方法:</em><ol>
+<li>Runnable接口只有一个方法<code>run()</code>，用户可以声明一个类实现Runnable接口，并实现<code>run()</code>方法，将线程代码写入其中；</li>
+<li><strong>通过创建该类的对象创建线程</strong>；</li>
+<li>通过该对象创建一个Thread类,调用<code>start()</code>方法启动此线程就会在此线程上运行<code>run()</code>方法。</li>
+<li><blockquote>
+<p>案例1：例11.2由Runnable接口创建多线程</p>
+</blockquote>
+<pre><code class="java">package JavaBook.chap11;
+
+//由Runnable接口创建多线程
+class MyThread implements Runnable &#123;
+   private String who;
+
+   public MyThread(String str) &#123;
+      who = str;
+   &#125;
+
+   public void run() &#123;
+      for (int i = 0; i &lt; 5; i++) &#123;
+            try &#123;
+               int num = (int) (1000 * Math.random());
+               System.out.println(num);
+               //MyThread类是由Runnable实现的，所以sleep()需要加前缀Thread
+               Thread.sleep(num);
+            &#125; catch (InterruptedException e) &#123;
+               e.printStackTrace();
+            &#125;
+            System.out.println(who + &quot;is running!&quot;);
+      &#125;
+   &#125;
+&#125;
+
+public class App11_2 &#123;
+   public static void main(String[] args) &#123;
+      MyThread you = new MyThread(&quot;you&quot;);
+      MyThread she = new MyThread(&quot;she&quot;);
+      Thread t1 = new Thread(you);
+      Thread t2 = new Thread(you);
+      t1.start();
+      t2.start();
+
+
+   &#125;
+&#125;
+</code></pre>
+</li>
+<li><blockquote>
+<p>TODO:案例2：例11.3多线程中join()方法</p>
+</blockquote>
+<pre><code class="java">package JavaBook.chap11;
+
+//多线程中join()方法
+
+class MyThread1 extends Thread &#123;
+   private final String who;
+
+   public MyThread1(String str) &#123;
+      who = str;
+   &#125;
+
+   public void run() &#123;
+      for (int i = 0; i &lt; 5; i++) &#123;
+            try &#123;
+               int num = (int) (1000 * Math.random());
+               System.out.println(num);
+               sleep(num);
+            &#125; catch (InterruptedException e) &#123;
+               e.printStackTrace();
+            &#125;
+            System.out.println(who + &quot;is running!&quot;);
+      &#125;
+   &#125;
+&#125;
+
+public class App11_3 &#123;
+   public static void main(String[] args) &#123;
+
+      MyThread1 you = new MyThread1(&quot;you&quot;);
+      MyThread1 she = new MyThread1(&quot;she&quot;);
+      you.start();
+      try &#123;
+            //当某一线程调用join()方法时，则其他线程会等到该线程结束后才开始执行。
+            you.join();
+      &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+      &#125;
+
+      she.start();
+      try &#123;
+            she.join();
+      &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+      &#125;
+
+      System.out.println(&quot;main() ran over!&quot;);
+   &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>区别：</strong><em>两种创建线程对象的方式的特点</em>：<blockquote>
+<ol>
+<li>直接继承Thread类的特点是：</li>
+<li>编写简单，可以直接操纵线程；</li>
+<li>但缺点是若继承Thread类，就不能再继承其他类。</li>
+<li>使用Runnable接口的特点是：</li>
+<li>可以将Thread类与所要处理的任务的类分开，形成清晰的模型；</li>
+<li>还可以从其他类继承，从而实现多重继承的功能</li>
+<li>相比于Thread类，Runnable更适合于多个线程处理同一资源。</li>
+<li>几乎所有多线程应用都可以用实现Runnable接口的方式来实现</li>
+<li>主要区别就在于对<strong>数据的共享</strong>上。使用Runnable接口可以轻松实现<strong>多个线程共享相同数据</strong>，只要用同一个实现了Runnable接口的类的对象作为参数创建多个线程就可以了</li>
+</ol>
+</blockquote>
+</li>
+<li>线程间的数据共享<ol>
+<li>建立Thread子类和实现Runnable接口都可以创建多线程，但<strong>它们的主要区别:就在于对数据的共享上。</strong><ol>
+<li>使用Runnable接口可以轻松实现<strong>多个线程共享相同数据</strong>，只要用同一个实现了Runnable接口的类的对象作为参数创建多个线程就可以了。</li>
+<li><blockquote>
+<p>案例1：见例11.4、11.5</p>
+</blockquote>
+<pre><code class="java">//11.5
+package JavaBook.chap11;
+
+//模拟航班售票系统，实现3个售票窗口发售某次航班的10张机票，一个售票窗口用一个线程来表示。
+//用Runnable接口程序，模拟航班售票窗口
+
+//每个线程都在独立地处理各自的资源
+//解决这个问题
+//3窗口共同卖10张票
+
+class ThreadSale extends Thread &#123;
+   //私有变量tickets代表及票数，是共享数据
+   private int tickets = 10;
+
+
+   public void run() &#123;
+      while (true) &#123;
+            //如果有票可售
+            if (tickets &gt; 0) &#123;
+               System.out.println(this.getName() + &quot; sale number &quot; + tickets-- + &quot;.&quot;);
+            &#125; else &#123;
+               System.exit(0);
+            &#125;
+      &#125;
+   &#125;
+&#125;
+
+//创建类，main中创建并启动3个线程对象
+public class App11_5 &#123;
+   public static void main(String[] args) &#123;
+      ThreadSale t = new ThreadSale();
+      Thread t1 = new Thread(t, &quot;first sale window&quot;);
+      Thread t2 = new Thread(t, &quot;second sale window&quot;);
+      Thread t3 = new Thread(t, &quot;third sale window&quot;);
+      t1.start();
+      t2.start();
+      t3.start();
+   &#125;
+
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>线程间的同步控制</p>
+<ol>
+<li><p><strong>区分</strong><em>（异步与同步的区分）</em></p>
+<blockquote>
+<ol>
+<li>异步执行：包含了运行时所需要的数据或方法的线程，不必关心其他线程的状态或行为，称这样的线程为<strong>独立的、不同步的、异步执行的</strong>。</li>
+<li>线程的同步：当一个线程对共享的数据进行操作时，应使之成为一个“原子操作”，即在没有完成相关操作之前，<strong>不允许其他线程打断它</strong>，否则就会破坏数据的完整性，必然会得到错误的处理结果，这就是<strong>线程的同步</strong>。（处理数据的线程，不能处理其他线程当前还没有处理结束的数据，但是可以处理其他的数据）</li>
+</ol>
+</blockquote>
+</li>
+<li><p><strong>区分</strong><em>同步与共享数据</em></p>
+<ol>
+<li>共享：线程之间对内存数据的共享</li>
+<li>同步是在共享的基础上，针对多个线程共享会导致数据不一致而提出来的。</li>
+<li>线程之间彼此不独立、需要进行同步控制</li>
+<li>同时运行的几个线程需要共享一些数据</li>
+</ol>
+</li>
+<li><p>有时线程之间彼此不独立、需要进行同步控制。</p>
+</li>
+<li><p>线程间的互斥</p>
+<ol>
+<li>同时运行的几个线程需要共享一个（些）数据；</li>
+<li>一个线程对共享的数据进行操作时，不允许其他线程打断它，否则会破坏数据的完整性。即<strong>被多个线程共享的数据，在某一时刻只允许一个线程对其进行操作</strong>,这就需要线程同步。</li>
+<li><blockquote>
+<p>案例1：见例11.6 见例11.7 TODO:多线程模拟用户从银行取款<br>设计一个模拟用户从银行取款的应用程序。设某银行账户存款额的初值是2000元，用线程模拟两个用户分别从银行取款的情况。两个用户分4次分别从一囊的同一账户取款，每次取100元。<br>最后应该剩下2000-400-400&#x3D;1200，但是<strong>结果随机</strong>。所以<strong>有问题</strong>！<br><strong>出现错误结果的原因</strong>：两个并发线程共享同一内存变量所引起的；因为在线程执行过程中，在执行有关的若干个动作时，没有能够保证<strong>独占</strong>相关资源，而是在对该资源进行处理时又被其他线程的操作打断或干扰而引起的。<br><strong>解决方法</strong>：保证线程在一个完整的操作所有动作的执行过程中，都占有相关资源而不被打断，这就是<strong>线程同步</strong>的概念。</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><p><strong>“生产者&#x2F;消费者” 问题</strong></p>
+<ol>
+<li>生产者产生数据，消费者消费数据，具体来说，假设有一个Java应用程序，其中有一个线程负责往数据区写数&#x3D;&#x3D;，另一个线程从同一数据区中读数据，两个线程可以并行执行(类似于流水线上的两道工序)；</li>
+<li>如果数据区已满，生产者要等消费者取走一些数据后才能再放；而当数据区没有数据时，消费者要等生产者放入一些数据后再取。</li>
+</ol>
+</li>
+<li><p>**这里我们先学一些概念！！!**（在并发程序设计中）</p>
+<ol>
+<li><strong>临界资源</strong>（同步资源）：对多线程共享的资源或数据（在一个时刻只能被一个线程访问的资源）</li>
+<li><strong>临界代码</strong>（临界区）：每个线程中访问临界资源的那一段代码（访问临界资源的那段代码）</li>
+<li>临界区必须互斥地使用，即一个线程执行临界区中的代码时，其他线程不准进入临界区，直至该线程退出为止。</li>
+<li>Java语言中每个对象都有一个“互斥锁”与之相连。</li>
+<li>为了保证互斥，Java语言使用synchronized关键字来标识同步的资源，这里的资源可以是一种类型的数据，也就是对象，也可以是一个方法，还可以是一段代码，synchronized直译为同步，但实际指的是<strong>互斥</strong>。</li>
+<li><strong>synchronized的功能</strong>是：<ol>
+<li>首先判断对象或方法的互斥锁是否存在，若在就获得互斥锁，然后就可以执行紧随其后的临界代码段或方法体；</li>
+<li>如果对象或方法的互斥锁不存在（已被其他线程拿走），就进入等待状态，知道获得互斥锁。（当被synchronized限定的代码段执行完，就自动释放互斥锁。）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><blockquote>
+<p>例:用两个线程模拟存票、售票过程:</p>
+</blockquote>
+<ol>
+<li>假定开始售票处并没有票，一个线程往里存票，另外一个线程则往出卖票；</li>
+<li>我们新建一个票类对象，让存票和售票线程都访问它。本例采用两个线程共享同一个数据对象来实现对同一份数据的操作。</li>
+</ol>
+</li>
+<li><p>在并发程序设计中，对多线程共享的资源或数据称为<strong>临界资源或同步资源</strong>，临界资源同一时刻只能被一个线程访问，每个线程中访问临界资源的代码称为<strong>临界代码或临界区</strong>，Java技术通过<strong>互斥锁</strong>机制实现线程间的互斥操作。</p>
+<ol>
+<li>每个对象都只有一个“<strong>互斥锁</strong>”与之相连，利用多线程对其的争夺可实现线程间的<strong>互斥操作</strong>；</li>
+<li>当线程A获得了一个对象的<strong>锁旗标</strong>后，线程B必须等待线程A完成规定的操作、并释放出锁旗标后，才能获得该对象的锁旗标，并执行线程B中的操作。</li>
+</ol>
+</li>
+<li><p>Java使用synchronized 关键字来标识同步的资源，这里的资源是某种类型的数据，临界区是一段代码或一个方法；</p>
+</li>
+<li><p>同步代码段语法：<br><code>synchronized（对象）&#123;代码段&#125;</code></p>
+</li>
+<li><p>同步方法语法：<br><code>public synchronized返回值类型 方法名()&#123;方法体&#125;</code></p>
+</li>
+</ol>
+<blockquote>
+<p>synchronized的功能是：首先判断对象的互斥锁是否在，如果在就获得互斥锁，然后就可以执行紧随其后的代码段或方法；如果对象的锁旗标不在（已被其他线程拿走），就进入等待状态，直到获得互斥锁；当被synchronized限定的代码段执行完，就释放锁旗标。</p>
+</blockquote>
+<ol>
+<li><blockquote>
+<p>案例1：见例11.7</p>
+</blockquote>
+<pre><code class="java">package JavaBook.chap11;
+
+/*
+程序说明：
+当Consumer线程售出票后，available值变为false，当Producer线程放入票后，available值变为true；
+只有available为true时，Consumer线程才能售票，否则就必须等待Producer线程放入新的票后的通知；
+只有available为false时，Producer线程才能放票，否则必须等待Consumer线程售出票后的通知。
+
+//实现的是存一票卖一票
+*/
+
+//票类
+class Tickets &#123;
+   protected int size;
+   int number = 0;
+   boolean available = false;
+
+   public Tickets(int size) &#123;
+      this.size = size;
+   &#125;
+
+   public synchronized void put() &#123;
+      if (available)
+            try &#123;
+               //进入等待池，并释放互斥锁(锁旗标)
+               wait();
+            &#125; catch (Exception ignored) &#123;
+            &#125;
+      System.out.println(&quot;存入第【&quot; + (++number) + &quot;】号票&quot;);
+      available = true;
+      //唤醒另一个进程
+      notify();
+   &#125;
+
+   public synchronized void sell() &#123;
+      if (!available)
+            try &#123;
+               //进入等待池，并释放互斥锁(锁旗标)
+               wait();
+            &#125; catch (Exception ignored) &#123;
+            &#125;
+      System.out.println(&quot;售出第【&quot; + (number) + &quot;】号票&quot;);
+      available = false;
+      //唤醒另一个进程
+      notify();
+      if (number == size) number = size + 1;
+      //number&gt;size表示售票结束
+   &#125;
+&#125;
+
+//生产者类，是一个线程
+class Producer extends Thread &#123;
+   Tickets t = null;
+
+   public Producer(Tickets t) &#123;
+      this.t = t;
+   &#125;
+
+   public void run() &#123;
+      //while循环
+      while (t.number &lt; t.size)
+            t.put();
+   &#125;
+&#125;
+
+//消费者类，是一个线程
+class Consumer extends Thread &#123;
+   Tickets t = null;
+
+   public Consumer(Tickets t) &#123;
+      this.t = t;
+   &#125;
+
+   public void run() &#123;
+      while (t.number &lt;= t.size)
+            t.sell();
+   &#125;
+&#125;
+
+public class App11_8 &#123;
+   public static void main(String[] args) &#123;
+      Tickets t = new Tickets(10);
+      //启动两个线程
+      new Producer(t).start();
+      new Consumer(t).start();
+   &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>线程间的通信</p>
+<ol>
+<li>java.1ang.Object类的<code>wait()</code>、<code>notify()</code>、<code>notifyAll()</code>等方法为线程间的通信提供了有效手段。</li>
+<li><code>wait()</code>:如果当前状态不适合本线程执行，正在执行同步代码（synchronized）的某个线程A调用<code>wait()</code>方法（在对象x上），该线程暂停执行而进入对象x的等待池，并释放已获得的对象x的互斥锁(锁旗标)。线程A要一直等到其他线程在对象x上调用<code>notify()</code>或<code>notifyAll()</code>方法，才能够在重新获得对象x的互斥锁后继续执行（从<code>wait()</code>语句后继续执行）。</li>
+<li><code>notify()</code>:唤醒等待池中的第一个线程，本线程继续执行，线程被唤醒以后获得互斥对象的互斥锁，并进入就绪状态等待调度。</li>
+<li><code>notifyAll()</code>:唤醒等待池中的所有线程，优先级最高的线程最先被调度执行。</li>
+<li><blockquote>
+<p>案例1：见例11.8（完善存票售票）</p>
+</blockquote>
+<pre><code class="java">/*
+程序说明：
+当Consumer线程售出票后，available值变为false，当Producer线程放入票后，available值变为true；
+只有available为true时，Consumer线程才能售票，否则就必须等待Producer线程放入新的票后的通知；
+只有available为false时，Producer线程才能放票，否则必须等待Consumer线程售出票后的通知。
+*/
+public class App11_8 &#123;
+   public static void main(String[] args) &#123;
+       Tickets t = new Tickets(10);
+       new Producer(t).start();
+       new Consumer(t).start();
+   &#125;
+&#125;
+
+class Tickets &#123;
+   protected int size;
+   int number = 0;
+   boolean available = false;
+
+   public Tickets(int size) &#123;
+       this.size = size;
+   &#125;
+
+   public synchronized void put() &#123;
+       if (available)
+           try &#123;
+               wait();
+           &#125; catch (Exception e) &#123;
+           &#125;
+       System.out.println(&quot;存入第【&quot; + (++number) + &quot;】号票&quot;);
+       available = true;
+       notify();
+   &#125;
+
+   public synchronized void sell() &#123;
+       if (!available)
+           try &#123;
+               wait();
+           &#125; catch (Exception e) &#123;
+           &#125;
+       System.out.println(&quot;售出第【&quot; + (number) + &quot;】号票&quot;);
+       available = false;
+       notify();
+       if (number == size) number = size + 1;
+       //number&gt;size表示售票结束
+   &#125;
+&#125;
+
+class Producer extends Thread &#123;
+   Tickets t = null;
+
+   public Producer(Tickets t) &#123;
+       this.t = t;
+   &#125;
+
+   public void run() &#123;
+       while (t.number &lt; t.size)
+           t.put();
+   &#125;
+&#125;
+
+class Consumer extends Thread &#123;
+   Tickets t = null;
+
+   public Consumer(Tickets t) &#123;
+       this.t = t;
+   &#125;
+
+   public void run() &#123;
+       while (t.number &lt;= t.size)
+           t.sell();
+   &#125;
+&#125;
+</code></pre>
+</li>
+<li><blockquote>
+<p>TODO:multiThreadingBankRefined</p>
+</blockquote>
+<pre><code class="java">
+package JavaBook.chap11;
+
+import java.util.Random;
+
+//银行账户类
+class Account &#123;
+   String name;
+   double balance;
+
+   //构造方法
+   public Account(String name) &#123;
+      this.name = name;
+      this.balance = 0;
+   &#125;
+
+&#125;
+
+//多线程
+class SaveThread extends Thread &#123;
+   private Account account;
+   private double value;
+
+   //传入一个account类、一个double值
+   public SaveThread(Account account) &#123;
+      this.account = account;
+   &#125;
+
+   public void run() &#123;
+
+      for (int i = 0; i &lt; 5; i++) &#123;
+            synchronized (account) &#123;
+
+               //产生5个500~1000的随机整数
+               Random random = new Random();
+               this.value = random.nextInt(1000) + 500;
+               System.out.println(&quot;valueInPut:&quot; + this.value);
+
+               //存款
+               if (value &gt; 0) &#123;
+                  account.balance += value;
+               &#125;
+               System.out.println(&quot;您的存款金额为&quot; + value + &quot; ; &quot; + &quot;存款成功,您的余额为&quot; + account.balance);
+
+            &#125;
+            try &#123;
+               Thread.sleep(1);
+            &#125; catch (InterruptedException ignored) &#123;
+            &#125;
+
+      &#125;
+   &#125;
+
+&#125;
+
+//主线程
+class FetchThread extends Thread &#123;
+
+   private Account account;
+
+   //传入一个account类、一个double值
+   public FetchThread(Account account) &#123;
+      this.account = account;
+   &#125;
+
+   public void run() &#123;
+
+      for (int i = 0; i &lt; 5; i++) &#123;
+            synchronized (account) &#123;
+
+               //产生5个500~1000的随机整数
+               Random random = new Random();
+               double value = random.nextInt(1000) + 500;
+               System.out.println(&quot;valueOutPut:&quot; + value);
+
+               //取款
+               //如果取钱金额&lt;=存款金额,取出来，并把存款金额减去取钱金额
+               if (account.balance &gt; 0) &#123;
+                  //如果要取负数,取不到钱
+                  if (value &lt;= 0) &#123;
+
+                        System.out.println(&quot;您的取款金额是负数，无法取款负数的金额！&quot; + &quot;您的余额为&quot; + account.balance);
+
+                  &#125; else if (value &lt;= account.balance) &#123;
+
+                        account.balance -= value;
+                        System.out.println(&quot;您的取款金额为&quot; + value + &quot; ; &quot; + &quot;取款成功,您的余额为&quot; + account.balance);
+
+                  &#125; else &#123;
+
+                        //如果取钱金额&gt;存款金额,就把剩余的钱全都取出来，并把存款清零
+                        value = account.balance;
+                        account.balance = 0;
+                        System.out.println(&quot;您的取款金额是&quot; + value + &quot;&lt;=存款金额，所以会把存款金额全部取出来 ; &quot; + &quot;取款成功,您的余额为&quot; + account.balance);
+
+                  &#125;
+               &#125; else &#123;
+
+                  System.out.println(&quot;您的余额是0，无法取款~&quot;);
+
+               &#125;
+
+            &#125;
+            try &#123;
+               Thread.sleep(1);
+            &#125; catch (InterruptedException ignored) &#123;
+            &#125;
+
+      &#125;
+   &#125;
+&#125;
+
+
+public class multiThreadingBankRefined &#123;
+   public static void main(String[] args) &#123;
+      Account Tony = new Account(&quot;Tony&quot;);
+      (new FetchThread(Tony)).start();
+
+      //两个线程，一个是存款线程（存款5次）、一个是取款线程（取款5次）
+      (new SaveThread(Tony)).start();
+
+
+   &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>后台线程</p>
+<ol>
+<li>也叫守护线程，通常是为了辅助其它线程而运行的线程；</li>
+<li>它不妨碍程序终止；</li>
+<li>一个进程中只要还有一个前台线程在运行，这个进程就不会结束；如果一个进程中的所有前台线程都已经结束，那么无论是否还有未结束的后台线程，这个进程都会结束；</li>
+<li>“垃圾回收”便是一个后台线程；</li>
+<li>如果对某个线程对象在启动（调用start方法）之前调用了<code>setDaemon(true)</code>方法，这个线程就变成了后台线程。</li>
+</ol>
+</li>
+<li><p>死锁</p>
+<ol>
+<li>线程在运行过程中，其中某个步骤往往需要满足一些条件才能继续进行下去，如果这个条件不能满足，线程将在这个步骤上出现阻塞；</li>
+<li>线程A可能会陷于对线程B的等待，而线程B同样陷于对线程C的等待，依次类推，整个等待链最后又可能回到线程A。如此一来便陷入一个彼此等待的轮回中，任何线程都动弹不得，此即所谓死锁（deadlock）；</li>
+<li>对于死锁问题，关键不在于出现问题后调试，而是在于预防。</li>
+<li><blockquote>
+<p>案例1：拿球游戏（todo:及其优化）</p>
+</blockquote>
+<pre><code class="java">
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>控制线程的生命</p>
+<ol>
+<li>结束线程的生命<ol>
+<li>用stop方法可以结束线程的生命，但如果一个线程正在操作共享数据段，操作过程没有完成就用stop结束的话，将会导致数据的不完整，因此并不提倡使用此方法；</li>
+<li>通常，可通过控制run方法中循环条件的方式来结束一个线程。</li>
+</ol>
+</li>
+<li><blockquote>
+<p>例:线程不断显示递增整数，按下回车键则停止执行。</p>
+</blockquote>
+<pre><code class="java">import java.io.*;
+
+public class App11_11 &#123;
+   public static void main(String[] args) throws IOException &#123;
+       TestThread t = new TestThread();
+       t.start();
+       new BufferedReader(new InputStreamReader(System.in)).readLine();
+       t.stopme();   //调用stopme方法结束t线程
+   &#125;
+&#125;
+
+class TestThread extends Thread &#123;
+   private boolean flag = true;
+
+   public void stopme() &#123; //在此方法中控制循环条件
+       flag = false;
+   &#125;
+
+   public void run() &#123;
+       int i = 0;
+       while (flag) &#123;
+           System.out.println(i++);//如果flag为真则一直显示递增整数
+       &#125;
+   &#125;
+&#125;
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2016-2020 HITlittlefox
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
