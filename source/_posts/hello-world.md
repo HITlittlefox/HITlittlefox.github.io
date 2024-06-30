@@ -39,3 +39,10 @@ $ hexo deploy
 ```
 
 More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+
+
+### 开启字数统计
+
+1. 开启此功能需先安装插件，在 hexo根目录 执行 `npm i hexo-wordcount --save`
+2. 修改 _config.yml
+    1. word_count: true
