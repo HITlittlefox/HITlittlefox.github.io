@@ -11,5 +11,8 @@ tags: REST
 2. https://restapitutorial.com/introduction/whatisrest
 3. curl -i "https://itunes.apple.com/search?term=radiohead&media=music&limit=3"
 
-## The Six Constraints
-
+4. https://restapitutorial.com/introduction/restconstraints.html
+5. https://restapitutorial.com/introduction/restquicktips
+6. 幂等性 Idempotence
+    1. Making multiple identical requests has the same effect as making a single request.
+7. [“Top 10” HTTP Status Code ](https://restapitutorial.com/httpstatuscodes)
