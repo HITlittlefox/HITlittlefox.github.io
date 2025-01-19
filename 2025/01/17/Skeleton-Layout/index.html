@@ -6,17 +6,17 @@
   <meta name="keywords" content=" Skeleton Layout ">
   <meta name="description" content="Skeleton Layout | fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Kotlin Lambda 表达式参数确定指南在 Kotlin 中，Lambda 表达式中的 -&gt; 前的参数取决于它实现的接口方法的简名。以下是一些实用方法，帮助你确定参数的个数及其类型。  1. 查看接口方法定义Lambda 的参数个数和类型完全由实现的接口方法确定。例如： 示例：setOnClickListenerpublic interface View.OnClickListener">
+<meta name="description" content="Skeleton Layout· 最近研究了recyclerView与viewPager2同步滑动· 最近研究了使用骨架屏优化加载 涉及链接:  https:&#x2F;&#x2F;github.com&#x2F;Faltenreich&#x2F;SkeletonLayout https:&#x2F;&#x2F;github.com&#x2F;bumptech&#x2F;glide  提取核心问题： 如何使用 recyclerView 展示A内容，并在滑动A内容的时候，同步切">
 <meta property="og:type" content="article">
-<meta property="og:title" content="kotlin lambda guide">
-<meta property="og:url" content="http://example.com/2024/12/29/kotlin-lambda-guide/index.html">
+<meta property="og:title" content="Skeleton Layout">
+<meta property="og:url" content="http://example.com/2025/01/17/Skeleton-Layout/index.html">
 <meta property="og:site_name" content="fox_blog">
-<meta property="og:description" content="Kotlin Lambda 表达式参数确定指南在 Kotlin 中，Lambda 表达式中的 -&gt; 前的参数取决于它实现的接口方法的简名。以下是一些实用方法，帮助你确定参数的个数及其类型。  1. 查看接口方法定义Lambda 的参数个数和类型完全由实现的接口方法确定。例如： 示例：setOnClickListenerpublic interface View.OnClickListener">
+<meta property="og:description" content="Skeleton Layout· 最近研究了recyclerView与viewPager2同步滑动· 最近研究了使用骨架屏优化加载 涉及链接:  https:&#x2F;&#x2F;github.com&#x2F;Faltenreich&#x2F;SkeletonLayout https:&#x2F;&#x2F;github.com&#x2F;bumptech&#x2F;glide  提取核心问题： 如何使用 recyclerView 展示A内容，并在滑动A内容的时候，同步切">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-12-29T15:49:33.000Z">
-<meta property="article:modified_time" content="2024-12-29T15:55:24.908Z">
+<meta property="article:published_time" content="2025-01-17T15:34:23.000Z">
+<meta property="article:modified_time" content="2025-01-19T13:09:13.256Z">
 <meta property="article:author" content="HITlittlefox">
-<meta property="article:tag" content="kotlin lambda guide">
+<meta property="article:tag" content="Skeleton Layout">
 <meta name="twitter:card" content="summary">
 
 
@@ -281,7 +281,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="108">
-<input type="hidden" id="yelog_site_word_count" value="144.4k">
+<input type="hidden" id="yelog_site_word_count" value="144.7k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -1282,12 +1282,12 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2025-01-18 00:07:48'>2025-01-17 23:34</time>
+            Created At : <time class="date" title='Updated At: 2025-01-19 21:09:13'>2025-01-17 23:34</time>
         
     </div>
     <div class="article-meta">
         
-        <span>Count:519</span>
+        <span>Count:759</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -1339,10 +1339,24 @@
 <li>adapter 中，初始数据如果为 <code>map.isEmpty() == true</code> ,建议配置一个虚假 key to null</li>
 <li>这样的话，能默认骨架屏loading一个空的单个的内容</li>
 <li>adapter 的 current item 的值如果非空，则进入 <code>Glide</code> 逻辑</li>
+</ol>
+</li>
+<li>如何避免 adapter 疯狂声明初始化<ol>
 <li><strong>注意</strong>，当 <code>adapter == null</code>，才有必要配置 adapter</li>
-<li>如果是多个嵌套 recyclerView，可以通过配置一个 adapterMap 的形式，减少adapter过量加载</li>
+<li>假的解决方案：这种解决方案的map放在adapter局部变量，仍然有时会导致复用错误数据 <del>如果是多个嵌套<br>recyclerView，可以通过配置一个 adapterMap 的形式，减少adapter过量加载</del>，</li>
+<li>真实解决方案：删除adapter的局部变量（除了入参），在bind内获取已有的recycler<br>view的adapter（也就是说，如果非null，直接cast出来）</li>
 <li><strong>注意</strong>，请一定要为 adapter update 内容，不能通过判断空列表，就不更新（否则会导致骨架屏没地方更新）</li>
-<li><strong>注意</strong>，减少闪烁：adapter 里的 update 函数，建议进行 <code>isEqual()</code> 内容比较。只有在更新内容时才<br><code>notifyDataSetChanged</code></li>
+<li><strong>注意</strong>，减少闪烁：adapter 里的 update 函数，建议进行 <code>equalTo()</code> 内容比较。只有在更新内容时才<br><code>notifyDataSetChanged</code>，<ol>
+<li>这里还需要注意的是，如果采用的kotlin的<code>?.</code>写法，比如<br><del><code>bean?.equalTo(inputBean) == false</code></del><br>，当<br><code>bean==null</code>的时候，不会进代码块。所以正确写法为：<br><code>bean == null || bean?.equalTo(inputBean) == false</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>数据存储应放在单例中</strong> 可以减少频繁请求<ol>
+<li>注意，在获取到url时就可以进行判断并从单例中读取已有数据，无需等到发送请求时</li>
+<li>注意，请求失败等异常情况，需要把url对应的是否已请求状态改为false</li>
+<li>建议增加map <code>&lt;url, 是否已请求&gt;</code></li>
+<li>建议增加map <code>&lt;url, url对应详情&gt;</code></li>
 </ol>
 </li>
 <li>viewPager2 如何搭配 SkeletonLayout 使用<ol>
