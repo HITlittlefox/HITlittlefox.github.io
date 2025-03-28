@@ -2,21 +2,21 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>解bug请拉取最新分支 | fox_blog</title>
-  <meta name="keywords" content=" DEBUG ">
-  <meta name="description" content="解bug请拉取最新分支 | fox_blog">
+  <title>fox_blog</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="该 BUG 是在某些场景下, 会引发崩溃 所打印出的日志,仅仅提示了所在 activity 已知该 BUG 能否复现,在多个代码版本的表现不同 老版本没问题 新版本有问题 我本地代码没问题    此时就应该敏感的先确认自己本地代码是否拉取新代码 但是因为到晚上了注意力下降，并没有从这方面发掘。反复阅读代码仍未发现问题！！！最终结果：同事在他那里发现是新的提交造成的问题 而我本地代码没有拉取这个提交">
+<meta name="description" content="记录一次onCreateViewHolder频繁调用的问题场景： 一个父recycler view内有多个子item，每个item有其对应的自定义ViewHolder，而有某两个ViewHolder分别有自己的一个recyclerview。 把父recycler view命名为rvParent 把这两个ViewHolder命名为vhA和vhB 把这两个recycler view命名为rvA和rvB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解bug请拉取最新分支">
-<meta property="og:url" content="http://example.com/2025/01/20/%E4%B8%80%E6%AC%A1bug%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/index.html">
+<meta property="og:title" content="onCreateViewHolder">
+<meta property="og:url" content="http://example.com/2025/02/17/onCreateViewHolder/index.html">
 <meta property="og:site_name" content="fox_blog">
-<meta property="og:description" content="该 BUG 是在某些场景下, 会引发崩溃 所打印出的日志,仅仅提示了所在 activity 已知该 BUG 能否复现,在多个代码版本的表现不同 老版本没问题 新版本有问题 我本地代码没问题    此时就应该敏感的先确认自己本地代码是否拉取新代码 但是因为到晚上了注意力下降，并没有从这方面发掘。反复阅读代码仍未发现问题！！！最终结果：同事在他那里发现是新的提交造成的问题 而我本地代码没有拉取这个提交">
+<meta property="og:description" content="记录一次onCreateViewHolder频繁调用的问题场景： 一个父recycler view内有多个子item，每个item有其对应的自定义ViewHolder，而有某两个ViewHolder分别有自己的一个recyclerview。 把父recycler view命名为rvParent 把这两个ViewHolder命名为vhA和vhB 把这两个recycler view命名为rvA和rvB">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-01-20T14:19:26.000Z">
-<meta property="article:modified_time" content="2025-01-20T15:13:12.107Z">
+<meta property="article:published_time" content="2025-02-17T14:17:07.000Z">
+<meta property="article:modified_time" content="2025-02-17T14:39:44.418Z">
 <meta property="article:author" content="HITlittlefox">
-<meta property="article:tag" content="DEBUG">
+<meta property="article:tag" content="onCreateViewHolder">
 <meta name="twitter:card" content="summary">
 
 
@@ -57,7 +57,7 @@
 
 
 <body>
-<aside class="nav">
+<aside class="nav mobile">
     <div class="nav-left">
         <a href="/"
    class="avatar_target">
@@ -115,7 +115,7 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(109)</small>
+                <small>(110)</small>
             
         </div>
     </li>
@@ -182,7 +182,7 @@
                     <div data-rel="Android">
                         
                         Android
-                        <small>(3)</small>
+                        <small>(4)</small>
                         
                     </div>
                     
@@ -280,8 +280,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="109">
-<input type="hidden" id="yelog_site_word_count" value="145.2k">
+<input type="hidden" id="yelog_site_posts_number" value="110">
+<input type="hidden" id="yelog_site_word_count" value="145.8k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -359,6 +359,10 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>onCreateViewHolder</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>REST</a>
             </li>
         
@@ -378,7 +382,15 @@
     <nav id="title-list-nav">
         
         <a  class="All Android "
-           href="/2025/01/20/%E4%B8%80%E6%AC%A1bug%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/"
+           href="/2025/02/17/onCreateViewHolder/"
+           data-tag="onCreateViewHolder"
+           data-author="" >
+            <span class="post-title" title="onCreateViewHolder">onCreateViewHolder</span>
+            <span class="post-date" title="2025-02-17 22:17:07">2025/02/17</span>
+        </a>
+        
+        <a  class="All Android "
+           href="/2025/01/20/%E8%A7%A3bug%E8%AF%B7%E6%8B%89%E5%8F%96%E6%9C%80%E6%96%B0%E5%88%86%E6%94%AF/"
            data-tag="DEBUG"
            data-author="" >
             <span class="post-title" title="解bug请拉取最新分支">解bug请拉取最新分支</span>
@@ -562,18 +574,18 @@
         </a>
         
         <a  class="All 我要就业 "
-           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
-            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
-        </a>
-        
-        <a  class="All 我要就业 "
            href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-labuladong/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="二叉树知识点-labuladong">二叉树知识点-labuladong</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
             <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
         </a>
         
@@ -1265,60 +1277,12 @@
         </div>
     </div>
 </aside>
-<div id="post">
+<div id="post" class="index">
     <div class="pjax">
-        <article id="post-一次bug引发的思考" class="article article-type-post" itemscope itemprop="blogPost">
+        <article class="index">
+            <div class="toc-ref">
     
-        <h1 class="article-title">解bug请拉取最新分支</h1>
-    
-    <div class="article-meta">
-        
-        
-        
-        <span class="book">
-            <i class="iconfont icon-category"></i>
-            
-            
-            <a  data-rel="Android">Android</a>
-            
-        </span>
-        
-        
-        <span class="tag">
-            <i class="iconfont icon-tag"></i>
-            
-            <a class="color1">DEBUG</a>
-            
-        </span>
-        
-    </div>
-    <div class="article-meta">
-        
-            Created At : <time class="date" title='Updated At: 2025-01-20 23:13:12'>2025-01-20 22:19</time>
-        
-    </div>
-    <div class="article-meta">
-        
-        <span>Count:561</span>
-        
-        
-        <span id="busuanzi_container_page_pv">
-            Views 👀 :<span id="busuanzi_value_page_pv">
-                <span class="count-comment">
-                    <span class="spinner">
-                      <div class="cube1"></div>
-                      <div class="cube2"></div>
-                    </span>
-                </span>
-            </span>
-        </span>
-        
-        
-    </div>
-    
-    <div class="toc-ref">
-    
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A5-BUG-%E6%98%AF%E5%9C%A8%E6%9F%90%E4%BA%9B%E5%9C%BA%E6%99%AF%E4%B8%8B-%E4%BC%9A%E5%BC%95%E5%8F%91%E5%B4%A9%E6%BA%83"><span class="toc-text">该 BUG 是在某些场景下, 会引发崩溃</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%98%E6%9C%89%E4%B8%AA%EF%BC%8Clogcat-%E4%B8%AD%E7%9A%84-getString-%E6%8F%8F%E8%BF%B0"><span class="toc-text">还有个，logcat 中的 getString() 描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="toc-text">关于占位符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%9A"><span class="toc-text">关键点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-text">详细解释：</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Everybody-loves-littlefox"><span class="toc-text">Everybody loves littlefox~</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#This-blog"><span class="toc-text">This blog</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -1331,100 +1295,15 @@
     }
 </style>
 </div>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="该-BUG-是在某些场景下-会引发崩溃"><a href="#该-BUG-是在某些场景下-会引发崩溃" class="headerlink" title="该 BUG 是在某些场景下, 会引发崩溃"></a>该 BUG 是在某些场景下, 会引发崩溃</h2><ol>
-<li>所打印出的日志,仅仅提示了所在 activity</li>
-<li>已知该 BUG 能否复现,在多个代码版本的表现不同<ol>
-<li>老版本没问题</li>
-<li>新版本有问题</li>
-<li>我本地代码没问题</li>
-</ol>
-</li>
-</ol>
-<p>此时就应该敏感的<strong>先确认自己本地代码是否拉取新代码</strong></p>
-<p>但是因为到晚上了注意力下降，并没有从这方面发掘。反复阅读代码仍未发现问题！！！<br>最终结果：同事在他那里发现是新的提交造成的问题</p>
-<p>而我本地代码没有拉取这个提交，自然如何 code review 也找不到原因。</p>
-<h2 id="还有个，logcat-中的-getString-描述"><a href="#还有个，logcat-中的-getString-描述" class="headerlink" title="还有个，logcat 中的 getString() 描述"></a>还有个，logcat 中的 <code>getString()</code> 描述</h2><p>这个 bug 的描述一开始说是资源丢失。最关键的 <code>getString()</code>，我一度认为是在读取文本资源等内容的时候资源索引不到。</p>
-<p>但是最终发现，确实是 <code>getString()</code> 的格式化的问题。</p>
-<p><strong>在 Kotlin 中使用 getString() 替换占位符：</strong></p>
-<pre><code class="xml">&lt;resources&gt;
-    &lt;string name=&quot;greeting_message&quot;&gt;Hello, %1$s! You have %2$d new messages.&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-<pre><code class="kotlin">val name = &quot;John&quot;
-val newMessages = 5
+            <h2 id="Everybody-loves-littlefox"><a href="#Everybody-loves-littlefox" class="headerlink" title="Everybody loves littlefox~"></a>Everybody loves littlefox~</h2><hr>
+<h3 id="This-blog"><a href="#This-blog" class="headerlink" title="This blog"></a>This blog</h3><p>So far, I have written <code class="article_number"></code> articles with a total<br>of <code class="site_word_count"></code> words.</p>
+<p>Unique Visitor： <code class="busuanzi_value_site_uv"></code> 人次</p>
+<p>Page views：<code class="busuanzi_value_site_pv"></code> 人次</p>
+<p>Blog platform This blog is generated from <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> and deployed in<br>making <a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages</a> theme <a target="_blank" rel="noopener" href="https://github.com/yelog/hexo-theme-3-hexo">3-hexo</a> which has<br>been open-source in the GitHub.</p>
 
-// 使用 getString() 和占位符
-val greetingMessage = getString(R.string.greeting_message, name, newMessages)
-
-println(greetingMessage)  // 输出：Hello, John! You have 5 new messages.
-</code></pre>
-<p>在 getString() 方法中</p>
-<ol>
-<li>第一个参数：是资源 ID，表示你要获取的字符串资源的位置（如 R.string.greeting_message）。</li>
-<li>后续参数：是你传递给该字符串的替代值，用来替换字符串中的占位符。</li>
-</ol>
-<h2 id="关于占位符"><a href="#关于占位符" class="headerlink" title="关于占位符"></a>关于占位符</h2><h3 id="关键点："><a href="#关键点：" class="headerlink" title="关键点："></a>关键点：</h3><ul>
-<li><strong>占位符和参数数量不匹配</strong> 时可能会导致崩溃。</li>
-<li><strong>占位符的数量和顺序</strong> 与你传入的参数数量必须匹配。</li>
-</ul>
-<h3 id="详细解释："><a href="#详细解释：" class="headerlink" title="详细解释："></a>详细解释：</h3><pre><code class="xml">&lt;!-- 两个占位符，第一个是字符串，第二个是整数 --&gt;
-&lt;string name=&quot;greeting_message&quot;&gt;Hello, %1$s! You have completed %2$d%% of the task.&lt;/string&gt;
-</code></pre>
-<pre><code class="kotlin">    private fun testGetString() &#123;
-        // 获取字符串资源，传入两个占位符的值
-        val name = &quot;John&quot;
-        val percentage = 75
-
-        // 双参数
-        println(
-            getString(
-                R.string.greeting_message, name, percentage
-            )
-        )
-
-        try &#123;
-            // 单参数
-            println(
-                getString(
-                    R.string.greeting_message, name
-                )
-            )
-        &#125; catch (e: Exception) &#123;
-            println(&quot;单参报错&quot;)
-        &#125;
-
-        try &#123;
-            // 三参数
-            println(
-                getString(
-                    R.string.greeting_message, name, name, name
-                )
-            )
-        &#125; catch (e: Exception) &#123;
-            println(&quot;三参报错&quot;)
-        &#125;
-    &#125;
-</code></pre>
-
-      
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达，可以邮件至 963614756@qq.com。 </span>
-    </div>
-</article>
-
-
-
-
-
-
-
-    
-
-
-
-
+        </article>
+        
+        
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -1433,11 +1312,11 @@ println(greetingMessage)  // 输出：Hello, John! You have 5 new messages.
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-    <div class="full-toc">
-        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+</div>
+<div class="full-toc">
+    <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
-    </div>
 </div>
 
 </body>

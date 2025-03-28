@@ -6,17 +6,17 @@
   <meta name="keywords" content="">
   <meta name="description" content="OOP-Java-02 | fox_blog">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="该 BUG 是在某些场景下, 会引发崩溃 所打印出的日志,仅仅提示了所在 activity 已知该 BUG 能否复现,在多个代码版本的表现不同 老版本没问题 新版本有问题 我本地代码没问题    此时就应该敏感的先确认自己本地代码是否拉取新代码 但是因为到晚上了注意力下降，并没有从这方面发掘。反复阅读代码仍未发现问题！！！最终结果：同事在他那里发现是新的提交造成的问题 而我本地代码没有拉取这个提交">
+<meta name="description" content="记录一次onCreateViewHolder频繁调用的问题场景： 一个父recycler view内有多个子item，每个item有其对应的自定义ViewHolder，而有某两个ViewHolder分别有自己的一个recyclerview。 把父recycler view命名为rvParent 把这两个ViewHolder命名为vhA和vhB 把这两个recycler view命名为rvA和rvB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解bug请拉取最新分支">
-<meta property="og:url" content="http://example.com/2025/01/20/%E4%B8%80%E6%AC%A1bug%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/index.html">
+<meta property="og:title" content="onCreateViewHolder">
+<meta property="og:url" content="http://example.com/2025/02/17/onCreateViewHolder/index.html">
 <meta property="og:site_name" content="fox_blog">
-<meta property="og:description" content="该 BUG 是在某些场景下, 会引发崩溃 所打印出的日志,仅仅提示了所在 activity 已知该 BUG 能否复现,在多个代码版本的表现不同 老版本没问题 新版本有问题 我本地代码没问题    此时就应该敏感的先确认自己本地代码是否拉取新代码 但是因为到晚上了注意力下降，并没有从这方面发掘。反复阅读代码仍未发现问题！！！最终结果：同事在他那里发现是新的提交造成的问题 而我本地代码没有拉取这个提交">
+<meta property="og:description" content="记录一次onCreateViewHolder频繁调用的问题场景： 一个父recycler view内有多个子item，每个item有其对应的自定义ViewHolder，而有某两个ViewHolder分别有自己的一个recyclerview。 把父recycler view命名为rvParent 把这两个ViewHolder命名为vhA和vhB 把这两个recycler view命名为rvA和rvB">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-01-20T14:19:26.000Z">
-<meta property="article:modified_time" content="2025-01-20T15:13:12.107Z">
+<meta property="article:published_time" content="2025-02-17T14:17:07.000Z">
+<meta property="article:modified_time" content="2025-02-17T14:39:44.418Z">
 <meta property="article:author" content="HITlittlefox">
-<meta property="article:tag" content="DEBUG">
+<meta property="article:tag" content="onCreateViewHolder">
 <meta name="twitter:card" content="summary">
 
 
@@ -115,7 +115,7 @@
     <li>
         <div class="all active" data-rel="All">All
             
-                <small>(109)</small>
+                <small>(110)</small>
             
         </div>
     </li>
@@ -182,7 +182,7 @@
                     <div data-rel="Android">
                         
                         Android
-                        <small>(3)</small>
+                        <small>(4)</small>
                         
                     </div>
                     
@@ -280,8 +280,8 @@
         
     </div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="109">
-<input type="hidden" id="yelog_site_word_count" value="145.2k">
+<input type="hidden" id="yelog_site_posts_number" value="110">
+<input type="hidden" id="yelog_site_word_count" value="145.8k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -359,6 +359,10 @@
             </li>
         
             <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>onCreateViewHolder</a>
+            </li>
+        
+            <li class="article-tag-list-item">
                 <i class="iconfont icon-tag"></i><a>REST</a>
             </li>
         
@@ -378,7 +382,15 @@
     <nav id="title-list-nav">
         
         <a  class="All Android "
-           href="/2025/01/20/%E4%B8%80%E6%AC%A1bug%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/"
+           href="/2025/02/17/onCreateViewHolder/"
+           data-tag="onCreateViewHolder"
+           data-author="" >
+            <span class="post-title" title="onCreateViewHolder">onCreateViewHolder</span>
+            <span class="post-date" title="2025-02-17 22:17:07">2025/02/17</span>
+        </a>
+        
+        <a  class="All Android "
+           href="/2025/01/20/%E8%A7%A3bug%E8%AF%B7%E6%8B%89%E5%8F%96%E6%9C%80%E6%96%B0%E5%88%86%E6%94%AF/"
            data-tag="DEBUG"
            data-author="" >
             <span class="post-title" title="解bug请拉取最新分支">解bug请拉取最新分支</span>
@@ -562,18 +574,18 @@
         </a>
         
         <a  class="All 我要就业 "
-           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
-            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
-        </a>
-        
-        <a  class="All 我要就业 "
            href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-labuladong/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="二叉树知识点-labuladong">二叉树知识点-labuladong</span>
+            <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
+        </a>
+        
+        <a  class="All 我要就业 "
+           href="/2022/07/26/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9F%A5%E8%AF%86%E7%82%B9-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="二叉树知识点-代码随想录">二叉树知识点-代码随想录</span>
             <span class="post-date" title="2022-07-26 09:20:24">2022/07/26</span>
         </a>
         
